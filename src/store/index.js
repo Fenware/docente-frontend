@@ -5,9 +5,19 @@ import axios from "axios";
 export default createStore({
   state: {
     API_URL: process.env.VUE_APP_ROOT_API,
+    user: {
+      ci: null,
+      nickname: "",
+      name: "",
+      middle_name: "",
+      surname: "",
+      second_surname: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      type: "teacher",
+    },
     subjects: [],
-    orientations: [],
-    orientations_subjects: [],
     token: null,
     headers: {
       Authorization: "",
@@ -97,51 +107,6 @@ export default createStore({
           console.log(error);
         });
     },
-    async createSubject({ commit, state }, subject) {
-      await axios({
-        method: "post",
-        url: state.API_URL + "/materia",
-        data: subject,
-        headers: state.headers,
-      })
-        .then((res) => {
-          subject.id = parseInt(res.data);
-          console.log(subject);
-          commit("addSubject", subject);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async removeSubject({ commit, state }, subject) {
-      await axios({
-        method: "delete",
-        url: state.API_URL + "/materia",
-        data: subject,
-        headers: state.headers,
-      }) // eslint-disable-next-line
-        .then((res) => {
-          commit("deleteSubject", subject);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async editSubject({ commit, state }, subject) {
-      await axios({
-        method: "put",
-        url: state.API_URL + "/materia",
-        data: subject,
-        headers: state.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          commit("changeSubjectName", subject);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     logout({ commit }) {
       commit("setToken", null);
       localStorage.removeItem("token");
@@ -164,59 +129,18 @@ export default createStore({
           console.log(error);
         });
     },
-    async syncOrientations({ commit, state }) {
-      await axios({
-        method: "get",
-        url: state.API_URL + "/orientacion",
-        headers: state.headers,
-      })
-        .then((res) => {
-          commit("setOrientations", res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    // eslint-disable-next-line
-    async getOrientationSubjects({ state }, id) {
-      var data_orientation = { "id": 1 };
-      /* await axios
-        .get(state.API_URL + "/orientacion-materia", {
-          params: data_orientation,
-        },state.headers)
-        .then((res) => {
-          console.log(res);
-        }); */
-      
-      await axios({
-        method: "get",
-        url: state.API_URL + "/orientacion-materia",
-        params: data_orientation,
-        data: data_orientation,
-        headers: state.headers,
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async createOrientation({ state }) {
-      var prueba = {
-        name: "Desarrollo y Soporte",
-        year: 1,
-        subjects: [1, 2, 3],
-      };
+    async userRegister({ state }) {
       await axios({
         method: "post",
-        url: state.API_URL + "/orientacion",
-        data: prueba,
+        url: state.API_URL + "/register",
+        data: state.user,
         headers: state.headers,
       })
         .then((res) => {
           console.log(res);
-          /* commit("setSubjects", res.data); */
+          if (res.data == 1) {
+            router.push("login");
+          }
         })
         .catch((error) => {
           console.log(error);
