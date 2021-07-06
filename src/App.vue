@@ -1,5 +1,5 @@
 <template>
-  <div class="" v-if="currentRouteName() == 'Login'">
+  <div class="" v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'">
     <router-view />
   </div>
   <div class="flex items-center min-h-screen max-h-screen max-w-screen" v-else>
@@ -25,15 +25,11 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["syncToken", "checkSession"]),
+    ...mapActions(["syncToken","checkSession"]),
     currentRouteName() {
       return this.$route.name;
-    },
-  },
-  created() {
-    this.syncToken();
-    this.checkSession();
-  },
+    }
+  }
 };
 </script>
 
