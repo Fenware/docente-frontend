@@ -38,9 +38,9 @@ export default {
   data: function() {
     return {
       user: {
-        user: "administrador@admin.com",
-        password: "mnoseadmin1234",
-        type: "admin",
+        user: "lucaspintos909@gmail.com",
+        password: "lucas",
+        type: "teacher",
       },
     };
   },
