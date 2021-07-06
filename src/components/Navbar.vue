@@ -4,16 +4,13 @@
   >
     <ul class="pt-4 h-full text-center flex flex-col justify-between">
       <div>
-        <span class="block pt-2 pb-4 text-4xl text-white text-center">O</span>
-        <li>
-          <router-link :to="{ name: 'Subjects' }" class="cursor-pointer">
-            <i :class="'fa-book ' + icon_class"></i>
+        <li class="cursor-pointer">
+          <router-link :to="{ name: 'Home' }" class="cursor-pointer">
+            <i :class="'fa-home ' + icon_class"></i>
           </router-link>
         </li>
-        <li class="cursor-pointer">
-          <router-link :to="{ name: 'Orientations' }" class="cursor-pointer">
-            <i :class="'fa-layer-group ' + icon_class"></i>
-          </router-link>
+        <li>
+            <i :class="'fa-book ' + icon_class"></i>
         </li>
         <li class="cursor-pointer">
           <i :class="'fa-user ' + icon_class"></i>
@@ -40,11 +37,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["syncToken", "logout"]),
-  },
-  created() {
-    this.syncToken();
-  },
+    ...mapActions(["logout"]),
+  }
 };
 </script>
 
