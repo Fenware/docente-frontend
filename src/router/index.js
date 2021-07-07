@@ -48,10 +48,15 @@ router.beforeEach((to, from, next) => {
   let redirectedFrom = to.redirectedFrom;
   /* console.log(redirectedFrom);
   console.log(to); */
-  if (routeProtected && store.state.token === null) {
+  if (routeProtected) {
+    if(store.state.token === null){
+      next({ name: "Login" });
+      console.log('Ruta protegida, token null');
+    }else{
+      next();
+    }
     // ruta protegida es true
     // token es nulo true, por ende redirigimos al inicio
-    next({ name: "Login" });
   } else if ((to.fullPath === "/login" || to.fullPath === "/registro") && store.state.token !== null) {
     // En caso contrario sigue...
     next({ name: redirectedFrom != undefined ? redirectedFrom : "Home" });
