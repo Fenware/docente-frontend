@@ -6,6 +6,7 @@ export default createStore({
   state: {
     API_URL: process.env.VUE_APP_ROOT_API,
     user: {
+      id: null,
       ci: null,
       nickname: "",
       name: "",
@@ -13,11 +14,9 @@ export default createStore({
       surname: "",
       second_surname: "",
       email: "",
-      password: "",
-      confirm_password: "",
+      avatar: "",
       type: "teacher",
     },
-    subjects: [],
     token: null,
     headers: {
       Authorization: "",
@@ -35,6 +34,19 @@ export default createStore({
     setText(state, payload) {
       state.text_filter = payload;
     },
+    setUserData(state, user){
+      state.user['id']= user.id;
+      state.user['ci']= user.ci;
+      state.user['name'] = user.name;
+      state.user['nickname'] = user.nickname;
+      state.user['name'] = user.name;
+      state.user['middle_name'] = user.middle_name;
+      state.user['surname'] = user.surname;
+      state.user['second_surname'] = user.second_surname;
+      state.user['email'] = user.email;
+      state.user['avatar'] = user.avatar;
+      console.log(state.user);
+    }
   },
   actions: {
     searcher({ commit }, payload) {
@@ -57,10 +69,14 @@ export default createStore({
         headers: { "Content-Type": "application/json" },
       })
         .then((res) => {
-          let token = res.data.result.token;
-          commit("setToken", token);
-          localStorage.setItem("token", token);
-          router.push("/inicio");
+          if ("token" in res.data.result) {
+            let token = res.data.result.token;
+            commit("setToken", token);
+            localStorage.setItem("token", token);
+            router.push("/inicio"); 
+          }else{
+            console.log("Error: login");
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -71,7 +87,7 @@ export default createStore({
       localStorage.removeItem("token");
       router.push("login");
     },
-    async checkSession({ state }) {
+    async checkSession({ commit, state }) {
       await axios({
         method: "post",
         url: state.API_URL + "/token",
@@ -81,23 +97,8 @@ export default createStore({
         .then((res) => {
           console.log(res);
           if (res.data != "OK") {
-            router.push("login");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async userRegister({ state }) {
-      await axios({
-        method: "post",
-        url: state.API_URL + "/register",
-        data: state.user,
-        headers: state.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
+            commit("setToken", null);
+            localStorage.removeItem("token");
             router.push("login");
           }
         })
