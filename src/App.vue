@@ -25,9 +25,14 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["syncToken","checkSession"]),
+    ...mapActions(["syncToken"]),
     currentRouteName() {
       return this.$route.name;
+    }
+  },
+  beforeCreated(){
+    if(this.currentRouteName() != "Register"){
+      this.syncToken();
     }
   }
 };
