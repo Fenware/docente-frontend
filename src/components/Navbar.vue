@@ -19,9 +19,19 @@
           <i :class="'fa-users ' + icon_class"></i>
         </li>
       </div>
-      <li class="cursor-pointer">
-        <i @click="logout()" :class="'fa-sign-out-alt  mb-4 ' + icon_class"></i>
-      </li>
+      <div>
+        <li class="cursor-pointer">
+          <router-link :to="{ name: 'Configuration' }" class="cursor-pointer">
+            <i :class="'fa-cog ' + icon_class"></i>
+          </router-link>
+        </li>
+        <li class="cursor-pointer">
+          <i
+            @click="logout()"
+            :class="'fa-sign-out-alt  mb-4 ' + icon_class"
+          ></i>
+        </li>
+      </div>
     </ul>
   </nav>
 </template>
@@ -33,7 +43,7 @@ export default {
   data: function() {
     return {
       icon_class:
-        "fas mt-6 text-3xl text-white transition-colors transition-transform filter hover:text-gray-200 transform hover:scale-110 drop-shadow-lg",
+        "fas mt-6 text-3xl text-white duration-500 ease-in-out  transition-colors transition-transform filter hover:text-gray-200 transform hover:scale-110 drop-shadow-lg",
     };
   },
   methods: {
