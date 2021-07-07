@@ -32,36 +32,8 @@ export default createStore({
     setHeaderToken(state, payload) {
       state.headers.Authorization = payload;
     },
-    setSubjects(state, subjects) {
-      state.subjects = subjects;
-    },
-    addSubject(state, subject) {
-      console.log(subject);
-      state.subjects.push(subject);
-    },
-    changeSubjectName(state, subject) {
-      state.subjects.forEach((item) => {
-        if (item.id == subject.id) {
-          item.name = subject.name;
-        }
-      });
-    },
-    deleteSubject(state, subject) {
-      state.subjects.forEach((item) => {
-        if (item.id == subject.id) {
-          item.state = 0;
-        }
-      });
-    },
     setText(state, payload) {
       state.text_filter = payload;
-    },
-    setOrientations(state, payload) {
-      console.log(payload);
-      state.orientations = payload;
-    },
-    addOrientation(state, orientation) {
-      state.orientations.push(orientation);
     },
   },
   actions: {
@@ -89,19 +61,6 @@ export default createStore({
           commit("setToken", token);
           localStorage.setItem("token", token);
           router.push("/inicio");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async syncSubjects({ commit, state }) {
-      await axios({
-        method: "get",
-        url: state.API_URL + "/materia",
-        headers: state.headers,
-      })
-        .then((res) => {
-          commit("setSubjects", res.data);
         })
         .catch((error) => {
           console.log(error);
