@@ -10,7 +10,7 @@
           <div class="">
             <input
               class="block mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-              v-model="user.ci"
+              v-model="user_data.ci"
               type="text"
               placeholder="Cédula de identidad"
               required
@@ -20,7 +20,7 @@
           <div>
             <input
               class="block mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-              v-model="user.nickname"
+              v-model="user_data.nickname"
               type="text"
               placeholder="Nombre de usuario"
               required
@@ -31,7 +31,7 @@
         <div>
           <input
             class="block w-full mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-            v-model="user.email"
+            v-model="user_data.email"
             type="email"
             placeholder="Email"
             required
@@ -42,7 +42,7 @@
           <div>
             <input
               class="block mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-              v-model="user.name"
+              v-model="user_data.name"
               type="text"
               placeholder="Nombre"
               required
@@ -51,7 +51,7 @@
           </div>
           <input
             class="block mx-auto text-center my-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-            v-model="user.middle_name"
+            v-model="user_data.middle_name"
             type="text"
             placeholder="Segundo nombre"
           />
@@ -60,7 +60,7 @@
           <div>
             <input
               class="block mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-              v-model="user.surname"
+              v-model="user_data.surname"
               type="text"
               placeholder="Apellido"
               required
@@ -69,7 +69,7 @@
           </div>
           <input
             class="block mx-auto text-center my-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-            v-model="user.second_surname"
+            v-model="user_data.second_surname"
             type="text"
             placeholder="Segundo Apellido"
           />
@@ -78,7 +78,7 @@
           <div>
             <input
               class="block mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-              v-model="user.password"
+              v-model="user_data.password"
               type="password"
               placeholder="Contraseña"
               required
@@ -87,7 +87,7 @@
           <div>
             <input
               class="block mx-auto text-center mt-5 p-2 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl bg-gray-50 bg-opacity-25 hover:bg-opacity-40 focus:bg-opacity-40 outline-none placeholder-gray-300 focus:placeholder-transparent focus:ring-4 ring-white ring-opacity-20"
-              v-model="user.confirm_password"
+              v-model="user_data.confirm_password"
               type="password"
               placeholder="Confirme la contraseña"
               required
@@ -105,15 +105,50 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Register",
+  data: () => {
+    return {
+      user_data: {
+        ci: null,
+        nickname: "",
+        name: "",
+        middle_name: "",
+        surname: "",
+        second_surname: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+        type: "teacher",
+      },
+    };
+  },
   computed: {
-    ...mapState(["API_URL", "user"]),
+    ...mapState(["API_URL", "headers"]),
   },
   methods: {
     ...mapActions(["userRegister"]),
+
+    async userRegister() {
+      await axios({
+        method: "post",
+        url: this.API_URL + "/register",
+        data: this.user_data,
+        headers: this.headers,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data == 1) {
+            this.$router.push("login");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
