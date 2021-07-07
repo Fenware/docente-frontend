@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Subjects from "../views/Subjects.vue";
+import Configuration from "../views/Configuration.vue";
 
 const routes = [
   {
@@ -26,6 +27,12 @@ const routes = [
     path: "/materias",
     name: "Subjects",
     component: Subjects,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/configuracion",
+    name: "Configuration",
+    component: Configuration,
     meta: { requireAuth: true },
   },
   { path: "/", redirect: "/inicio" },
