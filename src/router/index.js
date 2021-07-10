@@ -2,22 +2,26 @@ import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
 import Subjects from "../views/Subjects.vue";
-import Orientations from "../views/Orientations.vue";
+import Configuration from "../views/Configuration.vue";
 
 const routes = [
-  { path: "/", redirect: "/inicio" },
+  {
+    path: "/registro",
+    name: "Register",
+    component: Register
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  },
   {
     path: "/inicio",
     name: "Home",
     component: Home,
     meta: { requireAuth: true },
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: Login,
-    meta: { requireAuth: false },
   },
   {
     path: "/materias",
@@ -26,11 +30,12 @@ const routes = [
     meta: { requireAuth: true },
   },
   {
-    path: "/orientaciones",
-    name: "Orientations",
-    component: Orientations,
+    path: "/configuracion",
+    name: "Configuration",
+    component: Configuration,
     meta: { requireAuth: true },
   },
+  { path: "/", redirect: "/inicio" },
 ];
 
 const router = createRouter({
@@ -43,11 +48,16 @@ router.beforeEach((to, from, next) => {
   let redirectedFrom = to.redirectedFrom;
   /* console.log(redirectedFrom);
   console.log(to); */
-  if (routeProtected && store.state.token === null) {
+  if (routeProtected) {
+    if(store.state.token === null){
+      next({ name: "Login" });
+      console.log('Ruta protegida, token null');
+    }else{
+      next();
+    }
     // ruta protegida es true
     // token es nulo true, por ende redirigimos al inicio
-    next({ name: "Login" });
-  } else if (to.fullPath === "/login" && store.state.token !== null) {
+  } else if ((to.fullPath === "/login" || to.fullPath === "/registro") && store.state.token !== null) {
     // En caso contrario sigue...
     next({ name: redirectedFrom != undefined ? redirectedFrom : "Home" });
   } else {

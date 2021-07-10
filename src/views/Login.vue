@@ -26,6 +26,12 @@
         type="submit"
         value="Ingresar"
       />
+      <div class="text-center text-white mt-2">
+        <span class="block mb-3">O</span>
+        <router-link :to="{ name: 'Register' }" class=" mx-auto py-2 px-5 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl cursor-pointer bg-gray-50 bg-opacity-25 hover:bg-opacity-40 outline-none focus:ring-4 ring-white ring-opacity-20">
+          Registro
+        </router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -38,9 +44,9 @@ export default {
   data: function() {
     return {
       user: {
-        user: "administrador@admin.com",
-        password: "mnoseadmin1234",
-        type: "admin",
+        user: "lucaspintos909@gmail.com",
+        password: "lucas",
+        type: "teacher",
       },
     };
   },
