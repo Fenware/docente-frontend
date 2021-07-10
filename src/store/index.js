@@ -14,7 +14,7 @@ export default createStore({
       surname: "",
       second_surname: "",
       email: "",
-      avatar: "",
+      avatar: "01-man.svg",
       type: "teacher",
     },
     token: null,
@@ -44,8 +44,18 @@ export default createStore({
       state.user['surname'] = user.surname;
       state.user['second_surname'] = user.second_surname;
       state.user['email'] = user.email;
-      state.user['avatar'] = user.avatar;
-      console.log(state.user);
+      state.user['avatar'] = user.avatar != null ? user.avatar : '01-man.svg';
+    },
+    clearUserData(state){
+      state.user['id']= null;
+      state.user['ci']= null
+      state.user['name'] = "";
+      state.user['nickname'] = "";
+      state.user['name'] = "";
+      state.user['middle_name'] = "";
+      state.user['surname'] = "";
+      state.user['second_surname'] = "";
+      state.user['email'] = "";
     }
   },
   actions: {
@@ -84,6 +94,7 @@ export default createStore({
     },
     logout({ commit }) {
       commit("setToken", null);
+      commit("clearUserData");
       localStorage.removeItem("token");
       router.push("login");
     },
