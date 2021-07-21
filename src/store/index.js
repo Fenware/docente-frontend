@@ -229,6 +229,26 @@ export default createStore({
         dispatch("getOrientationSubjects", orientation.id);
       });
     },
+    async setTeacherSubjectsTaken({ dispatch, state, commit }) {
+      await axios({
+        method: "get",
+        url: state.API_URL + "/user-materia",
+        headers: state.headers,
+      })
+        .then((res) => {
+          console.log(res);
+          if (Array.isArray(res.data)) {
+            commit("clearGroups");
+            commit("setSubjectsTaken", res.data);
+            dispatch("syncTeacherGroups");
+          } else {
+            console.log("Error: setTeacherSubjectsTaken -> " + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async syncTeacherGroups({ state, dispatch }) {
       await axios({
         method: "get",
@@ -294,24 +314,6 @@ export default createStore({
             commit("addGroup", group);
           } else {
             console.log("Error: setFullGroupData -> " + res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async setTeacherSubjectsTaken({ state, commit }) {
-      await axios({
-        method: "get",
-        url: state.API_URL + "/user-materia",
-        headers: state.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (Array.isArray(res.data)) {
-            commit("setSubjectsTaken", res.data);
-          } else {
-            console.log("Error: setTeacherSubjectsTaken -> " + res.data);
           }
         })
         .catch((error) => {
