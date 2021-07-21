@@ -5,8 +5,10 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Subjects from "../views/Subjects.vue";
 import Configuration from "../views/Configuration.vue";
+import Groups from "../views/Groups.vue";
 
 const routes = [
+  { path: "/", redirect: "/inicio" },
   {
     path: "/registro",
     name: "Register",
@@ -24,9 +26,15 @@ const routes = [
     meta: { requireAuth: true },
   },
   {
-    path: "/materias",
+    path: "/tomar-materias",
     name: "Subjects",
     component: Subjects,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/tomar-grupos",
+    name: "Groups",
+    component: Groups,
     meta: { requireAuth: true },
   },
   {
@@ -35,7 +43,6 @@ const routes = [
     component: Configuration,
     meta: { requireAuth: true },
   },
-  { path: "/", redirect: "/inicio" },
 ];
 
 const router = createRouter({
