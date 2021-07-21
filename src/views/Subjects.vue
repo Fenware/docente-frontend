@@ -58,8 +58,6 @@ export default {
     this.syncOrientations();
     this.syncSubjects();
     this.setTeacherSubjectsTaken();
-    this.clearGroups();
-    this.syncTeacherGroups();
   },
   computed: {
     ...mapState([
