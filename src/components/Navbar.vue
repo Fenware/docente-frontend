@@ -4,19 +4,23 @@
   >
     <ul class="pt-4 h-full text-center flex flex-col justify-between">
       <div>
-        <li class="cursor-pointer">
+        <li>
           <router-link :to="{ name: 'Home' }" class="cursor-pointer">
             <i :class="'fa-home ' + icon_class"></i>
           </router-link>
         </li>
         <li>
+          <router-link :to="{ name: 'Groups' }" class="cursor-pointer">
+            <i :class="'fa-users ' + icon_class"></i>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'Subjects' }" class="cursor-pointer">
             <i :class="'fa-book ' + icon_class"></i>
+          </router-link>
         </li>
         <li class="cursor-pointer">
           <i :class="'fa-user ' + icon_class"></i>
-        </li>
-        <li class="cursor-pointer">
-          <i :class="'fa-users ' + icon_class"></i>
         </li>
       </div>
       <div>
@@ -48,7 +52,7 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
-  }
+  },
 };
 </script>
 
