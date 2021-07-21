@@ -8,7 +8,7 @@
     >
       <Navbar />
       <Main />
-      <Sidebar />
+      <!-- <Sidebar /> -->
     </div>
   </div>
 </template>
@@ -16,13 +16,13 @@
 import { mapActions } from "vuex";
 import Navbar from "@/components/Navbar";
 import Main from "@/components/Main";
-import Sidebar from "@/components/Sidebar";
+/* import Sidebar from "@/components/Sidebar"; */
 
 export default {
   components: {
     Navbar,
     Main,
-    Sidebar,
+    /* Sidebar, */
   },
   methods: {
     ...mapActions(["syncToken"]),
