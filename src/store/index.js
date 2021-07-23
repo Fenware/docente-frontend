@@ -258,9 +258,7 @@ export default createStore({
         .then((res) => {
           if (Array.isArray(res.data)) {
             res.data.forEach((group) => {
-              if (parseInt(group.state) == 1) {
-                dispatch("setFullGroupData", group);
-              }
+              dispatch("setFullGroupData", group);
             });
           } else {
             console.log("Error: getGroups -> " + res.data);
