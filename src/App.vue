@@ -8,7 +8,7 @@
     >
       <Navbar />
       <Main />
-      <!-- <Sidebar /> -->
+      <Sidebar />
     </div>
   </div>
 </template>
@@ -16,13 +16,13 @@
 import { mapActions } from "vuex";
 import Navbar from "@/components/Navbar";
 import Main from "@/components/Main";
-/* import Sidebar from "@/components/Sidebar"; */
+import Sidebar from "@/components/Sidebar";
 
 export default {
   components: {
     Navbar,
     Main,
-    /* Sidebar, */
+    Sidebar,
   },
   methods: {
     ...mapActions(["syncToken"]),
@@ -60,5 +60,18 @@ body {
 }
 .w-90per {
   width: 95%;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+  background: #ddd;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #666;
 }
 </style>
