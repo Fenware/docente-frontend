@@ -22,7 +22,7 @@
               :id="subject.id_subject + '_group_' + group.id_group"
               @click="
                 toogleSubject(
-                  subject.id_subject + '_group_' + group.id_group,
+                  subject.selected,
                   group.id_group,
                   subject.id_subject
                 )
@@ -87,19 +87,14 @@ export default {
       "clearGroups",
       "preProcessSubjects",
     ]),
-    toogleSubject(id_button, id_group, id_subject) {
-      let subject_card = document.getElementById(id_button);
-      /* let group = this.groups.find((group) => parseInt(group.id_group) == parseInt(id_group)) */
-      /* console.log(group.subjects);
-      console.log(id_subject);
-      console.log(subject_card); */
-      if (!subject_card.classList.contains("bg-blue-700")) {
-        this.takeSubject(id_group, id_subject, id_button);
+    toogleSubject(is_selected, id_group, id_subject) {
+      if (is_selected) {
+        this.unsuscribeGroupSubject(id_group, id_subject);
       } else {
-        this.unsuscribeGroupSubject(id_group, id_subject, id_button);
+        this.takeSubject(id_group, id_subject);
       }
     },
-    async takeSubject(id_group, id_subject, id_button) {
+    async takeSubject(id_group, id_subject) {
       let data = {
         grupo: parseInt(id_group),
         materia: parseInt(id_subject),
@@ -113,11 +108,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data == 1) {
-            let subject_card = document.getElementById(id_button);
-            subject_card.classList.toggle("scale-110");
-            subject_card.classList.toggle("bg-blue-700");
-            subject_card.classList.toggle("bg-opacity-50");
-            subject_card.classList.toggle("hover:bg-red-500");
+            this.toogleSelectSubject(id_group, id_subject);
           } else {
             console.log("Error: takeGroup -> " + res.data);
           }
@@ -126,7 +117,7 @@ export default {
           console.log(error);
         });
     },
-    async unsuscribeGroupSubject(id_group, id_subject, id_button) {
+    async unsuscribeGroupSubject(id_group, id_subject) {
       let data = {
         grupo: parseInt(id_group),
         materia: parseInt(id_subject),
@@ -140,11 +131,7 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data == 1) {
-            let subject_card = document.getElementById(id_button);
-            subject_card.classList.toggle("scale-110");
-            subject_card.classList.toggle("bg-blue-700");
-            subject_card.classList.toggle("bg-opacity-50");
-            subject_card.classList.toggle("hover:bg-red-500");
+            this.toogleSelectSubject(id_group, id_subject);
           } else {
             console.log("Error: unsuscribeGroupSubject -> " + res.data);
           }
@@ -152,6 +139,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    toogleSelectSubject(id_group, id_subject) {
+      let group = this.groups.find(
+        (group) => parseInt(group.id_group) == parseInt(id_group)
+      );
+
+      group.subjects.forEach((subject) => {
+        if (subject.id_subject == parseInt(id_subject)) {
+          subject.selected = !subject.selected;
+        }
+      });
     },
   },
 };
