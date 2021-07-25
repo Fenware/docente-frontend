@@ -6,6 +6,16 @@ export default createStore({
   state: {
     API_URL: process.env.VUE_APP_ROOT_API,
     groups: [],
+    consultation: {
+      creation_date: "Esperando datos",
+      group_name: "Esperando datos",
+      id: "Esperando datos",
+      state: "1",
+      subject_name: "Esperando datos",
+      teacher_name: "Esperando datos",
+      theme: "Esperando datos",
+    },
+    consultations: [],
     subjects: [],
     subjects_selected: [],
     subjects_taken: [],
@@ -104,6 +114,12 @@ export default createStore({
     },
     setSubjectsTaken(state, subjects) {
       state.subjects_taken = subjects;
+    },
+    setConsultations(state, consultations) {
+      state.consultations = consultations;
+    },
+    setConsultation(state, consultation) {
+      state.consultation = consultation;
     },
   },
   actions: {
@@ -318,6 +334,24 @@ export default createStore({
           console.log(error);
         });
     },
+    async syncConsultations({ state, commit }) {
+      await axios({
+        method: "get",
+        url: state.API_URL + "/consulta",
+        headers: state.headers,
+      })
+        .then((res) => {
+          console.log(res.data);
+          if (Array.isArray(res.data) && res.data.length > 0) {
+            commit("setConsultations", res.data);
+          } else {
+            console.log("Error: syncConsultations ->" + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
   getters: {
     subjectsFiltered(state) {
