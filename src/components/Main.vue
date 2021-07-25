@@ -1,5 +1,5 @@
 <template>
-  <main class=" mx-auto px-3" v-if="isLoginView()">
+  <main class=" w-full overflow-y-auto mr-1" v-if="isLoginView()">
       <router-view />
   </main>
 </template>
