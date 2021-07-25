@@ -6,13 +6,14 @@ import Register from "../views/Register.vue";
 import Subjects from "../views/Subjects.vue";
 import Configuration from "../views/Configuration.vue";
 import Groups from "../views/Groups.vue";
+import Consultation from "../views/Consultation.vue";
 
 const routes = [
   { path: "/", redirect: "/inicio" },
   {
     path: "/registro",
     name: "Register",
-    component: Register
+    component: Register 
   },
   {
     path: "/login",
@@ -35,6 +36,12 @@ const routes = [
     path: "/tomar-grupos",
     name: "Groups",
     component: Groups,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/consulta/:id",
+    name: "Consultation",
+    component: Consultation,
     meta: { requireAuth: true },
   },
   {
