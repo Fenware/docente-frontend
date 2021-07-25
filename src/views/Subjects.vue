@@ -9,7 +9,7 @@
       <div
         v-for="group in groups"
         :key="group.id_group"
-        class=" max-h-28 m-3 pt-2 w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl | rounded-2xl"
+        class=" max-h-full m-3 pt-2 w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl | rounded-2xl"
       >
         <p class="ml-3 mb-2 font-bold">
           {{ group.name }} - {{ group.orientation_name }}
@@ -29,7 +29,7 @@
               "
               :class="
                 subject.selected
-                  ? 'scale-110 block select-none my-2 mx-2 px-5 py-1 bg-blue-700 hover:bg-red-500 bg-opacity-50 backdrop-filter backdrop-blur-xl shadow-2xl rounded-full cursor-pointer transform-gpu transition-all duration-200'
+                  ? 'block select-none my-2 mx-2 px-5 py-1 bg-blue-700 hover:bg-red-500 bg-opacity-50 backdrop-filter backdrop-blur-xl shadow-2xl rounded-full cursor-pointer transform-gpu transition-all duration-200'
                   : 'block select-none my-2 px-5 py-1 mx-2 bg-white bg-opacity-10 hover:bg-opacity-20 backdrop-filter backdrop-blur-xl shadow-2xl rounded-full cursor-pointer transform-gpu transition-all duration-200'
               "
             >
@@ -89,8 +89,11 @@ export default {
     ]),
     toogleSubject(id_button, id_group, id_subject) {
       let subject_card = document.getElementById(id_button);
-
-      if (subject_card.classList.contains("scale-110")) {
+      /* let group = this.groups.find((group) => parseInt(group.id_group) == parseInt(id_group)) */
+      /* console.log(group.subjects);
+      console.log(id_subject);
+      console.log(subject_card); */
+      if (!subject_card.classList.contains("bg-blue-700")) {
         this.takeSubject(id_group, id_subject, id_button);
       } else {
         this.unsuscribeGroupSubject(id_group, id_subject, id_button);
