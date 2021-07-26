@@ -133,21 +133,29 @@ export default {
     ...mapActions(["userRegister"]),
 
     async userRegister() {
-      await axios({
-        method: "post",
-        url: this.API_URL + "/register",
-        data: this.user_data,
-        headers: this.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
-            this.$router.push("login");
-          }
+      if (this.user_data.password == this.user_data.confirm_password) {
+        await axios({
+          method: "post",
+          url: this.API_URL + "/register",
+          data: this.user_data,
+          headers: this.headers,
         })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then((res) => {
+            console.log(res);
+            if (res.data == 1) {
+              this.$router.push("login");
+              alert('Te has registrado correctamente.');
+            }else{
+              console.log(res);
+              alert(res.data.result.error_msg);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }else{
+        alert('Las contraseñas no coinciden, verifique que sean iguales.')
+      }
     },
   },
 };
