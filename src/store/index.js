@@ -147,6 +147,9 @@ export default createStore({
     setConsultationMessages(state, messages) {
       state.consultation.messages = messages;
     },
+    setConsultationStateAnswered(state){
+      state.consultation.state = 2;
+    }
   },
   actions: {
     searcher({ commit }, payload) {
