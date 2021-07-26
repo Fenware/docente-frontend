@@ -4,10 +4,10 @@
       Configuración de usuario
     </h1>
 
-    <div
-      class=" flex justify-center"
-    >
-      <div class="mt-10 p-5  bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-md">
+    <div class=" flex justify-center">
+      <div
+        class="mt-10 p-5  bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-md"
+      >
         <div class="text-white">
           <div v-if="!editAvatarMode">
             <img
@@ -158,6 +158,16 @@
             </div>
           </div>
         </div>
+
+        <div class="mt-5 text-white">
+          <button
+            @click="deleteUser()"
+            class="px-2 py-1 rounded-lg bg-red-500 hover:bg-red-600 transition-colors ease-linear"
+          >
+            <i class="fas fa-exclamation-triangle"></i>
+            Darme de baja
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -191,7 +201,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setUserData"]),
-    ...mapActions(["syncToken", "checkSession"]),
+    ...mapActions(["syncToken", "checkSession", "logout"]),
     async getUserData() {
       await axios({
         method: "get",
@@ -279,6 +289,23 @@ export default {
             this.changeNicknameEditMode(false);
           } else {
             console.log("Error: setUserAvatar");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async deleteUser() {
+      await axios({
+        method: "delete",
+        url: this.API_URL + "/user",
+        headers: this.headers,
+      })
+        .then((res) => {
+          if (res.data == 1) {
+            this.logout();
+          } else {
+            console.log("Error: deleteUser");
           }
         })
         .catch((error) => {
