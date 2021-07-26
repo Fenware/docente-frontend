@@ -1,21 +1,29 @@
 <template>
   <div class="text-white">
     <h2 class="text-center text-3xl pt-1">Consulta</h2>
-    <div class="flex justify-center mt-10 mb-4">
+    <div class="flex justify-center mt-10">
       <div
         class="text-white rounded-3xl | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl max-w-lg"
       >
-        <div class="flex gap-2 select-none py-4 px-5 mb-3">
-          <span
-            class="text-sm text-white rounded-lg px-3 py-0.5 | bg-purple-500 backdrop-filter backdrop-blur-xl shadow-2xl"
+        <div class="flex justify-between mb-3 items-center py-4 px-5">
+          <div class="flex gap-2 select-none">
+            <span
+              class="text-sm text-white rounded-lg px-3 py-0.5 | bg-purple-500 backdrop-filter backdrop-blur-xl shadow-2xl"
+            >
+              {{ consultation.group_name }}
+            </span>
+            <span
+              class="text-sm text-white rounded-lg px-3 py-0.5 | bg-blue-500 backdrop-filter backdrop-blur-xl shadow-2xl"
+            >
+              {{ consultation.subject_name }}
+            </span>
+          </div>
+          <router-link
+            :to="{ name: 'Home' }"
+            class="text-sm text-white rounded-full px-3 py-0.5 | bg-red-500 hover:bg-opacity-80 transition-all ease-linear backdrop-filter backdrop-blur-xl shadow-2xl"
           >
-            {{ consultation.group_name }}
-          </span>
-          <span
-            class="text-sm text-white rounded-lg px-3 py-0.5 | bg-blue-500 backdrop-filter backdrop-blur-xl shadow-2xl"
-          >
-            {{ consultation.subject_name }}
-          </span>
+            Cerrar
+          </router-link>
         </div>
 
         <div class="flex items-center mx-20 mb-2">
@@ -45,12 +53,11 @@
           <span class="block mr-3">Mensaje: </span>
           <textarea
             class=" w-max text-white rounded-lg px-3 py-1 | outline-none bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl"
-            v-model="consultation_body.content"
+            v-model="consultation.body"
             cols="35"
             rows="4"
             disabled
           ></textarea>
-
           <div class="flex mt-3">
             <button
               @click="toogleNewMessageMode()"
@@ -66,10 +73,14 @@
           <h3 class="pl-3 text-xl">Respuestas</h3>
 
           <div class="my-2 mx-8">
-            <p class="text-center" v-if="messages.length == 0">
+            <p class="text-center" v-if="consultation.messages.length == 0">
               Aún no hay respuestas
             </p>
-            <div class=" flex mb-2" v-for="message in messages" :key="message">
+            <div
+              class=" flex mb-2"
+              v-for="message in consultation.messages"
+              :key="message.id"
+            >
               <div
                 class="bg-gray-700  pr-5 py-0.5 rounded-3xl rounded-tl-sm w-full"
               >
@@ -105,7 +116,7 @@
                 <i class="fas fa-times"></i>
               </button>
               <button
-                @click="sendConsultationMessage()"
+                @click="sendMessage()"
                 class="text-sm ml-1 px-2 py-0.5 bg-green-500 hover:bg-green-600 transition-colors ease-linear duration-100 rounded-lg"
               >
                 Enviar
@@ -120,21 +131,18 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import axios from "axios";
 
 export default {
   name: "Consultation",
   data: function() {
     return {
-      messages: ["Esperando datos"],
-      consultation_body: {},
       new_message: "",
-      new_message_mode: false,
     };
   },
   computed: {
-    ...mapState(["API_URL", "headers", "consultation"]),
+    ...mapState(["API_URL", "headers", "consultation", "new_message_mode"]),
   },
   created() {
     var id = this.$route.params.id;
@@ -143,12 +151,18 @@ export default {
     } else if (parseInt(this.consultation.id) != parseInt(id)) {
       this.getConsultation(id);
     }
-    this.getConsultationMessages(id);
   },
   methods: {
-    ...mapMutations(["setConsultation", "removeConsultation"]),
-    toogleNewMessageMode() {
-      this.new_message_mode = !this.new_message_mode;
+    ...mapMutations([
+      "setConsultation",
+      "removeConsultation",
+      "toogleNewMessageMode",
+      "setNewMessage",
+    ]),
+    ...mapActions(["getConsultationMessages", "sendConsultationMessage"]),
+    sendMessage() {
+      this.setNewMessage(this.new_message);
+      this.sendConsultationMessage(parseInt(this.consultation.id));
     },
     async getConsultation(id) {
       let data = `consulta=${id}`;
@@ -159,55 +173,11 @@ export default {
       })
         .then((res) => {
           if (Array.isArray(res.data) && res.data.length > 0) {
+            res.data[0].messages = [];
             this.setConsultation(res.data[0]);
+            this.getConsultationMessages(id);
           } else {
-            console.log("Error: syncConsultations ->" + res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async getConsultationMessages(id) {
-      let data = `consulta=${id}`;
-      await axios({
-        method: "get",
-        url: this.API_URL + `/consulta-mensaje?${data}`,
-        headers: this.headers,
-      })
-        .then((res) => {
-          if (Array.isArray(res.data) && res.data.length > 0) {
-            this.consultation_body = res.data[0];
-            console.log(this.consultation_body);
-            res.data.splice(0, 1);
-            this.messages = res.data;
-          } else {
-            console.log("Error: getConsultationMessages ->" + res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async sendConsultationMessage() {
-      let data = {
-        consulta: parseInt(this.consultation.id),
-        msg: this.new_message,
-      };
-      await axios({
-        method: "post",
-        url: this.API_URL + "/consulta-mensaje",
-        data: data,
-        headers: this.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
-            this.new_message = "";
-            this.toogleNewMessageMode();
-            this.getConsultationMessages(this.consultation.id);
-          } else {
-            alert(res.data.result.error_msg);
+            console.log("Error: getConsultation ->" + res.data);
           }
         })
         .catch((error) => {
