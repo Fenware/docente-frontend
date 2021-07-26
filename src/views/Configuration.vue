@@ -5,155 +5,157 @@
     </h1>
 
     <div
-      class="mt-10 p-5 bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-md"
+      class=" flex justify-center"
     >
-      <div class="text-white">
-        <div v-if="!editAvatarMode">
-          <img
-            id="avatar_img"
-            class="max-h-32 mx-auto mb-6 "
-            :src="require('@/assets/avatars/' + ( user.avatar ))"
-            alt="avatar"
-          />
-          <div>
-            <button
-              class="block m-3 px-3 text-sm py-1 mx-auto  transition-colors duration-200 hover:bg-opacity-20 bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-full"
-              @click="changeAvatarEditMode(true)"
-            >
-              Cambiar avatar
-              <i
-                class="fas fa-pencil-alt text-yellow-300 mx-1 text-md drop-shadow-lg "
-              ></i>
-            </button>
-          </div>
-        </div>
-
-        <div
-          v-else
-          class=" px-2 pb-5 bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-sm"
-        >
-          <div class="flex justify-between items-center">
-            <span class="text-center my-2 mx-2">Seleccione uno</span>
+      <div class="mt-10 p-5  bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-md">
+        <div class="text-white">
+          <div v-if="!editAvatarMode">
+            <img
+              id="avatar_img"
+              class="max-h-32 mx-auto mb-6 "
+              :src="require('@/assets/avatars/' + user.avatar)"
+              alt="avatar"
+            />
             <div>
               <button
-                @click="changeAvatar()"
-                class="  bg-green-700 py-1 px-2 text-xs rounded-full duration-300 transition hover:bg-green-600 "
+                class="block m-3 px-3 text-sm py-1 mx-auto  transition-colors duration-200 hover:bg-opacity-20 bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-full"
+                @click="changeAvatarEditMode(true)"
               >
-                Guardar seleccion
-              </button>
-              <button
-                @click="changeAvatarEditMode(false)"
-                class=" ml-2 bg-red-700 py-1 px-2 text-xs rounded-full duration-300 transition hover:bg-red-600 "
-              >
-                Cancelar
+                Cambiar avatar
+                <i
+                  class="fas fa-pencil-alt text-yellow-300 mx-1 text-md drop-shadow-lg "
+                ></i>
               </button>
             </div>
-          </div>
-          <div class="flex flex-wrap gap-3 px-5 mt-2">
-            <button
-              v-for="avatar_data in avatars"
-              :key="avatar_data.id"
-              :id="avatar_data.id"
-              @click="selectAvatar(avatar_data.id)"
-              class="w-16 transition duration-200 ease-in-out hover:bg-opacity-20 focus:bg-opacity-30 transform bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl drop-shadow-xl cursor-pointer"
-            >
-              <img
-                class="max-h-14 my-3 mx-1"
-                :src="require('@/assets/avatars/' + avatar_data.file)"
-                alt="avatar"
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-10">
-        <div class="flex items-center ">
-          <div
-            v-if="!editNicknameMode"
-            class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
-          >
-            <span class="text-white pl-3">Nickname: </span>
-            <p
-              class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
-            >
-              {{ user.nickname }}
-              <i
-                @click="changeNicknameEditMode(true)"
-                class="fas fa-pencil-alt text-yellow-300 transition-colors hover:text-yellow-400 ml-1 text-md drop-shadow-lg cursor-pointer"
-              ></i>
-            </p>
           </div>
 
           <div
             v-else
-            class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
+            class=" px-2 pb-5 bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-sm"
           >
-            <span class="text-white pl-3">Editar nickname: </span>
-            <p
-              class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
-            >
-              <input
-                id="nickname_input"
-                class="bg-transparent outline-none"
-                type="text"
-                v-on:keyup.enter="editUserNickName()"
-                :value="user.nickname"
-                autofocus
-              />
-              <i
-                @click="editUserNickName()"
-                class="fas fa-save text-green-300 transition-colors transition-transform transform hover:scale-110 hover:text-green-400 ml-1 text-md drop-shadow-lg cursor-pointer"
-              ></i>
-            </p>
+            <div class="flex justify-between items-center">
+              <span class="text-center my-2 mx-2">Seleccione uno</span>
+              <div>
+                <button
+                  @click="changeAvatar()"
+                  class="  bg-green-700 py-1 px-2 text-xs rounded-full duration-300 transition hover:bg-green-600 "
+                >
+                  Guardar seleccion
+                </button>
+                <button
+                  @click="changeAvatarEditMode(false)"
+                  class=" ml-2 bg-red-700 py-1 px-2 text-xs rounded-full duration-300 transition hover:bg-red-600 "
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3 px-5 mt-2">
+              <button
+                v-for="avatar_data in avatars"
+                :key="avatar_data.id"
+                :id="avatar_data.id"
+                @click="selectAvatar(avatar_data.id)"
+                class="w-16 transition duration-200 ease-in-out hover:bg-opacity-20 focus:bg-opacity-30 transform bg-white rounded-2xl bg-opacity-10 backdrop-filter backdrop-blur-xl drop-shadow-xl cursor-pointer"
+              >
+                <img
+                  class="max-h-14 my-3 mx-1"
+                  :src="require('@/assets/avatars/' + avatar_data.file)"
+                  alt="avatar"
+                />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mt-3">
-        <div class="flex items-center ">
-          <div
-            class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
-          >
-            <span class="text-white pl-3">Cédula de identidad: </span>
-            <p
-              class="ml-2 px-3 py-1 font-bold tracking-widest | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+        <div class="mt-10">
+          <div class="flex items-center ">
+            <div
+              v-if="!editNicknameMode"
+              class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
             >
-              {{ user.ci }}
-            </p>
+              <span class="text-white pl-3">Nickname: </span>
+              <p
+                class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+              >
+                {{ user.nickname }}
+                <i
+                  @click="changeNicknameEditMode(true)"
+                  class="fas fa-pencil-alt text-yellow-300 transition-colors hover:text-yellow-400 ml-1 text-md drop-shadow-lg cursor-pointer"
+                ></i>
+              </p>
+            </div>
+
+            <div
+              v-else
+              class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
+            >
+              <span class="text-white pl-3">Editar nickname: </span>
+              <p
+                class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+              >
+                <input
+                  id="nickname_input"
+                  class="bg-transparent outline-none"
+                  type="text"
+                  v-on:keyup.enter="editUserNickName()"
+                  :value="user.nickname"
+                  autofocus
+                />
+                <i
+                  @click="editUserNickName()"
+                  class="fas fa-save text-green-300 transition-colors transition-transform transform hover:scale-110 hover:text-green-400 ml-1 text-md drop-shadow-lg cursor-pointer"
+                ></i>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mt-3">
-        <div class="flex items-center ">
-          <div
-            class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
-          >
-            <span class="text-white pl-3">Nombre completo: </span>
-            <p
-              class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+        <div class="mt-3">
+          <div class="flex items-center ">
+            <div
+              class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
             >
-              {{ user.name }}
-              {{ user.middle_name }}
-              {{ user.surname }}
-              {{ user.second_surname }}
-            </p>
+              <span class="text-white pl-3">Cédula de identidad: </span>
+              <p
+                class="ml-2 px-3 py-1 font-bold tracking-widest | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+              >
+                {{ user.ci }}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="mt-3">
-        <div class="flex items-center ">
-          <div
-            class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
-          >
-            <span class="text-white pl-3">Email: </span>
-            <p
-              class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+        <div class="mt-3">
+          <div class="flex items-center ">
+            <div
+              class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
             >
-              {{ user.email }}
-            </p>
+              <span class="text-white pl-3">Nombre completo: </span>
+              <p
+                class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+              >
+                {{ user.name }}
+                {{ user.middle_name }}
+                {{ user.surname }}
+                {{ user.second_surname }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div class="flex items-center ">
+            <div
+              class="flex items-center  text-white rounded-full shadow-xl bg-gray-300 bg-opacity-25"
+            >
+              <span class="text-white pl-3">Email: </span>
+              <p
+                class="ml-2 px-3 py-1 font-bold | text-white rounded-full shadow-lg bg-white bg-opacity-20"
+              >
+                {{ user.email }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -171,7 +173,7 @@ export default {
     return {
       editAvatarMode: false,
       editNicknameMode: false,
-      avatar:  '' ,
+      avatar: "",
       selectedAvatar: null,
       avatars: [
         { id: 1, file: "01-man.svg" },
@@ -217,8 +219,8 @@ export default {
         .then((res) => {
           if (res.data == 1) {
             this.user.avatar = avatar;
-          }else{
-            console.log('Error: setUserAvatar');
+          } else {
+            console.log("Error: setUserAvatar");
           }
         })
         .catch((error) => {
@@ -260,7 +262,7 @@ export default {
       });
     },
     async editUserNickName() {
-      let newUserNickname = document.getElementById('nickname_input').value;
+      let newUserNickname = document.getElementById("nickname_input").value;
       let data = {
         nickname: newUserNickname,
         avatar: this.user.avatar,
@@ -275,8 +277,8 @@ export default {
           if (res.data == 1) {
             this.user.nickname = newUserNickname;
             this.changeNicknameEditMode(false);
-          }else{
-            console.log('Error: setUserAvatar');
+          } else {
+            console.log("Error: setUserAvatar");
           }
         })
         .catch((error) => {
@@ -284,11 +286,11 @@ export default {
         });
     },
   },
-  created(){
+  created() {
     this.syncToken();
     this.checkSession();
     this.getUserData();
-  }
+  },
 };
 </script>
 
