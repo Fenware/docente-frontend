@@ -20,9 +20,9 @@
           </div>
           <router-link
             :to="{ name: 'Home' }"
-            class="text-sm text-white rounded-full px-3 py-0.5 | bg-red-500 hover:bg-opacity-80 transition-all ease-linear backdrop-filter backdrop-blur-xl shadow-2xl"
+            class="text-sm text-white rounded-full px-3 py-0.5 | bg-gray-700 border-2 border-gray-400 hover:bg-opacity-80 transition-all ease-linear backdrop-filter backdrop-blur-xl shadow-2xl"
           >
-            Cerrar
+            <i class="fas fa-reply"></i>
           </router-link>
         </div>
 
@@ -50,7 +50,7 @@
         </div>
 
         <div class="  mx-20">
-          <span class="block mr-3">Mensaje: </span>
+          <span class="block mr-3">Descripción: </span>
           <textarea
             class=" w-max text-white rounded-lg px-3 py-1 | outline-none bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl"
             v-model="consultation.body"
@@ -158,11 +158,14 @@ export default {
       "removeConsultation",
       "toogleNewMessageMode",
       "setNewMessage",
+      "setConsultationStateAnswered",
     ]),
     ...mapActions(["getConsultationMessages", "sendConsultationMessage"]),
     sendMessage() {
+      this.setConsultationStateAnswered();
       this.setNewMessage(this.new_message);
       this.sendConsultationMessage(parseInt(this.consultation.id));
+      this.new_message = '';
     },
     async getConsultation(id) {
       let data = `consulta=${id}`;
