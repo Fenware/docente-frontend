@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "ConsultationsContainer",
   computed: {
@@ -35,8 +35,11 @@ export default {
   },
   methods: {
     ...mapMutations(["setConsultation"]),
+    ...mapActions(['getConsultationMessages']),
     viewConsultation(consultation) {
+      consultation.messages = [];
       this.setConsultation(consultation);
+      this.getConsultationMessages(parseInt(consultation.id));
       this.$router.push({
         name: "Consultation",
         params: { id: consultation.id },
@@ -47,3 +50,4 @@ export default {
 </script>
 
 <style></style>
+
