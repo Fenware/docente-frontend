@@ -8,7 +8,7 @@
     <div class="flex justify-start items-center mt-2">
       <button 
       @click="syncConsultations()"
-      class="bg-gray-700 text-xs mx-2 px-2  rounded-full border-2 border-gray-400">
+      class="bg-gray-700 text-xs mx-2 px-2 hover:bg-gray-600 transition-colors ease-linear rounded-full border-2 border-gray-400">
         Actualizar
         <i class="fas fa-sync-alt "></i>
       </button>
