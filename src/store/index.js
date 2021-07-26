@@ -172,13 +172,15 @@ export default createStore({
         headers: { "Content-Type": "application/json" },
       })
         .then((res) => {
-          if ("token" in res.data.result) {
+          console.log(res);
+          if (typeof res.data.result.token == 'string') {
             let token = res.data.result.token;
             commit("setToken", token);
             localStorage.setItem("token", token);
             router.push("/inicio");
           } else {
             console.log("Error: login");
+            alert(res.data.result.error_msg);
           }
         })
         .catch((error) => {
