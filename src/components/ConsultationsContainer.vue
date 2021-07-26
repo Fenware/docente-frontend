@@ -17,12 +17,20 @@
     <p class="text-sm px-4 pt-1">
       {{ consultation.theme }}
     </p>
-    <button
-      @click="viewConsultation(consultation)"
-      class="mt-1 ml-3 text-xs bg-white bg-opacity-20 hover:bg-opacity-30 hover:shadow-xl transition-all ease-linear px-2 py-0.5 rounded-full"
-    >
-      Ver consulta
-    </button>
+    <div class=" flex justify-between items-center">
+      <button
+        @click="viewConsultation(consultation)"
+        class="mt-1 ml-3 text-xs bg-white bg-opacity-20 hover:bg-opacity-30 hover:shadow-xl transition-all ease-linear px-2 py-0.5 rounded-full"
+      >
+        Ver consulta
+      </button>
+      <div v-show="consultation.state == 2" class="rounded-full mr-2 text-green-500">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div v-show="consultation.state == 1" class="rounded-full mr-2 text-gray-800">
+        <i class="far fa-circle"></i>
+      </div>
+    </div>
   </div>
 </template>
 
