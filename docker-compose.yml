@@ -1,12 +1,12 @@
 version: '3.5'
 services:
-    vue-ui:
+    vue-ui-docente:
         build:
             context: ./
             dockerfile: Dockerfile
         ports:
-        - "8081:8080"
-        container_name: vue-ui
+        - "8082:8080"
+        container_name: vue-ui-docente
         volumes:
         - ./:/usr/src/app
         - /usr/src/app/node_modules
