@@ -1,4 +1,4 @@
-# Chathink Administrador
+# Chathink Docente
 
 ## Project setup
 ```
