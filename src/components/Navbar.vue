@@ -19,9 +19,9 @@
             <i :class="'fa-book ' + icon_class"></i>
           </router-link>
         </li>
-        <li class="cursor-pointer">
+        <!-- <li class="cursor-pointer">
           <i :class="'fa-user ' + icon_class"></i>
-        </li>
+        </li> -->
       </div>
       <div>
         <li class="cursor-pointer">
