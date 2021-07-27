@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="pb-2">
     <div class="flex px-2 justify-between items-center">
       Grupo:
       <span

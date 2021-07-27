@@ -116,7 +116,7 @@
                 <i class="fas fa-times"></i>
               </button>
               <button
-                @click="sendMessage()"
+                @click="new_message.trim() != '' ? sendMessage() : focusMessageInput()"
                 class="text-sm ml-1 px-2 py-0.5 bg-green-500 hover:bg-green-600 transition-colors ease-linear duration-100 rounded-lg"
               >
                 Enviar
@@ -161,6 +161,9 @@ export default {
       "setConsultationStateAnswered",
     ]),
     ...mapActions(["getConsultationMessages", "sendConsultationMessage"]),
+    focusMessageInput(){
+      document.getElementById('new_message').focus();
+    },
     sendMessage() {
       this.setConsultationStateAnswered();
       this.setNewMessage(this.new_message);

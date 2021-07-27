@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white w-full h-full">
+  <div class="text-white  w-full px-2">
     <h2 class="text-center text-3xl mt-1">
       Tomar Grupos
     </h2>
@@ -7,12 +7,13 @@
     <div class="flex justify-between mt-10">
       <input
         type="text"
+        id="code_input"
         placeholder="Código de grupo"
         v-model="group_code"
         class="w-96 mx-2 py-2 px-2 | bg-white transition duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl | rounded-2xl  outline-none placeholder-white"
       />
       <button
-        @click="takeGroup()"
+        @click="group_code.trim() != '' ? takeGroup() : focusCodeInput()"
         class="ml-4 pr-2 | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl transition duration-300 focus:bg-opacity-20 hover:bg-opacity-20 shadow-2xl | rounded-2xl"
       >
         <i
@@ -23,7 +24,7 @@
     </div>
 
     <div
-      class="flex overflow-auto h-2/3 mx-auto p-1 flex-wrap md:max-w-2xl lg:max-w-3xl mt-10 bg-white bg-opacity-10  shadow-2xl | rounded-lg"
+      class="flex px-2 overflow-y-auto h-2/3 mx-auto flex-wrap md:max-w-2xl lg:max-w-3xl mt-10 bg-white bg-opacity-10  shadow-2xl | rounded-lg"
     >
       <GroupsContainer />
     </div>
@@ -63,6 +64,9 @@ export default {
       "syncSubjects",
       "syncTeacherGroups",
     ]),
+    focusCodeInput(){
+      document.getElementById('code_input').focus();
+    },
     async takeGroup() {
       let data = {
         code: this.group_code,
@@ -77,7 +81,13 @@ export default {
           if (res.data == 1) {
             this.clearGroups();
             this.syncTeacherGroups();
-          } else {
+            this.group_code = ""
+          } else if(res.data == 0){
+            alert('Ya has tomado este grupo!');
+            this.group_code = "";
+            console.log("Error: takeGroup -> " + res.data);
+          }else{
+            alert(res.data);
             console.log("Error: takeGroup -> " + res.data);
           }
         })
