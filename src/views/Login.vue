@@ -46,7 +46,7 @@ export default {
       user: {
         user: "",
         password: "",
-        type: "",
+        type: "teacher",
       },
     };
   },
