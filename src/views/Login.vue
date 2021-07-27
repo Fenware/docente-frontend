@@ -44,9 +44,9 @@ export default {
   data: function() {
     return {
       user: {
-        user: "lucaspintos909@gmail.com",
-        password: "lucas",
-        type: "teacher",
+        user: "",
+        password: "",
+        type: "",
       },
     };
   },
