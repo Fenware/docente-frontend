@@ -1,0 +1,19 @@
+# Usando imagen de node para instalar dependencias y hacer un build del proyecto
+## Nombrando 'builder' al stage
+FROM node:14.17.1 as builder
+WORKDIR /usr/src/app
+## Copiando el proyecto entero a la carpeta actual
+COPY ./ ./
+RUN npm install && npm run build
+
+# Usando apache como servidor para produccion
+FROM httpd:2.4-alpine
+## Descargando archivo 'httpd.conf' para habilitar mod_rewrite y poder usar el .htaccess
+RUN wget https://fenware.github.io/archivos/httpd.conf && mv httpd.conf /usr/local/apache2/conf/
+WORKDIR /usr/local/apache2/htdocs/
+## Copiando el proyecto ya buildeado del stage anterior
+COPY --from=builder /usr/src/app/dist .
+## Descargando el archivo '.htaccess'
+RUN wget https://fenware.github.io/archivos/.htaccess
+## Exponiendo el puerto 80, aunque nose si es necesario
+EXPOSE 80
