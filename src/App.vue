@@ -19,6 +19,7 @@
 import Navbar from "@/components/Navbar";
 import Main from "@/components/Main";
 import Sidebar from "@/components/Sidebar";
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -27,9 +28,13 @@ export default {
     Sidebar,
   },
   methods: {
+    ...mapActions(["syncToken"]),
     currentRouteName() {
       return this.$route.name;
     },
+  },
+  created() {
+    this.syncToken();
   },
 };
 </script>
