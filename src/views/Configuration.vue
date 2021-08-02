@@ -201,7 +201,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setUserData"]),
-    ...mapActions(["syncToken", "checkSession", "logout"]),
+    ...mapActions(["logout"]),
     async getUserData() {
       await axios({
         method: "get",
@@ -314,8 +314,6 @@ export default {
     },
   },
   created() {
-    this.syncToken();
-    this.checkSession();
     this.getUserData();
   },
 };

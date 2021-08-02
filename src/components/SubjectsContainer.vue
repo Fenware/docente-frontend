@@ -96,8 +96,6 @@ export default {
       boxEditMode.classList.remove("hidden");
       boxNoEditMode.classList.add("hidden");
 
-      /* boxEditMode.className.replace("block", "hidden");
-      boxNoEditMode.className.replace("hidden", "block"); */
     },
     cancelEdit(id) {
       let boxEditMode = document.getElementById(id + "edit_mode");

@@ -59,7 +59,6 @@ export default {
   methods: {
     ...mapMutations(["clearGroups", "addGroup"]),
     ...mapActions([
-      "checkSession",
       "syncOrientations",
       "syncSubjects",
       "syncTeacherGroups",
@@ -97,7 +96,6 @@ export default {
     },
   },
   created() {
-    this.checkSession();
     this.syncOrientations();
     this.syncSubjects();
     this.clearGroups();

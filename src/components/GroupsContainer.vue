@@ -25,7 +25,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["API_URL", "headers", "groups"]),
+    ...mapState(["groups"]),
   },
 };
 </script>

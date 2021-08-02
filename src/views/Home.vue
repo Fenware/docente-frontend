@@ -5,17 +5,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import { mapActions } from "vuex";
-
 export default {
   name: "Home",
-  methods: {
-    ...mapActions(["syncToken", "checkSession"]),
-  },
-  created() {
-    this.syncToken();
-    this.checkSession();
-  },
 };
 </script>

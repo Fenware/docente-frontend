@@ -33,7 +33,7 @@ export default {
     ...mapState(["subjects", "orientations"]),
   },
   methods: {
-    ...mapActions(["createOrientation", "getOrientationSubjects"]),
+    ...mapActions(["getOrientationSubjects"]),
   },
 };
 </script>

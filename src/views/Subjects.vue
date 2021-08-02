@@ -44,7 +44,7 @@
 
 <script>
 import axios from "axios";
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "SubjectContainer",
@@ -64,28 +64,15 @@ export default {
       "API_URL",
       "headers",
       "subjects",
-      "orientations_subjects",
       "groups",
     ]),
     ...mapGetters(["subjectsFiltered"]),
   },
   methods: {
     ...mapActions([
-      "createSubject",
-      "removeSubject",
-      "editSubject",
-      "syncTeacherGroups",
       "syncOrientations",
       "syncSubjects",
       "setTeacherSubjectsTaken",
-    ]),
-    ...mapMutations([
-      "onlySelectGroupSubject",
-      "onlyDeleteGroupSubject",
-      "setPreselectedGroupSubjects",
-      "addOriginalOrientationSubjects",
-      "clearGroups",
-      "preProcessSubjects",
     ]),
     toogleSubject(is_selected, id_group, id_subject) {
       if (is_selected) {

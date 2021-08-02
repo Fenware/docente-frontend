@@ -1,5 +1,8 @@
 <template>
-  <div class="" v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'">
+  <div
+    class=""
+    v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'"
+  >
     <router-view />
   </div>
   <div class="flex items-center min-h-screen max-h-screen max-w-screen" v-else>
@@ -13,7 +16,6 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
 import Navbar from "@/components/Navbar";
 import Main from "@/components/Main";
 import Sidebar from "@/components/Sidebar";
@@ -25,16 +27,10 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["syncToken"]),
     currentRouteName() {
       return this.$route.name;
-    }
+    },
   },
-  beforeCreated(){
-    if(this.currentRouteName() != "Register"){
-      this.syncToken();
-    }
-  }
 };
 </script>
 
