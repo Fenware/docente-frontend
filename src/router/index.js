@@ -59,23 +59,22 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const routeProtected = to.matched.some((record) => record.meta.requireAuth);
-  let redirectedFrom = to.redirectedFrom;
+  /* let redirectedFrom = to.redirectedFrom; */
   /* console.log(redirectedFrom);
   console.log(to); */
+  // Verificando la session en cada ruta
+  store.dispatch('syncToken');
   if (routeProtected) {
-    if(store.state.token === null){
-      next({ name: "Login" });
-      console.log('Ruta protegida, token null');
-    }else{
+    store.dispatch("checkSession");
+    if (store.state.token !== null) {
       next();
     }
-    // ruta protegida es true
-    // token es nulo true, por ende redirigimos al inicio
-  } else if ((to.fullPath === "/login" || to.fullPath === "/registro") && store.state.token !== null) {
-    // En caso contrario sigue...
-    next({ name: redirectedFrom != undefined ? redirectedFrom : "Home" });
-  } else {
-    next();
+  } else if (to.fullPath == "/login" || to.fullPath == "/registro") {
+    if (store.state.token !== null) {
+      next({ name: "Home" });
+    } else {
+      next();
+    }
   }
 });
 
