@@ -1,7 +1,7 @@
 <template>
   <div class="text-white">
     <h2 class="text-center text-3xl pt-1">Consulta</h2>
-    <div class="flex justify-center mt-10">
+    <div class="flex justify-center my-10">
       <div
         class="text-white rounded-3xl | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl max-w-lg"
       >
