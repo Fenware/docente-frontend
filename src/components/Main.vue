@@ -1,5 +1,5 @@
 <template>
-  <main class=" w-full overflow-y-auto mr-1" v-if="isLoginView()">
+  <main class="mx-auto w-full overflow-y-auto px-3 mr-1" v-if="isLoginView()">
     <router-view />
   </main>
 </template>
@@ -15,4 +15,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+main {
+  font-family: "Montserrat", sans-serif !important;
+}
+</style>
