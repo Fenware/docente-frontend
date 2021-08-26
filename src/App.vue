@@ -7,19 +7,19 @@
   </div>
   <div class="flex items-center min-h-screen max-h-screen max-w-screen" v-else>
     <div
-      class=" flex lg:justify-between h-85vh w-90per mx-auto | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl | rounded-3xl shadow-md "
+      class=" flex flex-col sm:flex-row sm:justify-between h-85vh w-90per mx-auto | bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg | rounded-2xl shadow-md  "
     >
       <Navbar />
-      <Main />
+      <Main class="mt-5 sm:mt-0"/>
       <Sidebar />
     </div>
+
   </div>
 </template>
 <script>
 import Navbar from "@/components/Navbar";
 import Main from "@/components/Main";
 import Sidebar from "@/components/Sidebar";
-import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -28,13 +28,9 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["syncToken"]),
     currentRouteName() {
       return this.$route.name;
     },
-  },
-  created() {
-    this.syncToken();
   },
 };
 </script>
@@ -42,7 +38,7 @@ export default {
 <style>
 body {
   @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap");
-  font-family: "Nunito", sans-serif;
+  font-family: "Montserrat", sans-serif !important;
   /* background: linear-gradient(to right top ,#175AD4,#65DF9D); */
   background-image: url("./assets/background.svg");
   background-image: no-repeat;
