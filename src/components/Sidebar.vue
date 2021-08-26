@@ -29,10 +29,7 @@ export default {
   },
   methods: {
     ...mapActions(["syncConsultations"]),
-  },
-  created() {
-    this.syncConsultations();
-  },
+  }
 };
 </script>
 
