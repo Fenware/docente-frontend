@@ -65,10 +65,12 @@ router.beforeEach((to, from, next) => {
   // Verificando la session en cada ruta
   store.dispatch('syncToken');
   if (routeProtected) {
-    store.dispatch("checkSession");
-    if (store.state.token !== null) {
-      next();
-    }
+    store.dispatch("checkSession").then(()=>{
+      if (store.state.token !== null) {
+        next();
+      }
+    });
+    
   } else if (to.fullPath == "/login" || to.fullPath == "/registro") {
     if (store.state.token !== null) {
       next({ name: "Home" });
