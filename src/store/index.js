@@ -1,9 +1,14 @@
 import { createStore } from "vuex";
-import router from "@/router/index";
 import axios from "axios";
 import ab from "@/utils/websockets";
 
+// Modulos
+import auth from "./modules/auth";
+
 export default createStore({
+  modules:{
+    auth
+  },
   state: {
     API_URL: process.env.VUE_APP_ROOT_API,
     groups: [],
@@ -155,63 +160,6 @@ export default createStore({
   actions: {
     searcher({ commit }, payload) {
       commit("setText", payload.toLowerCase());
-    },
-    syncToken({ commit }) {
-      if (localStorage.getItem("token")) {
-        commit("setToken", localStorage.getItem("token"));
-        commit("setHeaderToken", "Bearer " + localStorage.getItem("token"));
-      } else {
-        /* router.push("login"); */
-        console.log();
-      }
-    },
-    async login({ commit, state, dispatch }, payload) {
-      await axios({
-        method: "post",
-        url: state.API_URL + "/auth",
-        data: payload,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          if (typeof res.data.result.token == "string") {
-            let token = res.data.result.token;
-            commit("setToken", token);
-            localStorage.setItem("token", token);
-            dispatch("syncToken");
-            router.push("/inicio");
-          } else {
-            console.log("Error: login");
-            alert(res.data.result.error_msg);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    logout({ commit }) {
-      commit("setToken", null);
-      commit("setHeaderToken", "");
-      localStorage.removeItem("token");
-      router.push("login");
-    },
-    async checkSession({ state, dispatch }) {
-      await axios({
-        method: "post",
-        url: state.API_URL + "/token",
-        data: {},
-        headers: state.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data != "OK") {
-            dispatch("logout");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
     async syncSubjects({ commit, state }) {
       await axios({
@@ -376,7 +324,6 @@ export default createStore({
         headers: state.headers,
       })
         .then((res) => {
-          console.log(res.data);
           if (Array.isArray(res.data)) {
             commit("setConsultations", res.data);
           } else {
