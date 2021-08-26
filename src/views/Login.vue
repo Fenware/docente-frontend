@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
@@ -49,9 +49,6 @@ export default {
         type: "teacher",
       },
     };
-  },
-  computed: {
-    ...mapState(["API_URL"]),
   },
   methods: {
     ...mapActions(["login"]),
