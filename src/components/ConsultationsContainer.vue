@@ -24,10 +24,16 @@
       >
         Ver consulta
       </button>
-      <div v-show="consultation.state == 2" class="rounded-full mr-2 text-green-500">
+      <div
+        v-show="consultation.state == 2"
+        class="rounded-full mr-2 text-green-500"
+      >
         <i class="fas fa-check-circle"></i>
       </div>
-      <div v-show="consultation.state == 1" class="rounded-full mr-2 text-gray-800">
+      <div
+        v-show="consultation.state == 1"
+        class="rounded-full mr-2 text-gray-800"
+      >
         <i class="far fa-circle"></i>
       </div>
     </div>
@@ -43,7 +49,7 @@ export default {
   },
   methods: {
     ...mapMutations(["setConsultation"]),
-    ...mapActions(['getConsultationMessages']),
+    ...mapActions(["syncConsultations", "getConsultationMessages"]),
     viewConsultation(consultation) {
       consultation.messages = [];
       this.setConsultation(consultation);
@@ -58,4 +64,3 @@ export default {
 </script>
 
 <style></style>
-
