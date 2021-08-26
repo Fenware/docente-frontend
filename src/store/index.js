@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import router from "@/router/index";
 import axios from "axios";
+import ab from "@/utils/websockets";
 
 export default createStore({
   state: {
@@ -323,9 +324,11 @@ export default createStore({
         headers: state.headers,
       })
         .then((res) => {
-          if (Array.isArray(res.data)) {
+          console.log(res);
+          let lol = true;
+          if (lol) {
             group.subjects = [];
-            let group_full_data = res.data[0];
+            let group_full_data = res.data;
             let orientation_data = state.orientations.find(
               (orientation) =>
                 parseInt(orientation.id) ==
@@ -358,7 +361,8 @@ export default createStore({
             group.id_orientation = group_full_data.id_orientation;
             commit("addGroup", group);
           } else {
-            console.log("Error: setFullGroupData -> " + res.data);
+            console.log("Error: setFullGroupData -> ");
+            console.log(res.data);
           }
         })
         .catch((error) => {
@@ -373,7 +377,7 @@ export default createStore({
       })
         .then((res) => {
           console.log(res.data);
-          if (Array.isArray(res.data) && res.data.length > 0) {
+          if (Array.isArray(res.data)) {
             commit("setConsultations", res.data);
           } else {
             console.log("Error: syncConsultations ->" + res.data);
@@ -432,6 +436,26 @@ export default createStore({
           console.log(error);
         });
     },
+    wsConnection() {
+      var conn = new ab.Session(
+        "ws://localhost:8085",
+        function() {
+          conn.subscribe("kittensCategory", function(topic, data) {
+            // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
+            console.log(
+              'New article published to category "' +
+                topic +
+                '" : ' +
+                data.title
+            );
+          });
+        },
+        function() {
+          console.warn("WebSocket connection closed");
+        },
+        { skipSubprotocolCheck: true }
+      );
+    },
   },
   getters: {
     subjectsFiltered(state) {
@@ -444,8 +468,5 @@ export default createStore({
       });
       return subjectsFiltered;
     },
-    /* getGroups(state){
-      return state.groups;
-    } */
   },
 });
