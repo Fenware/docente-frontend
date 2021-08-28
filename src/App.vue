@@ -37,7 +37,6 @@ export default {
 
 <style>
 body {
-  @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap");
   font-family: "Montserrat", sans-serif !important;
   /* background: linear-gradient(to right top ,#175AD4,#65DF9D); */
   background-image: url("./assets/background.svg");
@@ -52,6 +51,20 @@ body {
   height: 100vh;
   width: 100vw;
 }
+/* Buttons */
+.btn-success{
+  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-green-500 border-green-400 bg-green-200 hover:bg-green-300 text-green-900;
+}
+.btn-danger{
+  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-red-500 border-red-400 bg-red-200 hover:bg-red-300 text-red-900;
+}
+.btn-warning{
+  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-yellow-500 border-yellow-400 bg-yellow-200 hover:bg-yellow-300 text-yellow-900;
+}
+.btn-info{
+  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-indigo-500 border-indigo-400 bg-indigo-200 hover:bg-indigo-300 text-blue-900;
+}
+
 .h-85vh {
   height: 90vh;
 }
@@ -59,16 +72,28 @@ body {
   width: 95%;
 }
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  cursor: pointer;
+  width: 5px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ddd;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #666;
+  background: rgb(242, 242, 242);
+  border-radius: 1rem;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.05s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 </style>
