@@ -66,7 +66,6 @@ export default {
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (Array.isArray(res.data)) {
             commit("clearGroups");
             res.data.forEach((group) => {
@@ -84,55 +83,54 @@ export default {
           console.log(error);
         });
     },
-  },
-  async takeGroup({ rootState, commit }, group_code) {
-    let data = {
-      code: group_code,
-    };
-    await axios({
-      method: "post",
-      url: rootState.API_URL + "/user-grupo",
-      data: data,
-      headers: rootState.headers,
-    })
-      .then((res) => {
-        if (res.data == 1) {
-          /* this.syncTeacherGroups(); */
-          commit("pushGroup", res.data)
-        } else if (res.data == 0) {
-          alert("Ya has tomado este grupo!");
-          console.log("Error: takeGroup -> " + res.data);
-        } else {
-          alert(res.data);
-          console.log("Error: takeGroup -> " + res.data);
-        }
+    async takeGroup({ rootState, dispatch }, group_code) {
+      let data = {
+        code: group_code,
+      };
+      await axios({
+        method: "post",
+        url: rootState.API_URL + "/user-grupo",
+        data: data,
+        headers: rootState.headers,
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  async unsuscribeGroup() {
-    let data = {
-      grupo: parseInt(this.group.id_group),
-    };
-    await axios({
-      method: "delete",
-      url: this.API_URL + "/user-grupo",
-      data: data,
-      headers: this.headers,
-    })
-      .then((res) => {
-        if (!isNaN(parseInt(res.data))) {
-          this.removeGroup(data.grupo);
-        } else {
-          console.log("Error: deleteGroup -> " + res.data);
-        }
+        .then((res) => {
+          if (res.data == 1) {
+            showAlert({ type: "success", message: "Has tomado el grupo correctamente!" });
+            dispatch("getTeacherGroups");
+          } else if (res.data == 0) {
+            showAlert({ type: "error", message: "Ya has tomado este grupo!" });
+            console.log("Error: takeGroup -> " + res.data);
+          } else {
+            showAlert({ type: "error", message: res.data.result.error_msg });
+            console.log("Error: takeGroup -> " + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async unsuscribeGroup() {
+      let data = {
+        grupo: parseInt(this.group.id_group),
+      };
+      await axios({
+        method: "delete",
+        url: this.API_URL + "/user-grupo",
+        data: data,
+        headers: this.headers,
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  /* async getOrientations({ commit, dispatch, rootState }) {
+        .then((res) => {
+          if (!isNaN(parseInt(res.data))) {
+            this.removeGroup(data.grupo);
+          } else {
+            console.log("Error: deleteGroup -> " + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    /* async getOrientations({ commit, dispatch, rootState }) {
       await axios({
         method: "get",
         url: rootState.API_URL + "/orientacion",
@@ -146,7 +144,7 @@ export default {
           console.log(error);
         });
     }, */
-  /* async setFullGroupData({ state, rootState, commit }, group) {
+    /* async setFullGroupData({ state, rootState, commit }, group) {
     let data = `id=${group.id_group}`;
     await axios({
       method: "get",
@@ -198,74 +196,75 @@ export default {
         console.log(error);
       });
   }, */
-  async getSubjects({ commit, rootState }) {
-    await axios({
-      method: "get",
-      url: rootState.API_URL + "/materia",
-      headers: rootState.headers,
-    })
-      .then((res) => {
-        commit("setSubjects", res.data);
+    async getSubjects({ commit, rootState }) {
+      await axios({
+        method: "get",
+        url: rootState.API_URL + "/materia",
+        headers: rootState.headers,
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  async getOrientationSubjects({ state, rootState, commit }, id) {
-    let data = `id=${id}`;
-    await axios({
-      method: "get",
-      url: rootState.API_URL + `/orientacion-materia?${data}`,
-      headers: rootState.headers,
-    })
-      .then((res) => {
-        let orientation_subjects_res = [];
-
-        res.data.forEach((subject_data) => {
-          orientation_subjects_res.push(subject_data);
+        .then((res) => {
+          commit("setSubjects", res.data);
+        })
+        .catch((error) => {
+          console.log(error);
         });
+    },
+    async getOrientationSubjects({ state, rootState, commit }, id) {
+      let data = `id=${id}`;
+      await axios({
+        method: "get",
+        url: rootState.API_URL + `/orientacion-materia?${data}`,
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          let orientation_subjects_res = [];
 
-        orientation_subjects_res.forEach((orientation_subject) => {
-          state.subjects.forEach((subject_data) => {
-            if (orientation_subject.id_subject == parseInt(subject_data.id)) {
-              let subject = {
-                id_orientation: parseInt(orientation_subject.id_orientation),
-                id_subject: parseInt(orientation_subject.id_subject),
-                name: subject_data.name,
-              };
-              commit("setOrientationSubject", subject);
-            }
+          res.data.forEach((subject_data) => {
+            orientation_subjects_res.push(subject_data);
           });
+
+          orientation_subjects_res.forEach((orientation_subject) => {
+            state.subjects.forEach((subject_data) => {
+              if (orientation_subject.id_subject == parseInt(subject_data.id)) {
+                let subject = {
+                  id_orientation: parseInt(orientation_subject.id_orientation),
+                  id_subject: parseInt(orientation_subject.id_subject),
+                  name: subject_data.name,
+                };
+                commit("setOrientationSubject", subject);
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  /* syncOrientationSubjects({ dispatch, commit, state }) {
+    },
+    /* syncOrientationSubjects({ dispatch, commit, state }) {
     commit("clearOrientationSubjects");
     state.orientations.forEach((orientation) => {
       dispatch("getOrientationSubjects", orientation.id);
     });
   }, */
-  async setTeacherSubjectsTaken({ dispatch, rootState, commit }) {
-    await axios({
-      method: "get",
-      url: rootState.API_URL + "/user-materia",
-      headers: rootState.headers,
-    })
-      .then((res) => {
-        console.log(res);
-        if (Array.isArray(res.data)) {
-          commit("clearGroups");
-          commit("setSubjectsTaken", res.data);
-          dispatch("syncTeacherGroups");
-        } else {
-          console.log("Error: setTeacherSubjectsTaken -> " + res.data);
-        }
+    async setTeacherSubjectsTaken({ dispatch, rootState, commit }) {
+      await axios({
+        method: "get",
+        url: rootState.API_URL + "/user-materia",
+        headers: rootState.headers,
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => {
+          console.log(res);
+          if (Array.isArray(res.data)) {
+            commit("clearGroups");
+            commit("setSubjectsTaken", res.data);
+            dispatch("syncTeacherGroups");
+          } else {
+            console.log("Error: setTeacherSubjectsTaken -> " + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };

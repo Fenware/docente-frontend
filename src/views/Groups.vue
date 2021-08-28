@@ -13,7 +13,7 @@
         class="mx-2 py-2 px-2 w-56 focus:w-64 text-center bg-white transition-all duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-xl outline-none"
       />
       <button
-        @click="group_code.trim() != '' ? takeGroup() : focusCodeInput()"
+        @click="group_code.trim() != '' ? take() : focusCodeInput()"
         class="btn-success px-3  my-1"
       >
         Tomar grupo
@@ -57,10 +57,8 @@
         <div
           class="flex md:flex-col flex-wrap gap-2 justify-center md:justify-end"
         >
-            <!-- @click="changeMode({ mode: 'edit', group: group })" -->
-          <button
-            class=" pr-3 pl-5 py-1.5 text-xs btn-info"
-          >
+          <!-- @click="changeMode({ mode: 'edit', group: group })" -->
+          <button class=" pr-3 pl-5 py-1.5 text-xs btn-info">
             Ver materias
             <i
               class="fas fa-caret-down text-blue-600 mx-1 text-md drop-shadow-lg"
@@ -82,7 +80,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 /* import GroupCard from "@/components/TheGroupCard"; */
 
 export default {
@@ -92,23 +90,25 @@ export default {
       group_code: "",
     };
   },
-  components: {
-/*     GroupCard, */
+  created() {
+    this.getTeacherGroups();
   },
   computed: {
     ...mapState({ groups: (state) => state.groups.groups }),
   },
   methods: {
-    ...mapMutations(["clearGroups", "addGroup"]),
-    ...mapActions(["takeGroup", "getOrientations", "getSubjects", "getTeacherGroups"]),
+    ...mapActions([
+      "takeGroup",
+      /* "getOrientations", "getSubjects",*/ "getTeacherGroups",
+    ]),
+    take() {
+      this.takeGroup(this.group_code).then(() => {
+        this.group_code = "";
+      });
+    },
     focusCodeInput() {
       document.getElementById("code_input").focus();
     },
-  },
-  created() {
-    /* this.getOrientations(); */
-    /* this.clearGroups(); */
-    this.getTeacherGroups();
   },
 };
 </script>
