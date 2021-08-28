@@ -18,7 +18,7 @@ export default {
     clearGroups(state) {
       state.groups = [];
     },
-    addGroup(state, group) {
+    pushGroup(state, group) {
       state.groups.push(group);
     },
     removeGroup(state, id) {
@@ -59,39 +59,84 @@ export default {
     },
   },
   actions: {
-    async takeGroup() {
-      let data = {
-        code: this.group_code,
-      };
+    async getTeacherGroups({ rootState, commit }) {
       await axios({
-        method: "post",
-        url: this.API_URL + "/user-grupo",
-        data: data,
-        headers: this.headers,
+        method: "get",
+        url: rootState.API_URL + "/user-grupo",
+        headers: rootState.headers,
       })
         .then((res) => {
-          if (res.data == 1) {
-            this.clearGroups();
-            this.syncTeacherGroups();
-            this.group_code = "";
-          } else if (res.data == 0) {
-            alert("Ya has tomado este grupo!");
-            this.group_code = "";
-            console.log("Error: takeGroup -> " + res.data);
+          console.log(res);
+          if (Array.isArray(res.data)) {
+            commit("clearGroups");
+            res.data.forEach((group) => {
+              group.full_name =
+                (group.orientation_year == "1" || group.orientation_year == "3"
+                  ? group.orientation_year + "ero"
+                  : group.orientation_year + "do") + ` ${group.name}`;
+              commit("pushGroup", group);
+            });
           } else {
-            alert(res.data);
-            console.log("Error: takeGroup -> " + res.data);
+            console.log("Error: getTeacherGroups -> " + res.data);
           }
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    async syncOrientations({ commit, dispatch, state }) {
+  },
+  async takeGroup({ rootState, commit }, group_code) {
+    let data = {
+      code: group_code,
+    };
+    await axios({
+      method: "post",
+      url: rootState.API_URL + "/user-grupo",
+      data: data,
+      headers: rootState.headers,
+    })
+      .then((res) => {
+        if (res.data == 1) {
+          /* this.syncTeacherGroups(); */
+          commit("pushGroup", res.data)
+        } else if (res.data == 0) {
+          alert("Ya has tomado este grupo!");
+          console.log("Error: takeGroup -> " + res.data);
+        } else {
+          alert(res.data);
+          console.log("Error: takeGroup -> " + res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  async unsuscribeGroup() {
+    let data = {
+      grupo: parseInt(this.group.id_group),
+    };
+    await axios({
+      method: "delete",
+      url: this.API_URL + "/user-grupo",
+      data: data,
+      headers: this.headers,
+    })
+      .then((res) => {
+        if (!isNaN(parseInt(res.data))) {
+          this.removeGroup(data.grupo);
+        } else {
+          console.log("Error: deleteGroup -> " + res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  /* async getOrientations({ commit, dispatch, rootState }) {
       await axios({
         method: "get",
-        url: state.API_URL + "/orientacion",
-        headers: state.headers,
+        url: rootState.API_URL + "/orientacion",
+        headers: rootState.headers,
       })
         .then((res) => {
           commit("setOrientations", res.data);
@@ -100,33 +145,13 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-    async syncTeacherGroups({ state, dispatch }) {
-      await axios({
-        method: "get",
-        url: state.API_URL + "/user-grupo",
-        headers: state.headers,
-      })
-        .then((res) => {
-          if (Array.isArray(res.data)) {
-            res.data.forEach((group) => {
-              dispatch("setFullGroupData", group);
-            });
-          } else {
-            console.log("Error: getGroups -> " + res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-  },
-  async setFullGroupData({ state, commit }, group) {
+    }, */
+  /* async setFullGroupData({ state, rootState, commit }, group) {
     let data = `id=${group.id_group}`;
     await axios({
       method: "get",
-      url: state.API_URL + `/group?${data}`,
-      headers: state.headers,
+      url: rootState.API_URL + `/group?${data}`,
+      headers: rootState.headers,
     })
       .then((res) => {
         console.log(res);
@@ -172,12 +197,12 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-  },
-  async syncSubjects({ commit, state }) {
+  }, */
+  async getSubjects({ commit, rootState }) {
     await axios({
       method: "get",
-      url: state.API_URL + "/materia",
-      headers: state.headers,
+      url: rootState.API_URL + "/materia",
+      headers: rootState.headers,
     })
       .then((res) => {
         commit("setSubjects", res.data);
@@ -186,12 +211,12 @@ export default {
         console.log(error);
       });
   },
-  async getOrientationSubjects({ state, commit }, id) {
+  async getOrientationSubjects({ state, rootState, commit }, id) {
     let data = `id=${id}`;
     await axios({
       method: "get",
-      url: state.API_URL + `/orientacion-materia?${data}`,
-      headers: state.headers,
+      url: rootState.API_URL + `/orientacion-materia?${data}`,
+      headers: rootState.headers,
     })
       .then((res) => {
         let orientation_subjects_res = [];
@@ -217,17 +242,17 @@ export default {
         console.log(error);
       });
   },
-  syncOrientationSubjects({ dispatch, commit, state }) {
+  /* syncOrientationSubjects({ dispatch, commit, state }) {
     commit("clearOrientationSubjects");
     state.orientations.forEach((orientation) => {
       dispatch("getOrientationSubjects", orientation.id);
     });
-  },
-  async setTeacherSubjectsTaken({ dispatch, state, commit }) {
+  }, */
+  async setTeacherSubjectsTaken({ dispatch, rootState, commit }) {
     await axios({
       method: "get",
-      url: state.API_URL + "/user-materia",
-      headers: state.headers,
+      url: rootState.API_URL + "/user-materia",
+      headers: rootState.headers,
     })
       .then((res) => {
         console.log(res);
