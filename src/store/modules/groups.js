@@ -94,6 +94,7 @@ export default {
         headers: rootState.headers,
       })
         .then((res) => {
+          console.log(res);
           if (res.data == 1) {
             showAlert({ type: "success", message: "Has tomado el grupo correctamente!" });
             dispatch("getTeacherGroups");
@@ -101,7 +102,9 @@ export default {
             showAlert({ type: "error", message: "Ya has tomado este grupo!" });
             console.log("Error: takeGroup -> " + res.data);
           } else {
-            showAlert({ type: "error", message: res.data.result.error_msg });
+            showAlert({ type: "error", message: res.data });
+            // Para cuando felipe lo arregle
+            /* showAlert({ type: "error", message: res.data.result.error_msg }); */
             console.log("Error: takeGroup -> " + res.data);
           }
         })
