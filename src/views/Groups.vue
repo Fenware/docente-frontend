@@ -4,21 +4,21 @@
       Tomar Grupos
     </h2>
 
-    <div class="flex justify-between mt-10">
+    <div class="flex justify-center mt-10">
       <input
         type="text"
         id="code_input"
         placeholder="Código de grupo"
         v-model="group_code"
-        class="w-96 mx-2 py-2 px-2 | bg-white transition duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl | rounded-2xl  outline-none placeholder-white"
+        class="mx-2 py-2 px-2 w-56 focus:w-64 text-center bg-white transition-all duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-xl outline-none"
       />
       <button
         @click="group_code.trim() != '' ? takeGroup() : focusCodeInput()"
-        class="ml-4 pr-2 | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl transition duration-300 focus:bg-opacity-20 hover:bg-opacity-20 shadow-2xl | rounded-2xl"
+        class="btn-info px-3  my-1"
       >
-        <i
-          class="fas fa-plus text-white text-md py-3 px-3 | filter drop-shadow-xl transition-transform duration-300 transform hover:scale-110"
-        ></i>
+        <!-- <i
+          class="fas fa-plus py-3px-3"
+        ></i> -->
         Tomar grupo
       </button>
     </div>
