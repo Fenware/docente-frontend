@@ -72,6 +72,7 @@
             <div class="flex justify-center">
               <input
                 type="text"
+                v-model="text_filter"
                 class="mx-2 py-0.5 px-2 w-56 focus:w-64 text-center bg-white transition-all duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-lg outline-none"
                 placeholder="Buscar materia"
               />
@@ -83,7 +84,7 @@
                 class=" flex cursor-pointer items-center justify-between m-3 px-2 py-2
                       bg-gray-700 bg-opacity-90 border-2 border-gray-600 rounded-xl transform transition-transform"
                 :id="'subject_' + subject.id"
-                v-for="subject in group.subjects"
+                v-for="subject in subjectsFiltered"
                 :key="subject.id"
                 @click="selectSubject(subject.id)"
                 style="height:fit-content"
@@ -125,10 +126,11 @@ export default {
   name: "Group",
   data() {
     return {
-      group: {},
-      subjects_alredy_selected: [],
+      // Le agrego el array de materias vacio para evitar errores con la funcion subjectsFiltered
+      group: { subjects: [] },
       subjects_selected: [],
       subjects_deleted: [],
+      text_filter: "",
     };
   },
   created() {
@@ -139,19 +141,37 @@ export default {
       // Busco el grupo en el array de grupos por su codigo
       let group = this.groups.find((group) => group.code == group_code);
       if (group) {
+        // Obteniendo las materias ya tomadas del grupo
+        this.getTeacherSubjectsTakenByGroup(group.id);
         this.group = group;
         console.log(group);
       } else {
-        showAlert({ type: "error", message: "Elegí un grupo de la lista" });
+        showAlert({ type: "error", message: "Escoja un grupo válido" });
         this.$router.push({ name: "Groups" });
       }
     });
   },
   computed: {
-    ...mapState({ groups: (state) => state.groups.groups }),
+    ...mapState({
+      groups: (state) => state.groups.groups,
+      subjects_taken: (state) => state.groups.subjects_taken,
+    }),
+    subjectsFiltered() {
+      // Filtro las materias por coincidencias de nombre
+      let subjects_filtered = this.group.subjects.filter(
+        (subject) =>
+          subject.name.toLowerCase().indexOf(this.text_filter.toLowerCase()) >=
+          0
+      );
+      return subjects_filtered;
+    },
   },
   methods: {
-    ...mapActions(["getTeacherGroups", "unsuscribeGroup"]),
+    ...mapActions([
+      "getTeacherGroups",
+      "unsuscribeGroup",
+      "getTeacherSubjectsTakenByGroup",
+    ]),
     confirmDeletion() {
       let alert = this.$swal.mixin({
         toast: false,
