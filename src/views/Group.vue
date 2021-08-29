@@ -69,9 +69,13 @@
           <div
             class="min-h-full p-3 border-b-2 border-l-2 border-r-2 border-gray-700 rounded-b-2xl"
           >
-            <label class="block text-lg text-center"
-              >Seleccionar materias</label
-            >
+            <div class="flex justify-center">
+              <input
+                type="text"
+                class="mx-2 py-0.5 px-2 w-56 focus:w-64 text-center bg-white transition-all duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-lg outline-none"
+                placeholder="Buscar materia"
+              />
+            </div>
             <div
               class="max-h-80 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 overflow-auto"
             >
@@ -122,6 +126,9 @@ export default {
   data() {
     return {
       group: {},
+      subjects_alredy_selected: [],
+      subjects_selected: [],
+      subjects_deleted: [],
     };
   },
   created() {
