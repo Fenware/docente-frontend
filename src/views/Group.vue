@@ -63,7 +63,24 @@
                 Tomar materias
               </h2>
             </div>
-            <div class="flex items-center"></div>
+            <div class="flex items-center">
+              <span
+                v-show="
+                  unsuscribed_subjects.length > 0 ||
+                    subjects_selected.length > 0
+                "
+                class="text-sm font-semibold mr-5 transition-all text-yellow-300"
+              >
+                * hay cambios sin guardar
+              </span>
+
+              <span
+                v-show="changes_saved"
+                class="text-sm font-semibold mr-5 transition-all text-green-500"
+                >Los cambios se guardaron correctamente
+                <i class="fas fa-check"></i
+              ></span>
+            </div>
           </div>
 
           <div
@@ -114,7 +131,12 @@
                   unsuscribed_subjects.length == 0 &&
                     subjects_selected.length == 0
                 "
-                class="btn-success"
+                :class="
+                  unsuscribed_subjects.length == 0 &&
+                  subjects_selected.length == 0
+                    ? 'btn-disabled'
+                    : 'btn-success'
+                "
                 @click="saveChanges()"
               >
                 Guardar cambios
@@ -140,6 +162,7 @@ export default {
       subjects_selected: [],
       unsuscribed_subjects: [],
       text_filter: "",
+      changes_saved: false,
     };
   },
   created() {
@@ -184,6 +207,8 @@ export default {
       "getTeacherGroups",
       "unsuscribeGroup",
       "getTeacherSubjectsTakenByGroup",
+      "takeSubject",
+      "unsuscribeGroupSubject",
     ]),
     confirmDeletion() {
       let alert = this.$swal.mixin({
@@ -216,9 +241,25 @@ export default {
         });
     },
     saveChanges() {
-      console.log("dsa");
+      this.subjects_selected.forEach((subject_id) => {
+        this.takeSubject({ subject_id, group_id: this.group.id }).then(() => {
+          this.getTeacherSubjectsTakenByGroup(this.group.id);
+        });
+      });
+      this.unsuscribed_subjects.forEach((subject_id) => {
+        this.unsuscribeGroupSubject({
+          subject_id,
+          group_id: this.group.id,
+        }).then(() => {
+          this.getTeacherSubjectsTakenByGroup(this.group.id);
+        });
+      });
+      this.changes_saved = true;
+      this.subjects_selected = [];
+      this.unsuscribed_subjects = [];
     },
     toggleSubject(id) {
+      this.changes_saved = false;
       // Busco coincidencias en el array de materias ya seleccionadas
       let coincidencesInSubjectsTaken = this.subjects_taken.filter(
         (subject_taken) => subject_taken.id == id
@@ -290,70 +331,6 @@ export default {
       );
       subjectName.classList.add("text-indigo-400");
     },
-    /* toogleSubject(is_selected, id_group, id_subject) {
-      if (is_selected) {
-        this.unsuscribeGroupSubject(id_group, id_subject);
-      } else {
-        this.takeSubject(id_group, id_subject);
-      }
-    },
-    async takeSubject(id_group, id_subject) {
-      let data = {
-        grupo: parseInt(id_group),
-        materia: parseInt(id_subject),
-      };
-      await axios({
-        method: "post",
-        url: this.API_URL + "/user-materia",
-        data: data,
-        headers: this.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
-            this.toogleSelectSubject(id_group, id_subject);
-          } else {
-            console.log("Error: takeGroup -> " + res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async unsuscribeGroupSubject(id_group, id_subject) {
-      let data = {
-        grupo: parseInt(id_group),
-        materia: parseInt(id_subject),
-      };
-      await axios({
-        method: "delete",
-        url: this.API_URL + "/user-materia",
-        data: data,
-        headers: this.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
-            this.toogleSelectSubject(id_group, id_subject);
-          } else {
-            console.log("Error: unsuscribeGroupSubject -> " + res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    toogleSelectSubject(id_group, id_subject) {
-      let group = this.groups.find(
-        (group) => parseInt(group.id_group) == parseInt(id_group)
-      );
-
-      group.subjects.forEach((subject) => {
-        if (subject.id_subject == parseInt(id_subject)) {
-          subject.selected = !subject.selected;
-        }
-      });
-    }, */
   },
 };
 </script>
