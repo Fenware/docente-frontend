@@ -8,7 +8,6 @@ import showAlert from "@/utils/alerts";
 export default {
   state: {
     groups: [],
-    subjects_selected: [],
     subjects_taken: [],
   },
   mutations: {
@@ -203,6 +202,52 @@ export default {
             commit("setSubjectsTaken", res.data);
           } else {
             console.log("Error: setTeacherSubjectsTaken -> " + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async takeSubject({rootState, commit}, payload) {
+      let data = {
+        grupo: parseInt(payload.group_id),
+        materia: parseInt(payload.subject_id),
+      };
+      await axios({
+        method: "post",
+        url: rootState.API_URL + "/user-materia",
+        data: data,
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data == 1) {
+            /* this.toogleSelectSubject(id_group, id_subject); */
+          } else {
+            console.log("Error: takeGroup -> " + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async unsuscribeGroupSubject({rootState, commit}, payload) {
+      let data = {
+        grupo: parseInt(payload.group_id),
+        materia: parseInt(payload.subject_id),
+      };
+      await axios({
+        method: "delete",
+        url: rootState.API_URL + "/user-materia",
+        data: data,
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.data == 1) {
+            /* this.toogleSelectSubject(id_group, id_subject); */
+          } else {
+            console.log("Error: unsuscribeGroupSubject -> " + res.data);
           }
         })
         .catch((error) => {
