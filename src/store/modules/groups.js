@@ -23,7 +23,7 @@ export default {
     },
     removeGroup(state, id) {
       state.groups.forEach((group, index) => {
-        if (parseInt(group.id_group) == id) {
+        if (parseInt(group.id) == parseInt(id)) {
           state.groups.splice(index, 1);
         }
       });
@@ -94,7 +94,6 @@ export default {
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (res.data == 1) {
             showAlert({ type: "success", message: "Has tomado el grupo correctamente!" });
             dispatch("getTeacherGroups");
@@ -112,19 +111,22 @@ export default {
           console.log(error);
         });
     },
-    async unsuscribeGroup() {
+    async unsuscribeGroup({ rootState, commit }, group) {
       let data = {
-        grupo: parseInt(this.group.id_group),
+        grupo: parseInt(group.id),
       };
+      console.log(data);
       await axios({
         method: "delete",
-        url: this.API_URL + "/user-grupo",
+        url: rootState.API_URL + "/user-grupo",
         data: data,
-        headers: this.headers,
+        headers: rootState.headers,
       })
         .then((res) => {
-          if (!isNaN(parseInt(res.data))) {
-            this.removeGroup(data.grupo);
+          console.log(res);
+          if (res.data == 1) {
+            commit("removeGroup", group.id);
+            showAlert({ type: "info", message: `Te has dado de baja del grupo ${group.full_name} correctamente`});
           } else {
             console.log("Error: deleteGroup -> " + res.data);
           }

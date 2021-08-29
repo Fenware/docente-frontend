@@ -20,9 +20,6 @@
       </button>
     </div>
 
-    <!-- <div
-      class="flex px-2 overflow-y-auto h-2/3 mx-auto flex-wrap md:max-w-2xl lg:max-w-3xl mt-10 bg-white bg-opacity-10  shadow-2xl | rounded-lg"
-    > -->
     <div
       class="mt-5 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 max-h-96 overflow-y-auto "
     >
@@ -58,14 +55,17 @@
           class="flex md:flex-col flex-wrap gap-2 justify-center md:justify-end"
         >
           <!-- @click="changeMode({ mode: 'edit', group: group })" -->
+          <!-- <router-link :to="{ name: 'Subjects' }" class="cursor-pointer">
+            <i class="fa-book" :class="icon_class"></i>
+          </router-link> -->
           <button class=" pr-3 pl-5 py-1.5 text-xs btn-info">
-            Ver materias
+            Materias
             <i
               class="fas fa-caret-down text-blue-600 mx-1 text-md drop-shadow-lg"
             ></i>
           </button>
           <button
-            @click="confirmDeletion(group.id, group.name, group.year)"
+            @click="confirmDeletion(group)"
             class="flex justify-center items-center pl-3 pr-5 py-1.5 text-xs font-semibold transition-colors duration-200 rounded-md border-b-2 hover:border-red-400 border-red-300    bg-red-200 hover:bg-red-300 text-red-900"
           >
             <i
@@ -97,10 +97,7 @@ export default {
     ...mapState({ groups: (state) => state.groups.groups }),
   },
   methods: {
-    ...mapActions([
-      "takeGroup",
-      /* "getOrientations", "getSubjects",*/ "getTeacherGroups",
-    ]),
+    ...mapActions(["getTeacherGroups", "takeGroup", "unsuscribeGroup"]),
     take() {
       this.takeGroup(this.group_code).then(() => {
         this.group_code = "";
@@ -108,6 +105,34 @@ export default {
     },
     focusCodeInput() {
       document.getElementById("code_input").focus();
+    },
+    confirmDeletion(group) {
+      let alert = this.$swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true,
+        showDenyButton: true,
+        timer: 60000,
+        timerProgressBar: true,
+        iconColor: "white",
+        heightAuto: true,
+        customClass: {
+          popup: "colored-toast",
+        },
+      });
+      alert
+        .fire({
+          html: `<span class="text-white">Dandote de baja del grupo <b>${group.full_name}</b> <br> <br> ¿Estas segurx? </span>  `,
+          showCancelButton: false,
+          confirmButtonText: `Darme de baja`,
+          denyButtonText: `Cancelar`,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            /* this.removeSubject({id: parseInt( subject_id), name: subject_name}); */
+            this.unsuscribeGroup(group);
+          }
+        });
     },
   },
 };
