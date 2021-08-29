@@ -1,9 +1,14 @@
 <template>
-    <!-- <h1 class="text-center text-3xl mt-1">
+  <!-- <h1 class="text-center text-3xl mt-1">
       Grupo <span class="font-semibold">{{ group.full_name }}</span>
     </h1> -->
-
-    <div class="mt-10 mx-2 sm:ml-10 grid grid-cols-5 gap-10 text-white">
+  <div>
+    <!-- <div class="flex justify-end">
+      <button class="btn-info px-1.5 py-0.5 text-sm mt-2 mr-16">
+        <i class="fas fa-reply "></i>
+        Volver</button>
+    </div> -->
+    <div class=" mx-2 mt-10 sm:ml-10 grid grid-cols-5 gap-10 text-white">
       <div class="col-span-2">
         <h2 class="text-2xl text-center mb-2">Información del grupo</h2>
         <hr />
@@ -39,7 +44,12 @@
           </p>
           <hr />
         </div>
+        <button @click="confirmDeletion()" class="btn-danger mt-5">
+          <i class="fas fa-exclamation-triangle mr-1"></i>
+          Darme de baja
+        </button>
       </div>
+
       <div class="col-span-3 mt-2 mx-10">
         <div
           class=" max-w-screen-sm mx-auto mb-4 text-white bg-gray-600 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-2xl"
@@ -100,6 +110,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -133,7 +144,37 @@ export default {
     ...mapState({ groups: (state) => state.groups.groups }),
   },
   methods: {
-    ...mapActions(["getTeacherGroups"]),
+    ...mapActions(["getTeacherGroups", "unsuscribeGroup"]),
+    confirmDeletion() {
+      let alert = this.$swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true,
+        showDenyButton: true,
+        timer: 60000,
+        timerProgressBar: true,
+        iconColor: "white",
+        heightAuto: true,
+        customClass: {
+          popup: "colored-toast",
+        },
+      });
+      alert
+        .fire({
+          html: `<span class="text-white">Dandote de baja del grupo <b>${this.group.full_name}</b> <br> <br> ¿Estas segurx? </span>  `,
+          showCancelButton: false,
+          confirmButtonText: `Darme de baja`,
+          denyButtonText: `Cancelar`,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            /* this.removeSubject({id: parseInt( subject_id), name: subject_name}); */
+            this.unsuscribeGroup(this.group).then(() => {
+              this.$router.push({ name: "Groups" });
+            });
+          }
+        });
+    },
     /* toogleSubject(is_selected, id_group, id_subject) {
       if (is_selected) {
         this.unsuscribeGroupSubject(id_group, id_subject);
