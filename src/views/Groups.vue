@@ -21,7 +21,7 @@
     </div>
 
     <div
-      class="mt-5 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 max-h-96 overflow-y-auto "
+      class="mt-5 grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 max-h-96 overflow-y-auto "
     >
       <!-- Haciendo un for de los usuarios filtrados (por defecto se muestran todos) -->
       <div
@@ -54,25 +54,15 @@
         <div
           class="flex md:flex-col flex-wrap gap-2 justify-center md:justify-end"
         >
-          <!-- @click="changeMode({ mode: 'edit', group: group })" -->
-          <!-- <router-link :to="{ name: 'Subjects' }" class="cursor-pointer">
-            <i class="fa-book" :class="icon_class"></i>
-          </router-link> -->
-          <button class=" pr-3 pl-5 py-1.5 text-xs btn-info">
-            Materias
+          <router-link
+            :to="{ name: 'Group', params: { code: group.code } }"
+            class=" pr-3 pl-5 py-1.5 text-xs btn-info"
+          >
+            Abrir
             <i
               class="fas fa-caret-down text-blue-600 mx-1 text-md drop-shadow-lg"
             ></i>
-          </button>
-          <button
-            @click="confirmDeletion(group)"
-            class="flex justify-center items-center pl-3 pr-5 py-1.5 text-xs font-semibold transition-colors duration-200 rounded-md border-b-2 hover:border-red-400 border-red-300    bg-red-200 hover:bg-red-300 text-red-900"
-          >
-            <i
-              class="fas fa-exclamation-triangle mx-1 text-md drop-shadow-lg "
-            ></i>
-            Darme de baja
-          </button>
+          </router-link>
         </div>
       </div>
     </div>
