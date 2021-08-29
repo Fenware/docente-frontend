@@ -11,7 +11,7 @@
     >
       <Navbar />
       <Main class="mt-5 sm:mt-0"/>
-      <Sidebar />
+      <!-- <Sidebar /> -->
     </div>
 
   </div>
@@ -19,13 +19,13 @@
 <script>
 import Navbar from "@/components/Navbar";
 import Main from "@/components/Main";
-import Sidebar from "@/components/Sidebar";
+/* import Sidebar from "@/components/Sidebar"; */
 
 export default {
   components: {
     Navbar,
     Main,
-    Sidebar,
+    /* Sidebar, */
   },
   methods: {
     currentRouteName() {
@@ -64,7 +64,10 @@ body {
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-yellow-500 border-yellow-400 bg-yellow-200 hover:bg-yellow-300 text-yellow-900 cursor-pointer;
 }
 .btn-info{
-  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-indigo-500 border-indigo-400 bg-indigo-200 hover:bg-indigo-300 text-blue-900 cursor-pointer;
+  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-gray-500 border-indigo-400 bg-indigo-200 hover:bg-indigo-300 text-blue-900 cursor-pointer;
+}
+.btn-disabled{
+  @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2  border-gray-400 bg-gray-200 text-gray-900 cursor-default;
 }
 
 /* --------------------------------------------- */
