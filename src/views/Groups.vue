@@ -96,34 +96,6 @@ export default {
     focusCodeInput() {
       document.getElementById("code_input").focus();
     },
-    confirmDeletion(group) {
-      let alert = this.$swal.mixin({
-        toast: false,
-        position: "center",
-        showConfirmButton: true,
-        showDenyButton: true,
-        timer: 60000,
-        timerProgressBar: true,
-        iconColor: "white",
-        heightAuto: true,
-        customClass: {
-          popup: "colored-toast",
-        },
-      });
-      alert
-        .fire({
-          html: `<span class="text-white">Dandote de baja del grupo <b>${group.full_name}</b> <br> <br> ¿Estas segurx? </span>  `,
-          showCancelButton: false,
-          confirmButtonText: `Darme de baja`,
-          denyButtonText: `Cancelar`,
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            /* this.removeSubject({id: parseInt( subject_id), name: subject_name}); */
-            this.unsuscribeGroup(group);
-          }
-        });
-    },
   },
 };
 </script>
