@@ -86,7 +86,7 @@
                 :id="'subject_' + subject.id"
                 v-for="subject in subjectsFiltered"
                 :key="subject.id"
-                @click="selectSubject(subject.id)"
+                @click="toggleSubject(subject.id)"
                 style="height:fit-content"
               >
                 <p
@@ -109,7 +109,16 @@
               </div>
             </div>
             <div class="flex justify-center mt-5">
-              <button class="btn-success ">Guardar cambios</button>
+              <button
+                :disabled="
+                  unsuscribed_subjects.length == 0 &&
+                    subjects_selected.length == 0
+                "
+                class="btn-success"
+                @click="saveChanges()"
+              >
+                Guardar cambios
+              </button>
             </div>
           </div>
         </div>
@@ -129,7 +138,7 @@ export default {
       // Le agrego el array de materias vacio para evitar errores con la funcion subjectsFiltered
       group: { subjects: [] },
       subjects_selected: [],
-      subjects_deleted: [],
+      unsuscribed_subjects: [],
       text_filter: "",
     };
   },
@@ -142,7 +151,11 @@ export default {
       let group = this.groups.find((group) => group.code == group_code);
       if (group) {
         // Obteniendo las materias ya tomadas del grupo
-        this.getTeacherSubjectsTakenByGroup(group.id);
+        this.getTeacherSubjectsTakenByGroup(group.id).then(() => {
+          this.subjects_taken.forEach((subject) => {
+            this.selectSubjectDiv(subject.id);
+          });
+        });
         this.group = group;
         console.log(group);
       } else {
@@ -201,6 +214,81 @@ export default {
             });
           }
         });
+    },
+    saveChanges() {
+      console.log("dsa");
+    },
+    toggleSubject(id) {
+      // Busco coincidencias en el array de materias ya seleccionadas
+      let coincidencesInSubjectsTaken = this.subjects_taken.filter(
+        (subject_taken) => subject_taken.id == id
+      );
+
+      // Si hay coincidencias y ya no fue removida
+      if (
+        coincidencesInSubjectsTaken.length > 0 &&
+        !this.unsuscribed_subjects.includes(parseInt(id))
+      ) {
+        this.deselectSubjectDiv(id);
+
+        // Añado el id al array de materias eliminadas
+        this.unsuscribed_subjects.push(parseInt(id));
+
+        // Si esta en el array de materias añadidas
+      } else if (this.subjects_selected.includes(parseInt(id))) {
+        this.deselectSubjectDiv(id);
+
+        // Busco el id en el array y lo quito
+        this.subjects_selected.forEach((subject_id, index) => {
+          if (subject_id == parseInt(id)) {
+            this.subjects_selected.splice(index, 1);
+          }
+        });
+
+        // Si no esta seleccionada, o esta seleccionada (está en el array de preseleccionadas) pero fue removida
+      } else {
+        // Si la materia fue removida
+        if (this.unsuscribed_subjects.includes(parseInt(id))) {
+          // Busco el id de la materia en el array de eliminadas y lo quito
+          this.unsuscribed_subjects.forEach((subject_id, index) => {
+            if (subject_id == parseInt(id)) {
+              this.unsuscribed_subjects.splice(index, 1);
+            }
+          });
+        }
+
+        // Si no esta preseleccionada la añado al array de seleccionadas
+        if (coincidencesInSubjectsTaken.length == 0) {
+          this.subjects_selected.push(parseInt(id));
+        }
+        this.selectSubjectDiv(id);
+      }
+    },
+    deselectSubjectDiv(id) {
+      let subjectDiv = document.getElementById("subject_" + id);
+      let subjectIcon = document.getElementById("subject_icon_" + id);
+      let subjectName = document.getElementById("subject_name_" + id);
+
+      subjectDiv.classList.remove("scale-95");
+      subjectDiv.classList.replace("bg-gray-800", "bg-gray-700");
+      subjectIcon.classList.replace("fa-check-square", "fa-square");
+      subjectIcon.classList.remove("text-indigo-300");
+      subjectName.classList.remove("text-indigo-400");
+    },
+    selectSubjectDiv(id) {
+      let subjectDiv = document.getElementById("subject_" + id);
+      let subjectIcon = document.getElementById("subject_icon_" + id);
+      let subjectName = document.getElementById("subject_name_" + id);
+
+      subjectDiv.classList.add("scale-95");
+      subjectDiv.classList.replace("bg-gray-700", "bg-gray-800");
+      subjectIcon.classList.replace("fa-square", "fa-check-square");
+      subjectIcon.classList.add("text-indigo-300");
+      subjectIcon.classList.replace(
+        "hover:text-indigo-300",
+        "hover:text-indigo-400"
+      );
+      subjectName.classList.add("text-indigo-400");
     },
     /* toogleSubject(is_selected, id_group, id_subject) {
       if (is_selected) {
