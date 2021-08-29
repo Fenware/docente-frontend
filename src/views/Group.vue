@@ -180,7 +180,6 @@ export default {
           });
         });
         this.group = group;
-        console.log(group);
       } else {
         showAlert({ type: "error", message: "Escoja un grupo válido" });
         this.$router.push({ name: "Groups" });
