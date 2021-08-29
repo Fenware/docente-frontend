@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import router from "@/router/index";
+/* import router from "@/router/index"; */
 
 // Modulo donde manejo las alertas
 import showAlert from "@/utils/alerts";
@@ -8,11 +8,8 @@ import showAlert from "@/utils/alerts";
 export default {
   state: {
     groups: [],
-    orientations: [],
-    subjects: [],
     subjects_selected: [],
     subjects_taken: [],
-    orientations_subjects: [],
   },
   mutations: {
     clearGroups(state) {
@@ -28,20 +25,7 @@ export default {
         }
       });
     },
-    setOrientations(state, payload) {
-      state.orientations = payload;
-    },
-    setSubjects(state, subjects) {
-      state.subjects = [];
-      state.subjects = subjects;
-    },
-    clearOrientationSubjects(state) {
-      state.orientations_subjects = [];
-    },
-    setOrientationSubject(state, payload) {
-      state.orientations_subjects.push(payload);
-    },
-    onlySelectGroupSubject(state, id) {
+    /* onlySelectGroupSubject(state, id) {
       state.subjects_selected.push(id);
     },
     onlyDeleteGroupSubject(state, id) {
@@ -53,7 +37,7 @@ export default {
     },
     setPreselectedGroupSubjects(state, payload) {
       state.subjects_selected = payload;
-    },
+    }, */
     setSubjectsTaken(state, subjects) {
       state.subjects_taken = subjects;
     },
@@ -201,68 +185,22 @@ export default {
         console.log(error);
       });
   }, */
-    async getSubjects({ commit, rootState }) {
-      await axios({
-        method: "get",
-        url: rootState.API_URL + "/materia",
-        headers: rootState.headers,
-      })
-        .then((res) => {
-          commit("setSubjects", res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async getOrientationSubjects({ state, rootState, commit }, id) {
-      let data = `id=${id}`;
-      await axios({
-        method: "get",
-        url: rootState.API_URL + `/orientacion-materia?${data}`,
-        headers: rootState.headers,
-      })
-        .then((res) => {
-          let orientation_subjects_res = [];
-
-          res.data.forEach((subject_data) => {
-            orientation_subjects_res.push(subject_data);
-          });
-
-          orientation_subjects_res.forEach((orientation_subject) => {
-            state.subjects.forEach((subject_data) => {
-              if (orientation_subject.id_subject == parseInt(subject_data.id)) {
-                let subject = {
-                  id_orientation: parseInt(orientation_subject.id_orientation),
-                  id_subject: parseInt(orientation_subject.id_subject),
-                  name: subject_data.name,
-                };
-                commit("setOrientationSubject", subject);
-              }
-            });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     /* syncOrientationSubjects({ dispatch, commit, state }) {
     commit("clearOrientationSubjects");
     state.orientations.forEach((orientation) => {
       dispatch("getOrientationSubjects", orientation.id);
     });
   }, */
-    async setTeacherSubjectsTaken({ dispatch, rootState, commit }) {
+    async getTeacherSubjectsTakenByGroup({ rootState, commit }, group_id) {
+      let data = `group=${parseInt(group_id)}`
       await axios({
         method: "get",
-        url: rootState.API_URL + "/user-materia",
+        url: rootState.API_URL + `/user-materia?${data}`,
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (Array.isArray(res.data)) {
-            commit("clearGroups");
             commit("setSubjectsTaken", res.data);
-            dispatch("syncTeacherGroups");
           } else {
             console.log("Error: setTeacherSubjectsTaken -> " + res.data);
           }
