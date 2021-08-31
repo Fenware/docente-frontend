@@ -7,7 +7,7 @@
     </div>
     <div class="flex justify-end  items-center pr-3 mt-2">
       <button 
-      @click="syncConsultations()"
+      @click="getConsultations()"
       class="text-xs px-2 py-0.5 mb-1 text-blue-900  transition-colors font-semibold rounded-md bg-indigo-200 hover:bg-indigo-300 shadow-lg">
         Actualizar
         <i class="fas fa-sync-alt "></i>
@@ -28,7 +28,7 @@ export default {
     ConsultationsContainer,
   },
   methods: {
-    ...mapActions(["syncConsultations"]),
+    ...mapActions(["getConsultations"]),
   }
 };
 </script>
