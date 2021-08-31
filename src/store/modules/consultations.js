@@ -6,14 +6,15 @@ import showAlert from "@/utils/alerts";
 export default {
   state: {
     consultation: {
+      active: false,
       creation_date: "Esperando datos",
       group_name: "Esperando datos",
       id: "Esperando datos",
-      state: "1",
+      state: 1,
       subject_name: "Esperando datos",
       teacher_name: "Esperando datos",
-      theme: "Esperando datos",
-      body: "Esperando datos",
+      theme: "Esperando datos asunto",
+      body: "Esperando datos descripción",
       messages: [],
     },
     new_message: "",
@@ -49,8 +50,15 @@ export default {
     setConsultationMessages(state, messages) {
       state.consultation.messages = messages;
     },
-    setConsultationStateAnswered(state) {
-      state.consultation.state = 2;
+    setConsultationStateAnswered(state, id) {
+      state.consultations.forEach((consultation) => {
+        if (parseInt(consultation.id) == parseInt(id)){
+          consultation.state = 2;
+        }
+      });
+    },
+    pushMessage(state, message) {
+      state.consultation.messages.push(message);
     },
   },
   actions: {
@@ -71,27 +79,43 @@ export default {
           console.log(error);
         });
     },
-    async sendConsultationMessage(
-      { state, dispatch, commit },
-      id_consultation
-    ) {
+    async getConsultation({ rootState, commit, dispatch }, id) {
+      let data = `consulta=${id}`;
+      await axios({
+        method: "get",
+        url: rootState.API_URL + `/consulta?${data}`,
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          console.log(res);
+          if (!("result" in res.data)) {
+            res.data.messages = [];
+            res.data.state = parseInt(res.data.state);
+            commit("setConsultation", res.data);
+            dispatch("getConsultationMessages", id);
+          } else {
+            console.log("Error: getConsultation ->" + res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async sendConsultationMessage({ rootState, state, commit }, id) {
       let data = {
-        consulta: id_consultation,
+        consulta: parseInt(id),
         msg: state.new_message,
       };
       await axios({
         method: "post",
-        url: state.API_URL + "/consulta-mensaje",
+        url: rootState.API_URL + "/consulta-mensaje",
         data: data,
-        headers: state.headers,
+        headers: rootState.headers,
       })
         .then((res) => {
           commit("toogleNewMessageMode");
-          if (res.data == 1) {
-            dispatch(
-              "getConsultationMessages",
-              parseInt(state.consultation.id)
-            );
+          if (!("result" in res.data)) {
+            commit("pushMessage", res.data);
           } else {
             alert(res.data.result.error_msg);
           }
@@ -100,16 +124,17 @@ export default {
           console.log(error);
         });
     },
-    async getConsultationMessages({ state, commit }, id) {
+    async getConsultationMessages({ rootState, commit }, id) {
       let data = `consulta=${id}`;
       await axios({
         method: "get",
-        url: state.API_URL + `/consulta-mensaje?${data}`,
-        headers: state.headers,
+        url: rootState.API_URL + `/consulta-mensaje?${data}`,
+        headers: rootState.headers,
       })
         .then((res) => {
-          if (Array.isArray(res.data) && res.data.length > 0) {
-            commit("setConsultationBody", res.data[0].content);
+          if (Array.isArray(res.data)) {
+            let body = res.data[0].content;
+            commit("setConsultationBody", body);
             res.data.splice(0, 1);
             commit("setConsultationMessages", res.data);
           } else {
