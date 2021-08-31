@@ -7,7 +7,7 @@
   </div>
   <div class="flex items-center min-h-screen max-h-screen max-w-screen" v-else>
     <div
-      class=" flex flex-col sm:flex-row sm:justify-between h-85vh w-90per mx-auto | bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg | rounded-2xl shadow-md  "
+      class=" flex flex-col sm:flex-row sm:justify-between h-92vh w-95per mx-auto | bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg | rounded-2xl shadow-md  "
     >
       <Navbar />
       <Main class="mt-5 sm:mt-0"/>
@@ -53,7 +53,6 @@ body {
 }
 /* ----------------- Buttons ----------------- */
 
-/* sm */
 .btn-success{
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-green-500 border-green-400 bg-green-200 hover:bg-green-300 text-green-900 cursor-pointer;
 }
@@ -72,10 +71,10 @@ body {
 
 /* --------------------------------------------- */
 
-.h-85vh {
-  height: 90vh;
+.h-92vh {
+  height: 92vh;
 }
-.w-90per {
+.w-95per {
   width: 95%;
 }
 ::-webkit-scrollbar {
