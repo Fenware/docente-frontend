@@ -6,7 +6,6 @@ import Register from "../views/Register.vue";
 import Configuration from "../views/Configuration.vue";
 import Groups from "../views/Groups.vue";
 import Group from "../views/Group.vue";
-import Consultation from "../views/Consultation.vue";
 
 import ChatRooms from "../views/ChatRooms.vue";
 import Consultations from "../views/Consultations.vue";
@@ -39,12 +38,6 @@ const routes = [
     path: "/grupos/:code",
     name: "Group",
     component: Group,
-    meta: { requireAuth: true },
-  },
-  {
-    path: "/consulta/:id",
-    name: "Consultation",
-    component: Consultation,
     meta: { requireAuth: true },
   },
   {
