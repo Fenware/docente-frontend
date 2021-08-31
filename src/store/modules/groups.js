@@ -24,19 +24,6 @@ export default {
         }
       });
     },
-    /* onlySelectGroupSubject(state, id) {
-      state.subjects_selected.push(id);
-    },
-    onlyDeleteGroupSubject(state, id) {
-      state.subjects_selected.forEach((subject_id, index) => {
-        if (subject_id == id) {
-          state.subjects_selected.splice(index, 1);
-        }
-      });
-    },
-    setPreselectedGroupSubjects(state, payload) {
-      state.subjects_selected = payload;
-    }, */
     setSubjectsTaken(state, subjects) {
       state.subjects_taken = subjects;
     },
