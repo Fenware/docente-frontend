@@ -8,6 +8,9 @@ import Groups from "../views/Groups.vue";
 import Group from "../views/Group.vue";
 import Consultation from "../views/Consultation.vue";
 
+import ChatRooms from "../views/ChatRooms.vue";
+import Consultations from "../views/Consultations.vue";
+
 const routes = [
   { path: "/", redirect: "/inicio" },
   {
@@ -45,6 +48,18 @@ const routes = [
     meta: { requireAuth: true },
   },
   {
+    path: "/consultas",
+    name: "Consultations",
+    component: Consultations,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/salas-de-chat",
+    name: "ChatRooms",
+    component: ChatRooms,
+    meta: { requireAuth: true },
+  },
+  {
     path: "/configuracion",
     name: "Configuration",
     component: Configuration,
@@ -67,7 +82,7 @@ router.beforeEach((to, from, next) => {
   if (routeProtected) {
     store.dispatch("checkSession").then(()=>{
       if (store.state.token !== null) {
-        store.dispatch("syncConsultations")
+        store.dispatch("getConsultations")
         next();
       }
     });
