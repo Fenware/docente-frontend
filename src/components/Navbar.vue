@@ -16,11 +16,16 @@
             <i class="fa-users" :class="icon_class"></i>
           </router-link>
         </li>
-        <!-- <li>
-          <router-link :to="{ name: 'Subjects' }" class="cursor-pointer">
-            <i class="fa-book" :class="icon_class"></i>
+        <li>
+          <router-link :to="{ name: 'Consultations' }" class="cursor-pointer">
+            <i class="fa-inbox" :class="icon_class"></i>
           </router-link>
-        </li> -->
+        </li>
+        <li>
+          <router-link :to="{ name: 'ChatRooms' }" class="cursor-pointer">
+            <i class="fa-comments" :class="icon_class"></i>
+          </router-link>
+        </li>
         <!-- <li class="cursor-pointer">
           <i :class="'fa-user ' + icon_class"></i>
         </li> -->
