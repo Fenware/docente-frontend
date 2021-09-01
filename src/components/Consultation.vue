@@ -34,13 +34,6 @@
         </p>
       </div>
 
-      <!-- <div class="flex items-center mx-20 mb-5 text-sm">
-        <span class="mr-3 font-medium">Fecha de creación: </span>
-        <p class="text-white rounded-lg px-1 py-1">
-          {{ consultation.creation_date }}
-        </p>
-      </div> -->
-
       <div class="mx-20 mt-2">
         <span class="mr-3 text-sm font-bold">Consulta: </span>
         <p class="text-white  rounded-lg py-1 | outline-none">
