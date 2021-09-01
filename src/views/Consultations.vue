@@ -1,19 +1,23 @@
 <template>
   <div class="text-white w-full min-h-full">
     <div class="flex justify-between ">
-      <Consultation />
+      <Consultation v-if = "consultation.active"/>
+      <div class="flex justify-center items-center mx-auto" v-else>
+        <p class="text-2xl">Seleccione una consulta</p>
+      </div>
 
       <div class="h-92vh bg-gray-700 rounded-r-2xl shadow-xl">
         <h2 class="text-center text-2xl mt-1 mb-5">
           Consultas
         </h2>
 
-        <div class=" overflow-y-auto pl-2 pr-3" style="height: 82vh;">
+        <div class=" overflow-y-auto px-2" style="height: 82vh;">
           <div
             @click="viewConsultation(consultation)"
-            class=" text-white py-3 px-2 hover:bg-gray-600 transition-colors rounded-xl cursor-pointer"
+            class=" text-white my-0.5 py-3 px-2 hover:bg-gray-800 hover:bg-opacity-40 transition-colors rounded-xl cursor-pointer"
             v-for="consultation in consultations"
             :key="consultation.id"
+            :id="'consultation_' + consultation.id"
           >
             <div class="flex justify-between items-center">
               <div>
@@ -53,6 +57,11 @@ import Consultation from "@/components/Consultation";
 
 export default {
   name: "Consultations",
+  data: function() {
+    return {
+      consultation_selected: null,
+    };
+  },
   components: {
     Consultation,
   },
@@ -74,6 +83,19 @@ export default {
     ]),
     viewConsultation(consultation) {
       this.getConsultation(consultation.id);
+      this.toggleConsultationSelected(consultation.id);
+    },
+    toggleConsultationSelected(id) {
+      let div = document.getElementById('consultation_' + id);
+      div.classList.add("bg-gray-800");
+
+      if (this.consultation_selected != null && this.consultation_selected != id) {
+        console.log("s");
+        let selected_div = document.getElementById('consultation_' + this.consultation_selected);
+        selected_div.classList.remove("bg-gray-800");
+      }
+
+      this.consultation_selected = id;
     },
   },
 };
