@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white w-full min-h-full">
+  <div class="text-white w-full min-h-full" style="min-width: 15rem;">
     <div class="flex justify-between ">
       <Consultation v-if = "consultation.active"/>
       <div class="flex justify-center items-center mx-auto" v-else>
@@ -12,6 +12,9 @@
         </h2>
 
         <div class=" overflow-y-auto px-2" style="height: 82vh;">
+          <div v-if="consultations.length == 0">
+            <p>No tienes consultas pendientes</p>
+          </div>
           <div
             @click="viewConsultation(consultation)"
             class=" text-white my-0.5 py-3 px-2 hover:bg-gray-800 hover:bg-opacity-40 transition-colors rounded-xl cursor-pointer"
