@@ -1,19 +1,15 @@
 <template>
-  <div
-    class=""
-    v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'"
-  >
+  <div v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'">
     <router-view />
   </div>
   <div class="flex items-center min-h-screen max-h-screen max-w-screen" v-else>
     <div
-      class=" flex flex-col sm:flex-row sm:justify-between h-92vh w-95per mx-auto | bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg | rounded-2xl shadow-md  "
+      class="flex flex-col sm:flex-row sm:justify-between h-92vh w-95per mx-auto | bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg | rounded-2xl shadow-md"
     >
       <Navbar />
-      <Main class="mt-5 sm:mt-0"/>
+      <Main class="mt-5 sm:mt-0" />
       <!-- <Sidebar /> -->
     </div>
-
   </div>
 </template>
 <script>
@@ -53,19 +49,19 @@ body {
 }
 /* ----------------- Buttons ----------------- */
 
-.btn-success{
+.btn-success {
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-green-500 border-green-400 bg-green-200 hover:bg-green-300 text-green-900 cursor-pointer;
 }
-.btn-danger{
+.btn-danger {
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-red-500 border-red-400 bg-red-200 hover:bg-red-300 text-red-900 cursor-pointer;
 }
-.btn-warning{
+.btn-warning {
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-yellow-500 border-yellow-400 bg-yellow-200 hover:bg-yellow-300 text-yellow-900 cursor-pointer;
 }
-.btn-info{
+.btn-info {
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2 hover:border-gray-500 border-indigo-400 bg-indigo-200 hover:bg-indigo-300 text-blue-900 cursor-pointer;
 }
-.btn-disabled{
+.btn-disabled {
   @apply px-3 py-1 min-w-max font-semibold rounded-md transition-colors border-b-2  border-gray-400 bg-gray-200 text-gray-900 cursor-default;
 }
 
