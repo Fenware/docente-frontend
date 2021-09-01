@@ -30,6 +30,7 @@ export default {
     },
     setConsultation(state, consultation) {
       state.consultation = consultation;
+      state.consultation.active = true;
     },
     removeConsultation(state, id_consultation) {
       state.consultations.forEach((consultation, index) => {
@@ -87,7 +88,6 @@ export default {
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (!("result" in res.data)) {
             res.data.messages = [];
             res.data.state = parseInt(res.data.state);
