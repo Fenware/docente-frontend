@@ -93,7 +93,6 @@ export default {
       div.classList.add("bg-gray-800");
 
       if (this.consultation_selected != null && this.consultation_selected != id) {
-        console.log("s");
         let selected_div = document.getElementById('consultation_' + this.consultation_selected);
         selected_div.classList.remove("bg-gray-800");
       }
