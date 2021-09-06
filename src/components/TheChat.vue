@@ -39,7 +39,7 @@
           </p>
 
           <p
-            class="pt-1 px-1 max-w-sm"
+            class="pt-1 px-1 max-w-sm break-words"
             :class="
               (message.content.length < 20 ? 'leading-3 ' : 'leading-tight ') +
                 (isTheAuthorOfTheMessage(message.id_user)
