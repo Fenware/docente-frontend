@@ -12,7 +12,6 @@
       >
         <p class="text-2xl">Seleccione un chat</p>
       </div>
-
     </div>
     <div class="h-92vh bg-gray-700 rounded-2xl shadow-xl">
       <div
@@ -24,37 +23,46 @@
       </div>
 
       <div class=" overflow-y-auto px-2 mt-3" style="height: 80vh;">
-        <div class="" v-if="chats.length == 0">
+        <!-- <div class="" v-if="chats.length == 0">
           <p>No tienes salas de chat activas</p>
-        </div>
-        <div
-          @click="openChat(chat)"
-          class=" text-white my-1 mb-0.5 py-3 px-2 hover:bg-gray-800 hover:bg-opacity-40 transition-colors rounded-xl cursor-pointer"
-          v-for="chat in chats"
-          :key="chat.id"
-          :id="'chat_' + chat.id"
-        >
-          <div class="select-none">
-            <div>
-              <div
-                class="flex justify-between items-center flex-wrap min-w-max"
-              >
-                <p
-                  class="ml-2 font-semibold px-1 rounded-md select-none truncate"
-                  style="max-width: 12rem;"
+        </div> -->
+
+        <div class="" v-for="group in group_chats" :key="group.id">
+          <p
+            class="px-2 text-xl font-medium text-indigo-400 border-b-2 border-gray-500 rounded-b-sm"
+          >
+            {{ group.name }}
+          </p>
+
+          <div
+            @click="openChat(chat)"
+            class=" text-white my-1 mb-0.5 py-3 px-2 hover:bg-gray-800 hover:bg-opacity-40 transition-colors rounded-xl cursor-pointer"
+            v-for="chat in group.chats"
+            :key="chat.id"
+            :id="'chat_' + chat.id"
+          >
+            <div class="select-none">
+              <div>
+                <div
+                  class="flex justify-between items-center flex-wrap min-w-max"
                 >
-                  {{ chat.subject_name }}
+                  <p
+                    class="ml-2 font-semibold px-1 rounded-md select-none truncate"
+                    style="max-width: 12rem;"
+                  >
+                    {{ chat.subject_name }}
+                  </p>
+                  <span class="text-xs pr-3 select-none"
+                    >{{ getHour(chat.creation_date) }}
+                  </span>
+                </div>
+                <p
+                  class="text-sm pl-5 pt-0.5 text-gray-300 truncate"
+                  style="max-width: 15rem;"
+                >
+                  {{ chat.theme }}
                 </p>
-                <span class="text-xs pr-3 select-none"
-                  >{{ getHour(chat.creation_date) }}
-                </span>
               </div>
-              <p
-                class="text-sm pl-5 pt-0.5 text-gray-300 truncate"
-                style="max-width: 15rem;"
-              >
-                {{ chat.theme }}
-              </p>
             </div>
           </div>
         </div>
@@ -82,25 +90,27 @@ export default {
     TheChat,
   },
   created() {
-    this.getChatRooms();
+    // Obtengo los grupos del docente
+    this.getTeacherGroups().then(() => {
+      // Cuando se obtengan los grupos obtengo los chats del docente
+      this.getChatRooms();
+    });
     this.getUserData();
-    this.getTeacherGroups();
   },
   computed: {
     ...mapState({
-      chats: (state) => state.chatRooms.chats,
+      group_chats: (state) => state.chatRooms.group_chats,
       chat: (state) => state.chatRooms.chat,
-      user_subjects: (state) => state.subjects,
     }),
   },
   methods: {
     ...mapMutations(["setChat"]),
     ...mapActions([
       "getChatRooms",
-      "getTeacherGroups",
-      "getUserData",
       "getChatMesages",
+      "getTeacherGroups",
       "wsMessagesConnection",
+      "getUserData"
     ]),
     getHour(date) {
       // Formateo la fecha a español
