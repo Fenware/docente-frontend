@@ -6,14 +6,14 @@ import showAlert from "@/utils/alerts";
 
 export default {
   state: {
-    chats: [],
+    group_chats: [],
     chat: null,
     user_subjects: [],
     ws_connection: null
   },
   mutations: {
     setChats(state, chats) {
-      state.chats = chats;
+      state.group_chats = chats;
     },
     setChat(state, chat) {
       state.chat = chat;
@@ -28,14 +28,18 @@ export default {
       state.user_subjects = subjects;
     },
     pushNewChat(state, chat) {
-      state.chats.push(chat);
+      state.group_chats.forEach((group_chat, index) => {
+        if(group_chat.id == chat.id_group && !group_chat.chats.includes(chat)){
+          state.group_chats[index].chats.push(chat);
+        }
+      });
     },
     setWsConnection(state, conn){
       state.ws_connection = conn;
     }
   },
   actions: {
-    async getChatRooms({ rootState, commit }) {
+    async getChatRooms({ rootState, commit, dispatch }) {
       await axios({
         method: "get",
         url: rootState.API_URL + "/chat",
@@ -43,37 +47,33 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          // Si res.data no es "OK" significa que la sesion expiró o el token esta mal o no hay token
           if (Array.isArray(res.data)) {
-            // LLamo a la funcion logout
-            commit("setChats", res.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    async createChatRoom({ rootState, commit }, chatRoomData) {
-      let data = {
-        materia: parseInt(chatRoomData.subject),
-        asunto: chatRoomData.matter,
-      };
-      console.log(data);
-      await axios({
-        method: "post",
-        url: rootState.API_URL + "/chat",
-        data: data,
-        headers: rootState.headers,
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.data == 1) {
-            showAlert({
-              type: "success",
-              message: "Sala de chat creada correctamente",
+            
+            let chats = [];
+
+            // Recorriendo los grupos del modulo de grupos
+            rootState.groups.groups.forEach(group => {
+              // Asigno id de grupo y el nombre, declaro array de chats
+              let chat_by_group = {
+                id: group.id,
+                name: group.full_name,
+                chats: []
+              };
+              // Recorro el array de chats que devolvio el backend
+              res.data.forEach((chat) => {
+                // Si alguna sala coincide con el grupo 
+                if(chat.id_group == group.id){
+                  // Añado el chat al array
+                  chat_by_group.chats.push(chat);
+                }
+              });
+
+              dispatch("wsChatRoomsConnection", group.id);
+
+              // Añado el chat_by_group al array chats
+              chats.push(chat_by_group);
             });
-          } else {
-            showAlert({ type: "error", message: res.data.result.error_msg });
+            commit("setChats", chats);
           }
         })
         .catch((error) => {
@@ -126,20 +126,22 @@ export default {
           console.log(error);
         });
     },
-    wsChatRoomsConnection({ rootState, commit }) {
+    wsChatRoomsConnection({ rootState, commit }, group_id) {
+      console.log(group_id);
       require("@/utils/websockets");
       // eslint-disable-next-line no-undef
       let conn = new ab.Session(
         `ws://localhost:8085?token=${rootState.token}`,
         function() {
-          conn.subscribe(`${rootState.group.id_group}`, function(topic, data) {
+          conn.subscribe(`${group_id}`, function(topic, data) {
             if (data.chat != null) {
+
               commit("pushNewChat", data.chat);
             }
           });
         },
         function() {
-          console.warn("WebSocket connection closed");
+          console.warn("WebSocket connection rooms closed");
         },
         { skipSubprotocolCheck: true }
       );
@@ -154,15 +156,13 @@ export default {
         `ws://localhost:8086?token=${rootState.token}`,
         function() {
           conn.subscribe(`${state.chat.id}`, function(topic, data) {
-            console.log(data);
             if (data.msg != null) {
               commit("pushMessage", data.msg);
             }
-            console.log(data);
           });
         },
         function() {
-          /* console.warn("WebSocket connection closed"); */
+          console.warn("WebSocket connection messages closed");
         },
         { skipSubprotocolCheck: true }
       );
