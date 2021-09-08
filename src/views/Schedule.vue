@@ -15,8 +15,7 @@
                 ? 'bg-blue-500'
                 : day.state == 2
                 ? 'bg-green-600'
-                : 'bg-gray-600') +
-                (day.selected ? ' transform scale-110' : '')
+                : 'bg-gray-600') + (day.selected ? ' transform scale-110' : '')
             "
             @click="selectDay(day)"
             v-for="day in days"
@@ -28,7 +27,7 @@
 
         <div class="mt-8">
           <p class="pl-3 text-lg">Horarios (24 hrs)</p>
-          <div class="mt-3 flex justify-center font-medium">
+          <div class="mt-3 flex justify-center items-center font-medium">
             <span>De: </span>
             <input
               type="time"
@@ -41,8 +40,18 @@
               v-model="end_hour"
               class="ml-2 px-2 rounded-lg bg-gray-500 outline-none cursor-pointer text-white"
             />
+            <button
+              @click="confirmDeletion()"
+              :class="scheduleTakenSelected ? 'btn-danger' : 'btn-disabled'"
+              class="text-xs ml-2 px-1 py-0.5 flex items-center"
+            >
+              <span class="material-icons">
+                delete
+              </span>
+            </button>
           </div>
-          <div class="mt-10 flex ">
+
+          <div class="mt-5 flex">
             <button @click="saveSchedule()" class="btn-success mx-auto">
               Guardar horarios
             </button>
@@ -64,7 +73,7 @@ export default {
       days: [
         { name: "Lunes", day: 1, state: 0, selected: false },
         { name: "Martes", day: 2, state: 0, selected: false },
-        { name: "Miercoles", day: 3, state: 0, selected: false },
+        { name: "Miércoles", day: 3, state: 0, selected: false },
         { name: "Jueves", day: 4, state: 0, selected: false },
         { name: "Viernes", day: 5, state: 0, selected: false },
       ],
@@ -89,9 +98,15 @@ export default {
     ...mapState({
       schedule: (state) => state.schedule.schedule,
     }),
+    scheduleTakenSelected() {
+      return (
+        this.days.find((day) => day.selected && day.state == 2) &&
+        this.days.find((day) => day.selected && day.state != 2) == undefined
+      );
+    },
   },
   methods: {
-    ...mapActions(["addSchedule", "getSchedule"]),
+    ...mapActions(["addSchedule", "getSchedule", "removeSchedule"]),
     selectDay(selected_day) {
       if (selected_day.state == 0) {
         this.days.find((day) => day.day == selected_day.day).state = 1;
@@ -128,9 +143,7 @@ export default {
             );
             this.start_hour = found_day ? found_day.start_hour : null;
             // Asigno la hora de fin de otra que este seleccioada
-            found_day = this.schedule.find(
-              (d) => parseInt(d.day) == day.day
-            );
+            found_day = this.schedule.find((d) => parseInt(d.day) == day.day);
             this.end_hour = found_day ? found_day.end_hour : null;
           }
         });
@@ -159,13 +172,63 @@ export default {
               day.selected = false;
               this.start_hour = null;
               this.end_hour = null;
-              showAlert({type: "success", message: "Hora de disponibilidad actualizada correctamente"})
+              showAlert({
+                type: "success",
+                message: "Horarios de disponibilidad actualizada correctamente",
+              });
             });
           }
         });
       }
     },
+    confirmDeletion() {
+      let day_to_delete = "";
 
+      this.days.forEach((day) => {
+        if (day.selected) {
+          day_to_delete = day_to_delete + `${day.name}`;
+        }
+      });
+      let alert = this.$swal.mixin({
+        toast: false,
+        position: "center",
+        showConfirmButton: true,
+        showDenyButton: true,
+        timer: 60000,
+        timerProgressBar: true,
+        iconColor: "white",
+        heightAuto: true,
+        customClass: {
+          popup: "colored-toast",
+        },
+      });
+      alert
+        .fire({
+          html: `<span class="text-white">¿Estas segurx de eliminar tus horarios del <b>${day_to_delete}</b>? </span>  `,
+          showCancelButton: false,
+          confirmButtonText: `Eliminar`,
+          denyButtonText: `Cancelar`,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.days.forEach((day) => {
+              if (day.selected) {
+                this.removeSchedule({ day: parseInt(day.day) }).then(() => {
+                  day.state = 0;
+                  day.selected = false;
+                  this.start_hour = null;
+                  this.end_hour = null;
+                  showAlert({
+                    type: "success",
+                    message:
+                      "Horarios de disponibilidad eliminados correctamente",
+                  });
+                });
+              }
+            });
+          }
+        });
+    },
   },
 };
 </script>
