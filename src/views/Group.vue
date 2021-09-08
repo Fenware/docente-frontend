@@ -1,13 +1,5 @@
 <template>
-  <!-- <h1 class="text-center text-3xl mt-1">
-      Grupo <span class="font-semibold">{{ group.full_name }}</span>
-    </h1> -->
   <div>
-    <!-- <div class="flex justify-end">
-      <button class="btn-info px-1.5 py-0.5 text-sm mt-2 mr-16">
-        <i class="fas fa-reply "></i>
-        Volver</button>
-    </div> -->
     <div class=" mx-2 mt-10 sm:ml-10 grid grid-cols-5 gap-10 text-white">
       <div class="col-span-2">
         <h2 class="text-2xl text-center mb-2">Información del grupo</h2>
