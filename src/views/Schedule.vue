@@ -15,7 +15,7 @@
                 ? 'bg-blue-500'
                 : day.state == 2
                 ? 'bg-green-600'
-                : 'bg-gray-600') + (day.selected ? ' transform scale-105' : '')
+                : 'bg-gray-600') + (day.selected ? ' transform scale-110' : '')
             "
             @click="selectDay(day)"
             v-for="day in days"
@@ -26,8 +26,8 @@
         </div>
 
         <div class="mt-8">
-          <p class="pl-3 text-lg">Horarios</p>
-          <div class="mt-1 flex justify-center font-medium">
+          <p class="pl-3 text-lg">Horarios (24 hrs)</p>
+          <div class="mt-3 flex justify-center font-medium">
             <span>De: </span>
             <input
               type="time"
@@ -42,7 +42,9 @@
             />
           </div>
           <div class="mt-10 flex ">
-            <button class="btn-success mx-auto">Guardar horarios</button>
+            <button @click="saveSchedule()" class="btn-success mx-auto">
+              Guardar horarios
+            </button>
           </div>
         </div>
       </div>
@@ -51,6 +53,7 @@
 </template>
 
 <script>
+import showAlert from "@/utils/alerts.js";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -76,7 +79,6 @@ export default {
         );
 
         if (found_day) {
-          console.log("lol");
           found_day.state = 2;
         }
       });
@@ -89,15 +91,77 @@ export default {
   },
   methods: {
     ...mapActions(["addSchedule", "getSchedule"]),
-    selectDay(day_selected) {
-      this.days.find((day) => day.day == day_selected.day).selected = !day_selected.selected;
-      if (day_selected.state == 1) {
-        this.days.find((day) => day.day == day_selected.day).state = 0;
-      } else if (day_selected.state == 0) {
-        this.days.find((day) => day.day == day_selected.day).state = 1;
+    selectDay(selected_day) {
+      if (selected_day.state == 0) {
+        this.days.find((day) => day.day == selected_day.day).state = 1;
+      } else if (selected_day.state == 1) {
+        this.days.find((day) => day.day == selected_day.day).state = 0;
+      } else if (selected_day.state == 2) {
+        if (!selected_day.selected) {
+          // Asigno la hora de inicio que tiene
+          this.start_hour = this.schedule.find(
+            (day) => day.day == selected_day.day
+          ).start_hour;
+          // Asigno la hora de fin que tiene
+          this.end_hour = this.schedule.find(
+            (day) => day.day == selected_day.day
+          ).end_hour;
+        } else {
+          this.start_hour = null;
+          this.end_hour = null;
+        }
+
+        this.days.forEach((day) => {
+          // Deselecciono todas menos la que se quiere seleccionar
+          if (day.state == 2 && day.day != selected_day.day) {
+            day.selected = false;
+          }
+          if (
+            day.selected &&
+            selected_day.selected &&
+            day.day != selected_day.day
+          ) {
+            // Asigno la hora de inicio de otra que este seleccioada
+            this.start_hour = this.schedule.find(
+              (d) => d.day == day.day
+            ).start_hour;
+            // Asigno la hora de fin de otra que este seleccioada
+            this.end_hour = this.schedule.find(
+              (d) => d.day == day.day
+            ).end_hour;
+          }
+        });
+      }
+      // Seleccionando el dia
+      this.days.find(
+        (day) => day.day == parseInt(selected_day.day)
+      ).selected = !selected_day.selected;
+    },
+    saveSchedule() {
+      if (!this.start_hour || !this.end_hour) {
+        showAlert({
+          type: "error",
+          message: "Debes indicar la hora de disponibilidad",
+        });
+      } else {
+        this.days.forEach((day) => {
+          if (day.selected) {
+            let data = {
+              day: day.day,
+              start_hour: this.start_hour,
+              end_hour: this.end_hour,
+            };
+            this.addSchedule(data).then(() => {
+              day.state = 2;
+              day.selected = false;
+              this.start_hour = null;
+              this.end_hour = null;
+              showAlert({type: "success", message: "Hora de disponibilidad actualizada correctamente"})
+            });
+          }
+        });
       }
     },
-    saveSchedule() {},
   },
 };
 </script>
