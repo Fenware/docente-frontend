@@ -6,6 +6,7 @@ import Register from "../views/Register.vue";
 import Configuration from "../views/Configuration.vue";
 import Groups from "../views/Groups.vue";
 import Group from "../views/Group.vue";
+import Schedule from "../views/Schedule.vue";
 
 import ChatRooms from "../views/ChatRooms.vue";
 import Consultations from "../views/Consultations.vue";
@@ -50,6 +51,12 @@ const routes = [
     path: "/salas-de-chat",
     name: "ChatRooms",
     component: ChatRooms,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/horarios",
+    name: "Schedule",
+    component: Schedule,
     meta: { requireAuth: true },
   },
   {
