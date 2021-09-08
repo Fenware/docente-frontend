@@ -15,7 +15,8 @@
                 ? 'bg-blue-500'
                 : day.state == 2
                 ? 'bg-green-600'
-                : 'bg-gray-600') + (day.selected ? ' transform scale-110' : '')
+                : 'bg-gray-600') +
+                (day.selected ? ' transform scale-110' : '')
             "
             @click="selectDay(day)"
             v-for="day in days"
@@ -122,13 +123,15 @@ export default {
             day.day != selected_day.day
           ) {
             // Asigno la hora de inicio de otra que este seleccioada
-            this.start_hour = this.schedule.find(
-              (d) => d.day == day.day
-            ).start_hour;
+            let found_day = this.schedule.find(
+              (d) => parseInt(d.day) == day.day
+            );
+            this.start_hour = found_day ? found_day.start_hour : null;
             // Asigno la hora de fin de otra que este seleccioada
-            this.end_hour = this.schedule.find(
-              (d) => d.day == day.day
-            ).end_hour;
+            found_day = this.schedule.find(
+              (d) => parseInt(d.day) == day.day
+            );
+            this.end_hour = found_day ? found_day.end_hour : null;
           }
         });
       }
@@ -162,6 +165,7 @@ export default {
         });
       }
     },
+
   },
 };
 </script>
