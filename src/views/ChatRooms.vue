@@ -17,7 +17,7 @@
       <div
         class="flex justify-center px-2 bg-gray-600 rounded-t-xl rounded-b-md"
       >
-        <h2 class="text-center text-2xl my-2 min-w-max">
+        <h2 class="text-center text-2xl my-2 min-w-max font-medium">
           Salas de chat
         </h2>
       </div>

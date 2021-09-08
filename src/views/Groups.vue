@@ -1,6 +1,6 @@
 <template>
   <div class="text-white  w-full px-2">
-    <h2 class="text-center text-3xl mt-1">
+    <h2 class="text-white text-center text-3xl font-semibold pt-1">
       Grupos
     </h2>
 

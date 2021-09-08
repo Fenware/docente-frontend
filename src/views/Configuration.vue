@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-white text-center text-3xl pt-1">
+    <h1 class="text-white text-center text-3xl font-semibold pt-1">
       Configuración de usuario
     </h1>
 
@@ -197,7 +197,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(["API_URL", "headers", "user"]),
+    ...mapState({
+      API_URL: (state) => state.API_URL,
+      headers: (state) => state.headers,
+      user: (state) => state.userProfile.user,
+    }),
   },
   methods: {
     ...mapMutations(["setUserData"]),
