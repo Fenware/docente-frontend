@@ -3,10 +3,13 @@ import store from "../store";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
-import Subjects from "../views/Subjects.vue";
 import Configuration from "../views/Configuration.vue";
 import Groups from "../views/Groups.vue";
-import Consultation from "../views/Consultation.vue";
+import Group from "../views/Group.vue";
+import Schedule from "../views/Schedule.vue";
+
+import ChatRooms from "../views/ChatRooms.vue";
+import Consultations from "../views/Consultations.vue";
 
 const routes = [
   { path: "/", redirect: "/inicio" },
@@ -27,21 +30,33 @@ const routes = [
     meta: { requireAuth: true },
   },
   {
-    path: "/tomar-materias",
-    name: "Subjects",
-    component: Subjects,
-    meta: { requireAuth: true },
-  },
-  {
-    path: "/tomar-grupos",
+    path: "/grupos",
     name: "Groups",
     component: Groups,
     meta: { requireAuth: true },
   },
   {
-    path: "/consulta/:id",
-    name: "Consultation",
-    component: Consultation,
+    path: "/grupos/:code",
+    name: "Group",
+    component: Group,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/consultas",
+    name: "Consultations",
+    component: Consultations,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/salas-de-chat",
+    name: "ChatRooms",
+    component: ChatRooms,
+    meta: { requireAuth: true },
+  },
+  {
+    path: "/horarios",
+    name: "Schedule",
+    component: Schedule,
     meta: { requireAuth: true },
   },
   {
@@ -65,10 +80,13 @@ router.beforeEach((to, from, next) => {
   // Verificando la session en cada ruta
   store.dispatch('syncToken');
   if (routeProtected) {
-    store.dispatch("checkSession");
-    if (store.state.token !== null) {
-      next();
-    }
+    store.dispatch("checkSession").then(()=>{
+      if (store.state.token !== null) {
+        store.dispatch("getConsultations")
+        next();
+      }
+    });
+    
   } else if (to.fullPath == "/login" || to.fullPath == "/registro") {
     if (store.state.token !== null) {
       next({ name: "Home" });

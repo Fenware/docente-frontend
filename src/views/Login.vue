@@ -22,13 +22,13 @@
         />
       </div>
       <input
-        class="block mx-auto mt-10 py-2 px-10 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl cursor-pointer bg-gray-50 bg-opacity-25 hover:bg-opacity-40 outline-none focus:ring-4 ring-white ring-opacity-20"
+        class="block mx-auto mt-10 btn-success px-10 py-1.5 border-b-4"
         type="submit"
         value="Ingresar"
       />
       <div class="text-center text-white mt-2">
         <span class="block mb-3">O</span>
-        <router-link :to="{ name: 'Register' }" class=" mx-auto py-2 px-5 | text-white rounded-lg shadow-lg transition-all ease-in-out hover:shadow-xl cursor-pointer bg-gray-50 bg-opacity-25 hover:bg-opacity-40 outline-none focus:ring-4 ring-white ring-opacity-20">
+        <router-link :to="{ name: 'Register' }" class=" mx-auto shadow-lg btn-info">
           Registro
         </router-link>
       </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
@@ -49,9 +49,6 @@ export default {
         type: "teacher",
       },
     };
-  },
-  computed: {
-    ...mapState(["API_URL"]),
   },
   methods: {
     ...mapActions(["login"]),

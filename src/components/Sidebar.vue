@@ -1,14 +1,14 @@
 <template>
   <div
-    class="w-72 text-white h-full rounded-3xl | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl"
+    class="w-72 text-white h-full rounded-2xl | bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl"
   >
     <div class="truncate">
       <h3 class="font-bold px-1 text-xl text-center pt-2">Consultas pendientes</h3>
     </div>
-    <div class="flex justify-start items-center mt-2">
+    <div class="flex justify-end  items-center pr-3 mt-2">
       <button 
-      @click="syncConsultations()"
-      class="bg-gray-700 text-xs mx-2 px-2 hover:bg-gray-600 transition-colors ease-linear rounded-full border-2 border-gray-400">
+      @click="getConsultations()"
+      class="text-xs px-2 py-0.5 mb-1 text-blue-900  transition-colors font-semibold rounded-md bg-indigo-200 hover:bg-indigo-300 shadow-lg">
         Actualizar
         <i class="fas fa-sync-alt "></i>
       </button>
@@ -28,11 +28,8 @@ export default {
     ConsultationsContainer,
   },
   methods: {
-    ...mapActions(["syncConsultations"]),
-  },
-  created() {
-    this.syncConsultations();
-  },
+    ...mapActions(["getConsultations"]),
+  }
 };
 </script>
 
