@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col gap-1 justify-between h-full w-full">
     <div class="mt-1 flex flex-col justify-between h-full">
-      <div class="select-none">
+      <div
+        @click="openModal()"
+        class="pb-2 w-9/12 mx-auto hover:bg-gray-700 rounded-xl transition-colors cursor-pointer select-none"
+      >
         <p class="text-3xl text-center">
           {{ chat != null ? chat.subject_name : "Esperando datos" }}
         </p>
@@ -78,17 +81,85 @@
         @click="sendMessage()"
         class=" transition-colors text-gray-400 hover:text-gray-300 cursor-pointer px-1 flex mb-2.5 mt-1"
       >
-        <!-- <i class="fas fa-paper-plane px-2 mr-0.5"></i> -->
         <span class="material-icons ">send</span>
       </div>
     </div>
-    <!-- 
-    </input> -->
+
+    <!-- MODAL -->
+    <div
+      class="main-modal fixed w-full h-100 inset-0 z-50 overflow-hidden hidden justify-center items-center animated fadeIn faster rounded-2xl"
+      style="background: rgba(0,0,0,.5);"
+    >
+      <div
+        style="max-height: 65vh;"
+        class="border-2 border-gray-500 modal-container bg-gray-900 w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 overflow-y-auto"
+      >
+        <div class="modal-content py-4 text-left px-6">
+          <!--Title-->
+          <div class="flex justify-between items-center">
+            <p class="text-2xl font-bold">{{ chat.subject_name }}</p>
+            <div class="modal-close cursor-pointer z-50" @click="modalClose()">
+              <span class="material-icons text-red-400">close</span>
+            </div>
+          </div>
+          <!--Body-->
+          <div class="my-1">
+            <p class="text-lg font-medium mb-2">{{ chat.theme }}</p>
+            <hr />
+            <p class="mt-2 text-right">
+              <span class="text-sm"> {{ getDate(chat.creation_date) }}</span>
+            </p>
+            <p class="">
+              Grupo:
+              <span class="font-medium text-indigo-400">{{
+                chat.group_name
+              }}</span>
+            </p>
+            <p class="">
+              Creador:
+              <span class="font-medium text-indigo-400">
+                {{ chat.student_name }}</span
+              >
+            </p>
+            <p class="">
+              Docente:
+              <span class="font-medium text-indigo-400">
+                {{ chat.teacher_name }}</span
+              >
+            </p>
+
+            <p class="mt-5 font-medium text-lg text-center">Participantes</p>
+
+            <div>
+              <ol class="overflow-y-auto max-h-28">
+                <li v-for="participant in chat.participants" :key="participant">
+                  -
+                  {{ participant.name }}
+                  {{ participant.surname }}
+                  {{ participant.second_surname }}
+                </li>
+              </ol>
+            </div>
+          </div>
+          <!--Footer-->
+          <!-- <div class="flex justify-center pt-2 mt-2">
+            <button
+              v-if="user.id == chat.id_student"
+              @click="closeChat()"
+              class="btn-danger flex items-center py-0.5"
+            >
+              <span class="material-icons-round mr-1">warning_amber</span>
+              Terminar sala de chat
+            </button>
+          </div> -->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import moment from "moment";
 
 export default {
@@ -107,8 +178,13 @@ export default {
   updated() {
     this.scroll();
   },
+  unmounted() {
+    // Borrando el chat al salir del componente
+    this.clearChat();
+  },
   methods: {
-    ...mapActions(["sendMessageToChat"]),
+    ...mapMutations(["clearChat"]),
+    ...mapActions(["sendMessageToChat", "getChatRoomById"]),
     sendMessage() {
       this.sendMessageToChat({ id: this.chat.id, message: this.new_message });
       this.new_message = "";
@@ -117,6 +193,13 @@ export default {
       // Formateo la fecha a español
       let date_formated = moment(date).locale("es");
       date_formated = moment(date_formated).format("LT");
+      /* return moment(date_formated).format('LT'); */
+      return date_formated;
+    },
+    getDate(date) {
+      // Formateo la fecha a español
+      let date_formated = moment(date).locale("es");
+      date_formated = moment(date_formated).format("LL");
       /* return moment(date_formated).format('LT'); */
       return date_formated;
     },
@@ -134,6 +217,22 @@ export default {
       } else {
         return false;
       }
+    },
+    openModal() {
+      this.getChatRoomById(this.chat.id).then(() => {
+        let modal = document.querySelector(".main-modal");
+        modal.classList.remove("fadeOut");
+        modal.classList.add("fadeIn");
+        modal.style.display = "flex";
+      });
+    },
+    modalClose() {
+      let modal = document.querySelector(".main-modal");
+      modal.classList.remove("fadeIn");
+      modal.classList.add("fadeOut");
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 500);
     },
   },
 };
