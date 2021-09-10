@@ -9,14 +9,18 @@ export default {
     group_chats: [],
     chat: null,
     user_subjects: [],
-    ws_connection: null
+    ws_messages_connection: null,
+    ws_chat_rooms_connection: null
   },
   mutations: {
     setChats(state, chats) {
       state.group_chats = chats;
     },
     setChat(state, chat) {
+      // Arreglar, que haya un endpoint para obtener participantes
+      let messages = state.chat && state.chat.messages ? state.chat.messages : [] ;
       state.chat = chat;
+      state.chat.messages = messages;
     },
     setMessages(state, messages) {
       state.chat.messages = messages;
@@ -34,8 +38,11 @@ export default {
         }
       });
     },
-    setWsConnection(state, conn){
-      state.ws_connection = conn;
+    setWsMessagesConnection(state, conn){
+      state.ws_messages_connection = conn;
+    },
+    setWsChatRoomsConnection(state, conn){
+      state.ws_chat_rooms_connection = conn;
     }
   },
   actions: {
@@ -80,6 +87,26 @@ export default {
           console.log(error);
         });
     },
+    async getChatRoomById({ rootState, commit }, chat_id) {
+      await axios({
+        method: "get",
+        url: rootState.API_URL + `/chat?chat=${chat_id}`,
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          console.log(res);
+          if (!("result" in res.data)) {
+            // LLamo a la funcion logout
+            commit("setChat", res.data);
+          }else{
+            console.log("Error -> getChatRoomById");
+            console.log(res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async getChatMesages({ rootState, commit }, chat_id) {
       let data = `chat=${chat_id}`;
       await axios({
@@ -112,22 +139,15 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          /* commit("toogleNewMessageMode");
-          if (res.data == 1) {
-            dispatch(
-              "getConsultationMessages",
-              parseInt(state.consultation.id)
-            );
-          } else {
-            alert(res.data.result.error_msg);
-          } */
+          if (res.data != 1) {
+            showAlert({ type: "error", message: res.data.result.error_msg });
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     },
     wsChatRoomsConnection({ rootState, commit }, group_id) {
-      console.log(group_id);
       require("@/utils/websockets");
       // eslint-disable-next-line no-undef
       let conn = new ab.Session(
@@ -135,7 +155,6 @@ export default {
         function() {
           conn.subscribe(`${group_id}`, function(topic, data) {
             if (data.chat != null) {
-
               commit("pushNewChat", data.chat);
             }
           });
@@ -148,8 +167,8 @@ export default {
     },
     wsMessagesConnection({ rootState, state, commit }) {
       require("@/utils/websockets");
-      if(state.ws_connection){
-        state.ws_connection.close();
+      if(state.ws_messages_connection){
+        state.ws_messages_connection.close();
       }
       // eslint-disable-next-line no-undef
       let conn = new ab.Session(
@@ -166,7 +185,7 @@ export default {
         },
         { skipSubprotocolCheck: true }
       );
-      commit("setWsConnection", conn);
+      commit("setWsMessagesConnection", conn);
     },
   },
 };
