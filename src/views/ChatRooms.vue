@@ -27,13 +27,15 @@
           <p>No tienes salas de chat activas</p>
         </div> -->
 
-        <div class="" v-for="group in group_chats" :key="group.id">
+        <div v-for="group in group_chats" :key="group.id">
           <p
             class="px-2 text-xl font-medium text-indigo-400 border-b-2 border-gray-500 rounded-b-sm"
           >
             {{ group.name }}
           </p>
-
+          <div class="flex justify-center items-center h-full" v-if="group.chats.length == 0">
+          <p class="min-w-max m-3">No tienes salas de chat de {{ group.name }}</p>
+        </div>
           <div
             @click="openChat(chat)"
             class=" text-white my-1 mb-0.5 py-3 px-2 hover:bg-gray-800 hover:bg-opacity-40 transition-colors rounded-xl cursor-pointer"
