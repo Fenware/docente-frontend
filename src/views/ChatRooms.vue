@@ -77,6 +77,8 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 import TheChat from "@/components/TheChat.vue";
 import moment from "moment";
+import io from "socket.io-client";
+
 
 export default {
   name: "ChatRooms",
@@ -85,13 +87,17 @@ export default {
       create_chat_mode: false,
       matter: "",
       subject_id: null,
-      chat_selected: null,
+      socket: null,
     };
   },
   components: {
     TheChat,
   },
   created() {
+    this.socket = io("http://localhost:3000", {
+      auth: { token: this.headers },
+    });
+    this.setSocket(this.socket);
     // Obtengo los grupos del docente
     this.getTeacherGroups().then(() => {
       // Cuando se obtengan los grupos obtengo los chats del docente
@@ -106,12 +112,11 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations(["setChat"]),
+    ...mapMutations(["setChat", "setSocket", "setChatId"]),
     ...mapActions([
       "getChatRooms",
       "getChatMesages",
       "getTeacherGroups",
-      "wsMessagesConnection",
       "getUserData"
     ]),
     getHour(date) {
@@ -164,7 +169,6 @@ export default {
       this.create_chat_mode = false;
       this.setChat(chat);
       this.getChatMesages(chat.id);
-      this.wsMessagesConnection();
       this.toggleChatSelected(chat.id);
     },
     toggleChatSelected(id) {
@@ -182,7 +186,7 @@ export default {
         selected_div.classList.add("hover:bg-opacity-40");
       }
 
-      this.chat_selected = id;
+      this.setChatId(id);
     },
   },
 };
