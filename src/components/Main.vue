@@ -1,25 +1,22 @@
 <template>
-  <main class=" w-full overflow-y-auto mr-1" v-if="isLoginView()">
-      <router-view />
+  <main class="mx-auto w-full overflow-y-auto" v-if="isLoginView()">
+    <router-view />
   </main>
 </template>
 
 <script>
-
-import { mapActions } from "vuex";
-
 export default {
   name: "MainComponent",
   methods: {
-    ...mapActions(["syncToken", "checkSession"]),
     isLoginView() {
       return this.$route.name != "Login" || this.$route.name != "Register";
     },
   },
-  created() {
-    this.syncToken();
-  },
 };
 </script>
 
-<style></style>
+<style>
+main {
+  font-family: "Montserrat", sans-serif !important;
+}
+</style>

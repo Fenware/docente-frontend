@@ -1,0 +1,45 @@
+.colored-toast.swal2-icon-success {
+  background-color: #8ac767 !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+  background-color: #f8bb86 !important;
+}
+
+.colored-toast.swal2-icon-info {
+  background-color: #2ca4cc !important;
+}
+
+.colored-toast.swal2-icon-question {
+  background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+  color: white;
+}
+
+.colored-toast .swal2-close {
+  color: white;
+}
+
+.colored-toast .swal2-content {
+  color: white;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+  margin: 0 1em !important;
+}
+.swal2-popup.swal2-toast {
+  padding: 0.5em !important;
+}
+.swal2-html-container{
+  overflow: unset;
+}
+
+.swal2-popup {
+  background-color: rgb(55, 65, 81);
+}
