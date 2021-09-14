@@ -10,7 +10,8 @@ export default {
     chat: null,
     user_subjects: [],
     ws_messages_connection: null,
-    ws_chat_rooms_connection: null
+    ws_chat_rooms_connection: null,
+    selected_chat: null,
   },
   mutations: {
     setChats(state, chats) {
@@ -43,17 +44,25 @@ export default {
     },
     setWsChatRoomsConnection(state, conn){
       state.ws_chat_rooms_connection = conn;
-    }
+    },
+    setChatId(state, id) {
+      state.selected_chat = id;
+    },
+    clearChatId(state) {
+      state.selected_chat = null;
+    },
+    clearChat(state) {
+      state.chat = null;
+    },
   },
   actions: {
-    async getChatRooms({ rootState, commit, dispatch }) {
+    async getChatRooms({ rootState, commit, state, dispatch }) {
       await axios({
         method: "get",
         url: rootState.API_URL + "/chat",
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (Array.isArray(res.data)) {
             
             let chats = [];
@@ -74,12 +83,17 @@ export default {
                   chat_by_group.chats.push(chat);
                 }
               });
-
-              dispatch("wsChatRoomsConnection", group.id);
-
+              /* dispatch("wsChatRoomsConnection", group.id); */
               // Añado el chat_by_group al array chats
               chats.push(chat_by_group);
             });
+            if (state.chat) {
+              let chat = res.data.find((chat) => chat.id == state.chat.id);
+              if (!chat) {
+                commit("clearChatId");
+                commit("clearChat");
+              }
+            }
             commit("setChats", chats);
           }
         })
@@ -107,7 +121,7 @@ export default {
           console.log(error);
         });
     },
-    async getChatMesages({ rootState, commit }, chat_id) {
+    async getChatMessages({ rootState, commit, state }, chat_id) {
       let data = `chat=${chat_id}`;
       await axios({
         method: "get",
@@ -115,9 +129,17 @@ export default {
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (Array.isArray(res.data)) {
-            commit("setMessages", res.data);
+            if (state.chat) {
+              if (state.chat.messages.length == 0) {
+                commit("setMessages", res.data);
+              } else if (
+                state.chat.messages[state.chat.messages.length - 1].id !=
+                res.data[res.data.length - 1].id
+              ) {
+                commit("setMessages", res.data);
+              }
+            }
           } else {
             alert(res.data.result.error_msg);
           }
@@ -139,7 +161,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          if (res.data != 1) {
+          if ("result" in res.data) {
             showAlert({ type: "error", message: res.data.result.error_msg });
           }
         })
@@ -147,7 +169,7 @@ export default {
           console.log(error);
         });
     },
-    wsChatRoomsConnection({ rootState, commit }, group_id) {
+    /* wsChatRoomsConnection({ rootState, commit }, group_id) {
       require("@/utils/websockets");
       // eslint-disable-next-line no-undef
       let conn = new ab.Session(
@@ -186,6 +208,16 @@ export default {
         { skipSubprotocolCheck: true }
       );
       commit("setWsMessagesConnection", conn);
+    }, */
+    listenMessages({ dispatch, state }) {
+      setInterval(function() {
+        if (state.chat) dispatch("getChatMessages", state.chat.id);
+      }, 500);
+    },
+    listenRooms({ dispatch }) {
+      setInterval(function() {
+        dispatch("getChatRooms");
+      }, 500);
     },
   },
 };
