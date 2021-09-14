@@ -84,8 +84,7 @@ export default {
     return {
       create_chat_mode: false,
       matter: "",
-      subject_id: null,
-      chat_selected: null,
+      subject_id: null
     };
   },
   components: {
@@ -96,6 +95,7 @@ export default {
     this.getTeacherGroups().then(() => {
       // Cuando se obtengan los grupos obtengo los chats del docente
       this.getChatRooms();
+      this.listenRooms();
     });
     this.getUserData();
   },
@@ -103,16 +103,18 @@ export default {
     ...mapState({
       group_chats: (state) => state.chatRooms.group_chats,
       chat: (state) => state.chatRooms.chat,
+      selected_chat: (state) => state.chatRooms.selected_chat,
     }),
   },
   methods: {
-    ...mapMutations(["setChat"]),
+    ...mapMutations(["setChat", "setChatId"]),
     ...mapActions([
       "getChatRooms",
-      "getChatMesages",
+      "getChatMessages",
       "getTeacherGroups",
       "wsMessagesConnection",
-      "getUserData"
+      "getUserData",
+      "listenRooms"
     ]),
     getHour(date) {
       // Formateo la fecha a español
@@ -163,8 +165,8 @@ export default {
     openChat(chat) {
       this.create_chat_mode = false;
       this.setChat(chat);
-      this.getChatMesages(chat.id);
-      this.wsMessagesConnection();
+      this.getChatMessages(chat.id);
+      /* this.wsMessagesConnection(); */
       this.toggleChatSelected(chat.id);
     },
     toggleChatSelected(id) {
@@ -173,16 +175,16 @@ export default {
       div.classList.remove("hover:bg-gray-800");
       div.classList.remove("hover:bg-opacity-40");
 
-      if (this.chat_selected != null && this.chat_selected != id) {
+      if (this.selected_chat != null && this.selected_chat != id) {
         let selected_div = document.getElementById(
-          "chat_" + this.chat_selected
+          "chat_" + this.selected_chat
         );
         selected_div.classList.remove("bg-indigo-600");
         selected_div.classList.add("hover:bg-gray-800");
         selected_div.classList.add("hover:bg-opacity-40");
       }
 
-      this.chat_selected = id;
+      this.setChatId(id);
     },
   },
 };
