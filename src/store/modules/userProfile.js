@@ -1,60 +1,89 @@
-/* eslint-disable no-unused-vars */
 import axios from "axios";
-
 // Modulo donde manejo las alertas
-import showAlert from "@/utils/alerts";
-
+// eslint-disable-next-line no-unused-vars
+import { showAlert } from "@/utils/alerts";
 export default {
   state: {
-    user: {
-      id: null,
-      ci: null,
-      nickname: "",
-      name: "",
-      middle_name: "",
-      surname: "",
-      second_surname: "",
-      email: "",
-      avatar: "01-man.svg",
-      type: "teacher",
-    },
+    user: {},
   },
   mutations: {
     setUserData(state, user) {
-      state.user.id = user.id;
-      state.user.ci = user.ci;
-      state.user.name = user.name;
-      state.user.nickname = user.nickname;
-      state.user.name = user.name;
-      state.user.middle_name = user.middle_name;
-      state.user.surname = user.surname;
-      state.user.second_surname = user.second_surname;
-      state.user.email = user.email;
-      state.user.avatar = user.avatar != null ? user.avatar : "01-man.svg";
+      console.log(user);
+      state.user = user;
     },
-    clearUserData(state) {
-      state.user.id = null;
-      state.user.ci = null;
-      state.user.name = "";
-      state.user.nickname = "";
-      state.user.name = "";
-      state.user.middle_name = "";
-      state.user.surname = "";
-      state.user.second_surname = "";
-      state.user.email = "";
-      state.user.avatar = "01-man.svg";
-
+    changeUser(state, edited_user) {
+      state.user = { ...edited_user };
     },
   },
   actions: {
     async getUserData({ rootState, commit }) {
       await axios({
-        method: "get",
-        url: rootState.API_URL + "/user",
+        method: "post",
+        url: rootState.API_URL + "/user/getUserById",
         headers: rootState.headers,
       })
         .then((res) => {
-          commit("setUserData", res.data[0]);
+          console.log(res);
+          if (!res.data.middle_name) {
+            res.data.middle_name = "";
+          }
+          if (!res.data.second_surname) {
+            res.data.second_surname = "";
+          }
+          commit("setUserData", res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    // eslint-disable-next-line no-unused-vars
+    async deleteUser({ rootState, dispatch }) {
+      await axios({
+        method: "post",
+        url: rootState.API_URL + "/user/delete",
+        data: {},
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          if (res.data == 1) {
+            dispatch("logout");
+            showAlert({
+              type: "info",
+              message: `Te has dado de baja correctamente`,
+            });
+          } else {
+            console.log(res.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async editUser({ rootState, commit }, payload) {
+      /* payload.id = parseInt(payload.id); */
+      let data = {
+        avatar: payload.avatar,
+        nickname: payload.nickname
+      }
+      await axios({
+        method: "post",
+        url: rootState.API_URL + "/user/modify",
+        data,
+        headers: rootState.headers,
+      })
+        .then((res) => {
+          if (res.data == 1) {
+            commit("changeUser", payload);
+            showAlert({
+              type: "success",
+              message: `El usuario ${payload.name} fue modificado correctamente`,
+            });
+          } else {
+            showAlert({
+              type: "error",
+              message: `Hubo un error, intente nuevamente`,
+            });
+          }
         })
         .catch((error) => {
           console.log(error);
