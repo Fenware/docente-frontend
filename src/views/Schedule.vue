@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import showAlert from "@/utils/alerts.js";
+import { showAlert } from "@/utils/alerts.js";
 import { mapActions, mapState } from "vuex";
 
 export default {
