@@ -1,7 +1,7 @@
 <template>
   <div class="text-white w-full min-h-full" style="min-width: 15rem;">
     <div class="flex justify-between ">
-      <Consultation v-if = "consultation.active"/>
+      <Consultation v-if="consultation.active" />
       <div class="flex justify-center items-center mx-auto" v-else>
         <p class="text-2xl">Seleccione una consulta</p>
       </div>
@@ -11,7 +11,7 @@
           Consultas
         </h2>
 
-        <div class=" overflow-y-auto px-2" style="height: 82vh;">
+        <div class=" mt-2 overflow-y-auto px-2" style="height: 82vh;">
           <div v-if="consultations.length == 0">
             <p>No tienes consultas pendientes</p>
           </div>
@@ -22,8 +22,8 @@
             :key="consultation.id"
             :id="'consultation_' + consultation.id"
           >
-            <div class="flex justify-between items-center">
-              <div>
+            <div class="flex justify-between">
+              <div class="mr-3">
                 <div class="flex flex-wrap">
                   <span
                     class="ml-2 text-indigo-400 font-semibold px-1 rounded-md select-none"
@@ -36,15 +36,17 @@
               </div>
               <div
                 v-show="consultation.state == 2"
-                class="rounded-full mr-2 text-green-500"
+                class="mr-1  text-green-500"
               >
-                <i class="fas fa-check-circle"></i>
+                <span class="material-icons text-xl">check_circle_outline</span>
               </div>
               <div
                 v-show="consultation.state == 1"
-                class="rounded-full mr-2 text-gray-800"
+                class="rounded-full mr-1  text-gray-500"
               >
-                <i class="far fa-circle"></i>
+                <span class="material-icons text-xl"
+                  >radio_button_unchecked</span
+                >
               </div>
             </div>
           </div>
@@ -89,11 +91,16 @@ export default {
       this.toggleConsultationSelected(consultation.id);
     },
     toggleConsultationSelected(id) {
-      let div = document.getElementById('consultation_' + id);
+      let div = document.getElementById("consultation_" + id);
       div.classList.add("bg-gray-800");
 
-      if (this.consultation_selected != null && this.consultation_selected != id) {
-        let selected_div = document.getElementById('consultation_' + this.consultation_selected);
+      if (
+        this.consultation_selected != null &&
+        this.consultation_selected != id
+      ) {
+        let selected_div = document.getElementById(
+          "consultation_" + this.consultation_selected
+        );
         selected_div.classList.remove("bg-gray-800");
       }
 
