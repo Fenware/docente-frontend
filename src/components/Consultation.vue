@@ -53,7 +53,7 @@
       <div class="mt-5 pb-2">
         <h3 class="pl-3 text-xl">Respuestas</h3>
 
-        <div class="my-2 mx-8">
+        <div class="my-2 mx-8 overflow-y-auto max-h-60">
           <p class="text-center" v-if="consultation.messages.length == 0">
             Aún no hay respuestas
           </p>
