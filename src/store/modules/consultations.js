@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 // Modulo donde manejo las alertas
-import showAlert from "@/utils/alerts";
+import { showAlert } from "@/utils/alerts";
 
 export default {
   state: {
@@ -53,20 +53,20 @@ export default {
     },
     setConsultationStateAnswered(state, id) {
       state.consultations.forEach((consultation) => {
-        if (parseInt(consultation.id) == parseInt(id)){
+        if (parseInt(consultation.id) == parseInt(id)) {
           consultation.state = 2;
         }
       });
     },
-    pushMessage(state, message) {
+    pushConsultationMessage(state, message) {
       state.consultation.messages.push(message);
     },
   },
   actions: {
     async getConsultations({ rootState, commit }) {
       await axios({
-        method: "get",
-        url: rootState.API_URL + "/consulta",
+        method: "post",
+        url: rootState.API_URL + "/consultation/getActiveConsultations",
         headers: rootState.headers,
       })
         .then((res) => {
@@ -81,10 +81,11 @@ export default {
         });
     },
     async getConsultation({ rootState, commit, dispatch }, id) {
-      let data = `consulta=${id}`;
+      let data = { consulta: parseInt(id) };
       await axios({
-        method: "get",
-        url: rootState.API_URL + `/consulta?${data}`,
+        method: "post",
+        url: rootState.API_URL + `/consultation/getConsultationById`,
+        data,
         headers: rootState.headers,
       })
         .then((res) => {
@@ -108,14 +109,14 @@ export default {
       };
       await axios({
         method: "post",
-        url: rootState.API_URL + "/consulta-mensaje",
-        data: data,
+        url: rootState.API_URL + "/consultation/postMessage",
+        data,
         headers: rootState.headers,
       })
         .then((res) => {
           commit("toogleNewMessageMode");
           if (!("result" in res.data)) {
-            commit("pushMessage", res.data);
+            commit("pushConsultationMessage", res.data);
           } else {
             alert(res.data.result.error_msg);
           }
@@ -125,10 +126,11 @@ export default {
         });
     },
     async getConsultationMessages({ rootState, commit }, id) {
-      let data = `consulta=${id}`;
+      let data = { consulta: parseInt(id) };
       await axios({
-        method: "get",
-        url: rootState.API_URL + `/consulta-mensaje?${data}`,
+        method: "post",
+        url: rootState.API_URL + `/consultation/getMessages`,
+        data,
         headers: rootState.headers,
       })
         .then((res) => {
