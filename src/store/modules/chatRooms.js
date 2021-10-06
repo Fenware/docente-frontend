@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Modulo donde manejo las alertas
-import showAlert from "@/utils/alerts";
+import { showAlert } from "@/utils/alerts";
 
 export default {
   state: {
@@ -19,7 +19,8 @@ export default {
     },
     setChat(state, chat) {
       // Arreglar, que haya un endpoint para obtener participantes
-      let messages = state.chat && state.chat.messages ? state.chat.messages : [] ;
+      let messages =
+        state.chat && state.chat.messages ? state.chat.messages : [];
       state.chat = chat;
       state.chat.messages = messages;
     },
@@ -34,15 +35,18 @@ export default {
     },
     pushNewChat(state, chat) {
       state.group_chats.forEach((group_chat, index) => {
-        if(group_chat.id == chat.id_group && !group_chat.chats.includes(chat)){
+        if (
+          group_chat.id == chat.id_group &&
+          !group_chat.chats.includes(chat)
+        ) {
           state.group_chats[index].chats.push(chat);
         }
       });
     },
-    setWsMessagesConnection(state, conn){
+    setWsMessagesConnection(state, conn) {
       state.ws_messages_connection = conn;
     },
-    setWsChatRoomsConnection(state, conn){
+    setWsChatRoomsConnection(state, conn) {
       state.ws_chat_rooms_connection = conn;
     },
     setChatId(state, id) {
@@ -56,29 +60,28 @@ export default {
     },
   },
   actions: {
-    async getChatRooms({ rootState, commit, state, dispatch }) {
+    async getChatRooms({ rootState, commit, state }) {
       await axios({
-        method: "get",
-        url: rootState.API_URL + "/chat",
+        method: "post",
+        url: rootState.API_URL + "/chat/getActiveChats",
         headers: rootState.headers,
       })
         .then((res) => {
           if (Array.isArray(res.data)) {
-            
             let chats = [];
 
             // Recorriendo los grupos del modulo de grupos
-            rootState.groups.groups.forEach(group => {
+            rootState.groups.groups.forEach((group) => {
               // Asigno id de grupo y el nombre, declaro array de chats
               let chat_by_group = {
                 id: group.id,
                 name: group.full_name,
-                chats: []
+                chats: [],
               };
               // Recorro el array de chats que devolvio el backend
               res.data.forEach((chat) => {
-                // Si alguna sala coincide con el grupo 
-                if(chat.id_group == group.id){
+                // Si alguna sala coincide con el grupo
+                if (chat.id_group == group.id) {
                   // Añado el chat al array
                   chat_by_group.chats.push(chat);
                 }
@@ -102,9 +105,13 @@ export default {
         });
     },
     async getChatRoomById({ rootState, commit }, chat_id) {
+      let data = {
+        chat: parseInt(chat_id)
+      }
       await axios({
-        method: "get",
-        url: rootState.API_URL + `/chat?chat=${chat_id}`,
+        method: "post",
+        url: rootState.API_URL + `/chat/getChatById`,
+        data,
         headers: rootState.headers,
       })
         .then((res) => {
@@ -112,7 +119,7 @@ export default {
           if (!("result" in res.data)) {
             // LLamo a la funcion logout
             commit("setChat", res.data);
-          }else{
+          } else {
             console.log("Error -> getChatRoomById");
             console.log(res.data);
           }
@@ -122,10 +129,13 @@ export default {
         });
     },
     async getChatMessages({ rootState, commit, state }, chat_id) {
-      let data = `chat=${chat_id}`;
+      let data ={
+        chat: parseInt(chat_id)
+      }
       await axios({
-        method: "get",
-        url: rootState.API_URL + `/chat-mensaje?${data}`,
+        method: "post",
+        url: rootState.API_URL + `/chat/getMessages`,
+        data,
         headers: rootState.headers,
       })
         .then((res) => {
@@ -141,7 +151,7 @@ export default {
               }
             }
           } else {
-            alert(res.data.result.error_msg);
+            showAlert({ type: "error", message: res.data.result.error_msg });
           }
         })
         .catch((error) => {
@@ -155,12 +165,11 @@ export default {
       };
       await axios({
         method: "post",
-        url: rootState.API_URL + "/chat-mensaje",
+        url: rootState.API_URL + "/chat/postMessage",
         data: data,
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if ("result" in res.data) {
             showAlert({ type: "error", message: res.data.result.error_msg });
           }
