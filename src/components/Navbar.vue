@@ -14,7 +14,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'Groups' }" v-slot="{ isActive }" class="cursor-pointer">
+          <router-link :to="{ name: 'Groups' }" v-slot="{ isActive }" exact-path class="cursor-pointer">
             <span :class="[isActive && 'active']"  class="nav-icon material-icons">
               groups
             </span>
@@ -46,7 +46,7 @@
       
       <div class="flex gap-2 sm:gap-0 sm:block">
         <li class="cursor-pointer">
-          <router-link :to="{ name: 'Configuration' }" v-slot="{ isActive }" class="cursor-pointer">
+          <router-link :to="{ name: 'UserConfiguration' }" v-slot="{ isActive }" class="cursor-pointer">
             <span :class="[isActive && 'active']"  class="nav-icon material-icons">
               manage_accounts
             </span>
