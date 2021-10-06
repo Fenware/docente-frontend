@@ -143,7 +143,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import showAlert from "@/utils/alerts";
+import { showAlert } from "@/utils/alerts";
 
 export default {
   name: "Group",
