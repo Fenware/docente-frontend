@@ -8,7 +8,6 @@ export default {
   },
   mutations: {
     setUserData(state, user) {
-      console.log(user);
       state.user = user;
     },
     changeUser(state, edited_user) {
@@ -23,7 +22,6 @@ export default {
         headers: rootState.headers,
       })
         .then((res) => {
-          console.log(res);
           if (!res.data.middle_name) {
             res.data.middle_name = "";
           }
