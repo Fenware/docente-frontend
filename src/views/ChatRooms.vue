@@ -111,6 +111,9 @@ export default {
     });
     this.getUserData();
   },
+  unmounted(){
+    this.closeSocketConnection();
+  },
   computed: {
     ...mapState({
       group_chats: (state) => state.chatRooms.group_chats,
@@ -126,7 +129,8 @@ export default {
       "getChatMessages",
       "getTeacherGroups",
       "getUserData",
-      "wsChatRoomsConnection"
+      "wsChatRoomsConnection",
+      "closeSocketConnection"
     ]),
     getHour(date) {
       // Formateo la fecha a español
