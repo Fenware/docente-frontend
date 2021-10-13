@@ -243,5 +243,8 @@ export default {
         }
       });
     },
+    closeSocketConnection({state}){
+      state.socket.disconnect();
+    }
   },
 };
