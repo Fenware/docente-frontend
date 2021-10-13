@@ -77,6 +77,8 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 import TheChat from "@/components/TheChat.vue";
 import moment from "moment";
+import io from "socket.io-client";
+
 
 export default {
   name: "ChatRooms",
@@ -84,18 +86,28 @@ export default {
     return {
       create_chat_mode: false,
       matter: "",
-      subject_id: null
+      subject_id: null,
+      socket: null,
     };
   },
   components: {
     TheChat,
   },
   created() {
+    this.socket = io("ws://localhost:3000", {
+      auth: { token: this.headers },
+    });
+
+    this.socket.on("connect_error", (err) => {
+      console.log(err.message);
+    });
+
+    this.setSocket(this.socket);
     // Obtengo los grupos del docente
     this.getTeacherGroups().then(() => {
       // Cuando se obtengan los grupos obtengo los chats del docente
       this.getChatRooms();
-      this.listenRooms();
+      this.wsChatRoomsConnection();
     });
     this.getUserData();
   },
@@ -104,17 +116,17 @@ export default {
       group_chats: (state) => state.chatRooms.group_chats,
       chat: (state) => state.chatRooms.chat,
       selected_chat: (state) => state.chatRooms.selected_chat,
+      headers: (state) => state.headers,
     }),
   },
   methods: {
-    ...mapMutations(["setChat", "setChatId"]),
+    ...mapMutations(["setChat", "setChatId", "setSocket"]),
     ...mapActions([
       "getChatRooms",
       "getChatMessages",
       "getTeacherGroups",
-      "wsMessagesConnection",
       "getUserData",
-      "listenRooms"
+      "wsChatRoomsConnection"
     ]),
     getHour(date) {
       // Formateo la fecha a español
@@ -166,7 +178,6 @@ export default {
       this.create_chat_mode = false;
       this.setChat(chat);
       this.getChatMessages(chat.id);
-      /* this.wsMessagesConnection(); */
       this.toggleChatSelected(chat.id);
     },
     toggleChatSelected(id) {
