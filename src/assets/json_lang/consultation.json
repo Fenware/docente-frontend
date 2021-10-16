@@ -10,10 +10,5 @@
     "select_a_consultation":{
         "es":"Seleccione una consulta",
         "en":"Select a consultation"
-    },
-    "":{
-        "es":"Cerrar sesion",
-        "en":"log out"
-    },
-
+    }
 }
