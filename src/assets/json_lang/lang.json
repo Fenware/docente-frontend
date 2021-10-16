@@ -1,0 +1,62 @@
+{
+    "admin_chathink":{
+        "es":"Docente Chathink",
+        "en":"Chathink Teacher"
+    },
+    "teacher":{
+        "es":"Docente",
+        "en":"Teacher"
+    },
+    "student":{
+        "es":"Estudiante",
+        "en":"Student"
+    },
+    "accept":{
+        "es":"Aceptar",
+        "en":"Accept"
+    },
+    "reject":{
+        "es":"Rechazar",
+        "en":"Reject"
+    },
+    "save":{
+        "es":"Guardar",
+        "en":"Save"
+    },
+    "delete":{
+        "es":"Eliminar",
+        "en":"Delete"
+    },
+    "more":{
+        "es":"Ver mas",
+        "en":"More"
+    },
+    "create":{
+        "es":"Crear",
+        "en":"Create"
+    },
+    "name":{
+        "es":"Nombre",
+        "en":"Name"
+    },
+    "cancel":{
+        "es":"Cancelar",
+        "en":"Cancel"
+    },
+    "id":{
+        "es":"CI",
+        "en":"ID"
+    },
+    "back":{
+        "es":"Volver",
+        "en":"Back"
+    },
+    "open":{
+        "es":"Abrir",
+        "en":"Open"
+    },
+    "send":{
+        "es":"Enviar",
+        "en":"Send"
+    }
+}

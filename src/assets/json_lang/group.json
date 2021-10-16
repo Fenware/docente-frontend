@@ -1,0 +1,54 @@
+{
+    "group":{
+        "es":"Grupo",
+        "en":"Group"
+    },
+    "groups":{
+        "es":"Grupos",
+        "en":"Groups"
+    },
+    "group_list":{
+        "es":"Lista de grupos",
+        "en":"Group list"
+    },
+    "code":{
+        "es":"Codigo",
+        "en":"Code"
+    },
+    "orientation":{
+        "es":"Orientacion",
+        "en":"Orientation"
+    },
+    "take_group":{
+        "es":"Tomar grupo",
+        "en":"Take group"
+    },
+    "group_name":{
+        "es":"Nombre del grupo",
+        "en":"Group name"
+    },
+    "access_code":{
+        "es":"Codigo de acceso",
+        "en":"Access code"
+    },
+    "take_subjects":{
+        "es":"Tomar materias",
+        "en":"Take subjects"
+    },
+    "search_subjects":{
+        "es":"Buscar materias",
+        "en":"Search subjects"
+    },
+    "leave_group":{
+        "es":"Abandonar grupo",
+        "en":"Leave group"
+    },
+    "year":{
+        "es":"Año",
+        "en":"Year"
+    },
+    "group_information":{
+        "es":"Información del grupo",
+        "en":"Group information"
+    } 
+}

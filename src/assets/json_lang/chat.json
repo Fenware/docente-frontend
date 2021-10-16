@@ -1,0 +1,54 @@
+{
+    "chat":{
+        "es":"Chat",
+        "en":"Chat"
+    },
+    "chats":{
+        "es":"Chats",
+        "en":"Chats"
+    },
+    "no_chats":{
+        "es":"No tienes salas de chat",
+        "en":"You have no active chats"
+    },
+    "select_a_chat":{
+        "es":"Seleccione un chat",
+        "en":"Select a chat"
+    },
+    "availability_hours":{
+        "es":"Horarios de disponibilidad",
+        "en":"Availability hours"
+    },
+    "monday":{
+        "es":"Lunes",
+        "en":"Monday"
+    },
+    "tuesday":{
+        "es":"Martes",
+        "en":"Tuesday"
+    },
+    "wednesday":{
+        "es":"Miercoles",
+        "en":"Wednesday"
+    },
+    "thursday":{
+        "es":"Jueves",
+        "en":"Thursday"
+    },
+    "friday":{
+        "es":"Viernes",
+        "en":"Friday"
+    },
+    "hours_24":{
+        "es":"Horarios (24 hrs)",
+        "en":"Hours (24 hrs)"
+    },
+    "from":{
+        "es":"De",
+        "en":"From"
+    },
+    "to":{
+        "es":"Hasta",
+        "en":"To"
+    }
+}
