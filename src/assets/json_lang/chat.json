@@ -15,40 +15,20 @@
         "es":"Seleccione un chat",
         "en":"Select a chat"
     },
-    "availability_hours":{
-        "es":"Horarios de disponibilidad",
-        "en":"Availability hours"
+    "type_message":{
+        "es":"Escribir mensaje",
+        "en":"Type a message"
     },
-    "monday":{
-        "es":"Lunes",
-        "en":"Monday"
+    "group":{
+        "es":"Grupo",
+        "en":"Group"
     },
-    "tuesday":{
-        "es":"Martes",
-        "en":"Tuesday"
+    "creator":{
+        "es":"Creador",
+        "en":"Creator"
     },
-    "wednesday":{
-        "es":"Miercoles",
-        "en":"Wednesday"
-    },
-    "thursday":{
-        "es":"Jueves",
-        "en":"Thursday"
-    },
-    "friday":{
-        "es":"Viernes",
-        "en":"Friday"
-    },
-    "hours_24":{
-        "es":"Horarios (24 hrs)",
-        "en":"Hours (24 hrs)"
-    },
-    "from":{
-        "es":"De",
-        "en":"From"
-    },
-    "to":{
-        "es":"Hasta",
-        "en":"To"
+    "participants":{
+        "es":"Participantes",
+        "en":"Participants"
     }
 }
