@@ -38,5 +38,9 @@
     "profile":{
         "es":"Perfil",
         "en":"Profile"
+    },
+    "change_avatar":{
+        "es":"Cambiar avatar",
+        "en":"Change avatar"
     }
 }

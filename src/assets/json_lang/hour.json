@@ -3,6 +3,10 @@
         "es":"Horarios de disponibilidad",
         "en":"Availability hours"
     },
+    "days":{
+        "es":"Días",
+        "en":"Days"
+    },
     "monday":{
         "es":"Lunes",
         "en":"Monday"

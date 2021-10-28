@@ -28,8 +28,8 @@
         "en":"Group name"
     },
     "access_code":{
-        "es":"Codigo de acceso",
-        "en":"Access code"
+        "es":"Codigo de grupo",
+        "en":"Group code"
     },
     "take_subjects":{
         "es":"Tomar materias",

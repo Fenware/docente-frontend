@@ -4,12 +4,16 @@
         "en":"Chat"
     },
     "chats":{
-        "es":"Chats",
-        "en":"Chats"
+        "es":"Salas de chat",
+        "en":"Chat rooms"
     },
     "no_chats":{
         "es":"No tienes salas de chat",
         "en":"You have no active chats"
+    },
+    "no_chats_from":{
+        "es":"No tienes salas de chat de",
+        "en":"You have no active chats from "
     },
     "select_a_chat":{
         "es":"Seleccione un chat",
