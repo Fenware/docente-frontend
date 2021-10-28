@@ -37,12 +37,14 @@
         </router-link>
       </div>
     </form>
+    <ToggleLanguageButton class="absolute bottom-0 right-0 m-2"/>
   </div>
 </template>
 
 <script>
 import { mapActions,mapState } from "vuex";
 import { getWord } from "@/utils/lang";
+import ToggleLanguageButton from '@/components/ToggleLanguageButton.vue';
 
 export default {
   name: "Login",
@@ -64,6 +66,9 @@ export default {
   },
   created(){
     //console.log(this.lang);
+  },
+  components: {
+    ToggleLanguageButton,
   }
 };
 </script>
