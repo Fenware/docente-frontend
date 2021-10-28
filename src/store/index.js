@@ -25,7 +25,7 @@ export default createStore({
       "Content-Type": "application/json",
     },
     text_filter: "",
-    lang: "en"
+    lang: "es"
   },
   mutations: {
     setToken(state, payload) {
