@@ -10,6 +10,7 @@
         <h2 class="px-2 font-extrabold select-none">{{getWord({file:'user',word:'profile',lang})}}</h2>
       </div>
       <div class="flex items-center ">
+        
         <!-- <button
           @click="createUser()"
           class="px-3 m-1 py-1 text-xs font-semibold transition-colors rounded-md bg-indigo-200 hover:bg-indigo-300 text-blue-900"
@@ -148,7 +149,11 @@
           />
         </div>
       </div>
-      <div class="mt-5">
+      <div class="flex justify-center mt-2">
+        <ToggleLanguageButton class=""/>
+      </div>
+      
+      <div class="mt-3">
         <div
           v-show="wasEdited"
           class="flex justify-center text-yellow-200 items-center"
@@ -174,6 +179,7 @@
           </button>
         </div>
       </div>
+      
     </div>
 
     <!-- MODAL -->
@@ -230,6 +236,7 @@
 import { mapActions, mapState } from "vuex";
 import { confirmModal, showAlert } from "@/utils/alerts.js";
 import { getWord } from "@/utils/lang";
+import ToggleLanguageButton from '@/components/ToggleLanguageButton.vue';
 
 export default {
   name: "UserConfiguration",
@@ -346,6 +353,9 @@ export default {
     },
     getWord,
   },
+  components: {
+    ToggleLanguageButton,
+  }
 };
 </script>
 
