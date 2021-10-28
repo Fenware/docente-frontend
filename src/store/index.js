@@ -25,6 +25,7 @@ export default createStore({
       "Content-Type": "application/json",
     },
     text_filter: "",
+    lang: "en"
   },
   mutations: {
     setToken(state, payload) {
@@ -36,6 +37,9 @@ export default createStore({
     setText(state, payload) {
       state.text_filter = payload;
     },
+    setLang(state,lang){
+      state.lang = lang;
+    }
   },
   actions: {
     searcher({ commit }, payload) {
