@@ -66,6 +66,17 @@
 import { mapActions } from "vuex";
 export default {
   name: "Navbar",
+  data: () => {
+    return {
+      nav_items: [
+        { view: "Home", icon: "home", tooltip: "Inicio" },
+        { view: "Groups", icon: "groups", tooltip: "Grupos" },
+        { view: "Consultations", icon: "inbox", tooltip: "Consultas" },
+        { view: "ChatRooms", icon: "question_answer", tooltip: "Salas de chat" },
+        { view: "Schedule", icon: "date_range", tooltip: "Tus horarios" },
+      ],
+    };
+  },
   methods: {
     ...mapActions(["logout"]),
   },
