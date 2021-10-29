@@ -79,4 +79,8 @@ export default {
 .active{
   @apply bg-gray-600 transition-colors shadow-lg;
 }
+
+.tooltip {
+  @apply absolute mt-3.5 w-auto p-2 m-2 min-w-max left-12 rounded-md shadow-lg text-white bg-gray-900 text-sm font-bold transition-all duration-100 opacity-0;
+}
 </style>
