@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'">
+  <div class="h-92vh" v-if="currentRouteName() == 'Login' || currentRouteName() == 'Register'">
     <router-view />
   </div>
   <div class="flex items-center min-h-screen max-h-screen max-w-screen" v-else>
