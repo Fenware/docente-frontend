@@ -252,7 +252,7 @@ export default {
   },
   computed: {
     ...mapState({
-      user: (state) => state.userProfile.user,
+      user: (state) => state.user.user,
     }),
     wasEdited() {
       return (
