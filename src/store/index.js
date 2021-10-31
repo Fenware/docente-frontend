@@ -5,7 +5,7 @@ import auth from "./modules/auth";
 import groups from "./modules/groups";
 import consultations from "./modules/consultations";
 import chatRooms from "./modules/chatRooms";
-import userProfile from "./modules/userProfile";
+import user from "./modules/user";
 import schedule from "./modules/schedule";
 
 export default createStore({
@@ -14,7 +14,7 @@ export default createStore({
     groups,
     consultations,
     chatRooms,
-    userProfile,
+    user,
     schedule
   },
   state: {
