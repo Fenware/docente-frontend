@@ -2,7 +2,7 @@
   <div>
     <div class=" mx-2 mt-10 sm:ml-10 grid grid-cols-5 gap-10 text-white">
       <div class="col-span-2">
-        <h2 class="text-2xl text-center mb-2">Información del grupo</h2>
+        <h2 class="text-2xl text-center mb-2">{{ getWord({file:'group',word:'group_information',lang}) }}</h2>
         <hr />
         <div class="col-span-2 mt-5">
           <p class="pb-2 font-bold text-2xl text-indigo-300">
@@ -10,25 +10,25 @@
           </p>
 
           <p>
-            Grupo: <span class="font-bold">{{ group.name }}</span>
+            {{ getWord({file:'group',word:'group',lang}) }}: <span class="font-bold">{{ group.name }}</span>
           </p>
 
           <p>
-            Año:
+            {{ getWord({file:'group',word:'year',lang}) }}:
             <span class="font-bold text-xl">
               {{ group.orientation_year }}
             </span>
           </p>
 
           <p>
-            Orientación:
+            {{ getWord({file:'group',word:'orientation',lang}) }}:
             <span class="font-bold text-xl">
               {{ group.orientation_name }}
             </span>
           </p>
 
           <p class="mb-5">
-            Código de acceso:
+            {{ getWord({file:'group',word:'access_code',lang}) }}:
             <span class="font-bold text-xl"> {{ group.code }} </span
             ><i
               class="fas fa-copy ml-2 text-gray-400 cursor-pointer transition-colors duration-300 hover:text-gray-300"
@@ -38,7 +38,7 @@
         </div>
         <button @click="confirmDeletion()" class="btn-danger mt-5">
           <i class="fas fa-exclamation-triangle mr-1"></i>
-          Darme de baja
+          {{ getWord({file:'group',word:'leave_group',lang}) }}
         </button>
       </div>
 
@@ -52,7 +52,7 @@
             <div class="flex items-center">
               <i class="fas fa-clipboard-check pb-0.5"></i>
               <h2 class="px-2 font-extrabold select-none">
-                Tomar materias
+                {{ getWord({file:'group',word:'take_subjects',lang}) }}
               </h2>
             </div>
             <div class="flex items-center">
@@ -63,13 +63,14 @@
                 "
                 class="text-sm font-semibold mr-5 transition-all text-yellow-300"
               >
-                * hay cambios sin guardar
+                {{ getWord({file:'lang',word:'unsaved_changes',lang}) }}
               </span>
 
               <span
                 v-show="changes_saved"
                 class="text-sm font-semibold mr-5 transition-all text-green-500"
-                >Los cambios se guardaron correctamente
+                >
+                {{ getWord({file:'lang',word:'succes_changes',lang}) }}
                 <i class="fas fa-check"></i
               ></span>
             </div>
@@ -83,7 +84,7 @@
                 type="text"
                 v-model="text_filter"
                 class="mx-2 py-0.5 px-2 w-56 focus:w-64 text-center bg-white transition-all duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-lg outline-none"
-                placeholder="Buscar materia"
+                :placeholder="getWord({file:'group',word:'search_subjects',lang})"
               />
             </div>
             <div
@@ -131,7 +132,7 @@
                 "
                 @click="saveChanges()"
               >
-                Guardar cambios
+                {{ getWord({file:'lang',word:'save',lang}) }}
               </button>
             </div>
           </div>
@@ -144,6 +145,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { showAlert } from "@/utils/alerts";
+import { getWord } from "@/utils/lang";
 
 export default {
   name: "Group",
@@ -182,6 +184,7 @@ export default {
     ...mapState({
       groups: (state) => state.groups.groups,
       subjects_taken: (state) => state.groups.subjects_taken,
+      lang: (state) => state.lang,
     }),
     subjectsFiltered() {
       // Filtro las materias por coincidencias de nombre
@@ -322,6 +325,7 @@ export default {
       );
       subjectName.classList.add("text-indigo-400");
     },
+    getWord,
   },
 };
 </script>

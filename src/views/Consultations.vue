@@ -3,17 +3,17 @@
     <div class="flex justify-between ">
       <Consultation v-if="consultation.active" />
       <div class="flex justify-center items-center mx-auto" v-else>
-        <p class="text-2xl">Seleccione una consulta</p>
+        <p class="text-2xl">{{ getWord({file:'consultation',word:'select_consultation',lang}) }} </p>
       </div>
 
       <div class="h-92vh bg-gray-700 rounded-r-2xl shadow-xl">
         <h2 class="text-center text-2xl mt-1 mb-5">
-          Consultas
+          {{ getWord({file:'consultation',word:'consultations',lang}) }}
         </h2>
 
         <div class=" mt-2 overflow-y-auto px-2" style="height: 82vh;">
           <div v-if="consultations.length == 0">
-            <p>No tienes consultas pendientes</p>
+            <p>{{ getWord({file:'consultation',word:'no_consultations',lang}) }}</p>
           </div>
           <div
             @click="viewConsultation(consultation)"
@@ -59,6 +59,7 @@
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 import Consultation from "@/components/Consultation";
+import { getWord } from "@/utils/lang";
 
 export default {
   name: "Consultations",
@@ -74,6 +75,7 @@ export default {
     ...mapState({
       consultations: (state) => state.consultations.consultations,
       consultation: (state) => state.consultations.consultation,
+      lang: (state) => state.lang,
     }),
   },
   created() {
@@ -106,6 +108,7 @@ export default {
 
       this.consultation_selected = id;
     },
+    getWord,
   },
 };
 </script>

@@ -7,9 +7,10 @@
     >
       <div class="flex items-center">
         <span class="material-icons">manage_accounts</span>
-        <h2 class="px-2 font-extrabold select-none">Perfil del usuario</h2>
+        <h2 class="px-2 font-extrabold select-none">{{getWord({file:'user',word:'profile',lang})}}</h2>
       </div>
       <div class="flex items-center ">
+        
         <!-- <button
           @click="createUser()"
           class="px-3 m-1 py-1 text-xs font-semibold transition-colors rounded-md bg-indigo-200 hover:bg-indigo-300 text-blue-900"
@@ -44,13 +45,13 @@
               alt="avatar"
             />
             <button @click="openModal()" class="mt-2 btn-info text-xs border-0">
-              Cambiar avatar
+              {{getWord({file:'user',word:'change_avatar',lang})}}
             </button>
           </div>
           <div class="w-full">
             <div class="block">
               <span class="block select-none text-xs">
-                Cédula de identidad
+                {{getWord({file:'user',word:'identification_document',lang})}}
               </span>
               <p class="font-medium text-2xl tracking-widest px-2">
                 {{ edited_user.ci }}
@@ -59,7 +60,7 @@
 
             <div class="block mt-2 ">
               <label for="nickname" class="block select-none text-xs"
-                >Nombre de usuario</label
+                >{{getWord({file:'user',word:'nickname',lang})}}</label
               >
               <input
                 id="nickname"
@@ -77,7 +78,7 @@
         </div>
 
         <div>
-          <label for="name" class="block select-none text-xs">Nombre</label>
+          <label for="name" class="block select-none text-xs">{{getWord({file:'user',word:'name',lang})}}</label>
           <input
             id="name"
             disabled
@@ -89,7 +90,7 @@
 
         <div>
           <label for="middle_name" class="block select-none text-xs"
-            >Segundo nombre</label
+            >{{getWord({file:'user',word:'middle_name',lang})}}</label
           >
           <input
             id="middle_name"
@@ -104,7 +105,7 @@
         </div>
         <div>
           <label for="surname" class="block select-none text-xs"
-            >Apellido</label
+            >{{getWord({file:'user',word:'surname',lang})}}</label
           >
           <input
             id="surname"
@@ -117,7 +118,7 @@
 
         <div>
           <label for="second_surname" class="block select-none text-xs"
-            >Segundo apellido</label
+            >{{getWord({file:'user',word:'second_surname',lang})}}</label
           >
           <input
             id="second_surname"
@@ -134,7 +135,7 @@
         </div>
         <div class=" col-span-2 mt-">
           <label for="second_surname" class="block select-none text-xs"
-            >Email</label
+            >{{getWord({file:'user',word:'email',lang})}}</label
           >
           <input
             id="email"
@@ -148,13 +149,17 @@
           />
         </div>
       </div>
-      <div class="mt-5">
+      <div class="flex justify-center mt-2">
+        <ToggleLanguageButton class=""/>
+      </div>
+      
+      <div class="mt-3">
         <div
           v-show="wasEdited"
           class="flex justify-center text-yellow-200 items-center"
         >
           <span class="material-icons">warning</span>
-          <span class="text-sm mt-0.5"> Tienes cambios sin guardar</span>
+          <span class="text-sm mt-0.5"> {{getWord({file:'lang',word:'unsaved_changes',lang})}}</span>
         </div>
         <div class="flex justify-between gap-2 ">
           <button
@@ -163,17 +168,18 @@
             :class="wasEdited ? 'btn-success' : 'btn-disabled'"
             class="text-sm mt-5 px-3 flex items-center"
           >
-            <span class="mt-0.5">Guardar cambios</span>
+            <span class="mt-0.5">{{getWord({file:'lang',word:'save',lang})}}</span>
           </button>
           <button
             @click="removeUser()"
             class="btn-danger text-sm mt-5 pt-0.5 px-3 flex items-center"
           >
             <span class="material-icons text-md mr-1">warning</span>
-            <span class="mt-0.5">Darme de baja</span>
+            <span class="mt-0.5">{{getWord({file:'user',word:'take_down',lang})}}</span>
           </button>
         </div>
       </div>
+      
     </div>
 
     <!-- MODAL -->
@@ -229,6 +235,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { confirmModal, showAlert } from "@/utils/alerts.js";
+import { getWord } from "@/utils/lang";
+import ToggleLanguageButton from '@/components/ToggleLanguageButton.vue';
 
 export default {
   name: "UserConfiguration",
@@ -252,6 +260,7 @@ export default {
   },
   computed: {
     ...mapState({
+      lang: (state) => state.lang,
       user: (state) => state.user.user,
     }),
     wasEdited() {
@@ -342,7 +351,11 @@ export default {
         modal.style.display = "none";
       }, 500);
     },
+    getWord,
   },
+  components: {
+    ToggleLanguageButton,
+  }
 };
 </script>
 

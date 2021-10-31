@@ -39,10 +39,19 @@ export default {
           if (Array.isArray(res.data)) {
             commit("clearGroups");
             res.data.forEach((group) => {
-              group.full_name =
-                (group.orientation_year == "1" || group.orientation_year == "3"
-                  ? group.orientation_year + "ero"
-                  : group.orientation_year + "do") + ` ${group.name}`;
+              console.log(group.orientation_year);
+              switch (group.orientation_year) {
+                case "1":
+                  group.full_name = "1" + (rootState.lang == 'es' ? 'ero' : 'st') + ` ${group.name}`;
+                  break;
+                case "2":
+                  group.full_name = "2" + (rootState.lang == 'es' ? 'do' : 'nd') + ` ${group.name}`;
+                  break;
+                case "3":
+                  group.full_name = "3" + (rootState.lang == 'es' ? 'ero' : 'rd') + ` ${group.name}`;
+                  break;
+              }
+              
               commit("pushGroup", group);
             });
           } else {

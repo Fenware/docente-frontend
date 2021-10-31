@@ -1,14 +1,14 @@
 <template>
   <div class="text-white  w-full px-2">
     <h2 class="text-white text-center text-3xl font-semibold pt-1">
-      Grupos
+      {{ getWord({file:'group',word:'groups',lang}) }}
     </h2>
 
     <div class="flex justify-center mt-10">
       <input
         type="text"
         id="code_input"
-        placeholder="Código de grupo"
+        :placeholder="getWord({file:'group',word:'access_code',lang})"
         v-model="group_code"
         class="mx-2 py-2 px-2 w-56 focus:w-64 text-center bg-white transition-all duration-300 focus:bg-opacity-20 hover:bg-opacity-20 bg-opacity-10 backdrop-filter backdrop-blur-xl shadow-2xl rounded-xl outline-none"
       />
@@ -16,7 +16,7 @@
         @click="group_code.trim() != '' ? take() : focusCodeInput()"
         class="btn-success px-3  my-1"
       >
-        Tomar grupo
+        {{getWord({file:'group',word:'take_group',lang})}}
       </button>
     </div>
 
@@ -41,7 +41,7 @@
             >
           </p>
           <p class="w-max">
-            <span class="font-semibold select-none">Código:</span>
+            <span class="font-semibold select-none">{{getWord({file:'group',word:'code',lang})}}:</span>
             <span class="px-2 py-0.5 ml-1 bg-white rounded-md bg-opacity-10">{{
               group.code
             }}</span>
@@ -58,7 +58,7 @@
             :to="{ name: 'Group', params: { code: group.code } }"
             class=" pr-3 pl-5 py-1.5 text-xs btn-info"
           >
-            Abrir
+            {{ getWord({file:'lang',word:'open',lang})  }}
             <i
               class="fas fa-caret-down text-blue-600 mx-1 text-md drop-shadow-lg"
             ></i>
@@ -71,6 +71,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { getWord } from "@/utils/lang";
 /* import GroupCard from "@/components/TheGroupCard"; */
 
 export default {
@@ -84,7 +85,10 @@ export default {
     this.getTeacherGroups();
   },
   computed: {
-    ...mapState({ groups: (state) => state.groups.groups }),
+    ...mapState({ 
+      groups: (state) => state.groups.groups ,
+      lang: (state) => state.lang
+    }),
   },
   methods: {
     ...mapActions(["getTeacherGroups", "takeGroup", "unsuscribeGroup"]),
@@ -96,6 +100,7 @@ export default {
     focusCodeInput() {
       document.getElementById("code_input").focus();
     },
+    getWord,
   },
 };
 </script>
