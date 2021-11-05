@@ -21,6 +21,7 @@ export default createStore({
   },
   state: {
     API_URL: env_vars.VUE_APP_ROOT_API || "http://localhost:8080",
+    WS_URL: env_vars.VUE_APP_ROOT_WS || "ws://localhost:3000",
     token: null,
     headers: {
       Authorization: "",
