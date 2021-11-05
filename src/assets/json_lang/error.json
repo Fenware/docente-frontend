@@ -1,0 +1,86 @@
+{
+    "0":{
+        "es":"El sistema se ha caido",
+        "en":"The system is down"
+    },
+    "400":{
+        "es":"Campos incompletos o incorrectos",
+        "en":"Incomplete or incorrect fields"
+    },
+    "401":{
+        "es":"No pudimos autenticarte",
+        "en":"We couldn't authenticate you"
+    },
+    "403":{
+        "es":"No tienes los permisos para acceder a este recurso",
+        "en":"You do not have the permissions to access this resource"
+    },
+    "404":{
+        "es":"Recurso no encontrado",
+        "en":"Resource not found"
+    },
+    "500":{
+        "es":"Algo salio mal en el servidor",
+        "en":"Something went wrong on the server"
+    },
+    "1001":{
+        "es":"Tu cuenta aun no fue aceptada por un administrador",
+        "en":"Your account has not yet been accepted by an administrator"
+    },
+    "1002":{
+        "es":"El usuario no existe",
+        "en":"User does not exist"
+    },
+    "1004":{
+        "es":"El usuario no es un ",
+        "en":"User is not a "
+    },
+    "1010":{
+        "es":"La materia ya existe",
+        "en":"Subject already exists"
+    },
+    "1020":{
+        "es":"La orientacion ya existe",
+        "en":"Orientation already exists"
+    },
+    "1030":{
+        "es":"El grupo ya existe",
+        "en":"The group already exists"
+    },
+    "1031":{
+        "es":"La orientacion no existe o fue borrada",
+        "en":"Orientation does not exist or was deleted"
+    },
+    "1052":{
+        "es":"El grupo no existe",
+        "en":"The group does not exist"
+    },
+    "1050":{
+        "es":"Un estudiante solo puede estar en un grupo a la vez",
+        "en":"A student can only be in one group at a time"
+    },
+    "1060":{
+        "es":"Esta materia ya tiene un docente",
+        "en":"This subject already has a teacher"
+    },
+    "1061":{
+        "es":"No perteneces a este grupo",
+        "en":"You do not belong to this group"
+    },
+    "1062":{
+        "es":"Esta materia no pertenece a este grupo",
+        "en":"This subject does not belong to this group"
+    },
+    "1085":{
+        "es":"No puedes enviar mensajes a consultas cerradas",
+        "en":"You cannot send messages to closed consultations"
+    },
+    "1080":{
+        "es":"Ya hay demasiadas salas de chat abiertas en esta materia",
+        "en":"There are already too many chat rooms open on this subject"
+    },
+    "1095":{
+        "es":"No puedes enviar mensajes a chats cerrados",
+        "en":"You can't send messages to closed chats"
+    }
+}

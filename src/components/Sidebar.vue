@@ -22,6 +22,7 @@
 <script>
 import ConsultationsContainer from "@/components/ConsultationsContainer.vue";
 import { mapActions } from "vuex";
+
 export default {
   name: "SidebarComponent",
   components: {

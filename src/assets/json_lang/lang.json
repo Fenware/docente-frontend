@@ -1,0 +1,90 @@
+{
+    "teacher_chathink":{
+        "es":"Docente Chathink",
+        "en":"Chathink Teacher"
+    },
+    "teacher":{
+        "es":"Docente",
+        "en":"Teacher"
+    },
+    "teachers":{
+        "es":"Docentes",
+        "en":"Teachers"
+    },
+    "student":{
+        "es":"Estudiante",
+        "en":"Student"
+    },
+    "students":{
+        "es":"Estudiantes",
+        "en":"Students"
+    },
+    "accept":{
+        "es":"Aceptar",
+        "en":"Accept"
+    },
+    "reject":{
+        "es":"Rechazar",
+        "en":"Reject"
+    },
+    "save":{
+        "es":"Guardar",
+        "en":"Save"
+    },
+    "delete":{
+        "es":"Eliminar",
+        "en":"Delete"
+    },
+    "more":{
+        "es":"Ver mas",
+        "en":"More"
+    },
+    "create":{
+        "es":"Crear",
+        "en":"Create"
+    },
+    "name":{
+        "es":"Nombre",
+        "en":"Name"
+    },
+    "cancel":{
+        "es":"Cancelar",
+        "en":"Cancel"
+    },
+    "id":{
+        "es":"CI",
+        "en":"ID"
+    },
+    "back":{
+        "es":"Volver",
+        "en":"Back"
+    },
+    "open":{
+        "es":"Abrir",
+        "en":"Open"
+    },
+    "send":{
+        "es":"Enviar",
+        "en":"Send"
+    },
+    "all":{
+        "es":"Todos",
+        "en":"All"
+    },
+    "none":{
+        "es":"Ninguno",
+        "en":"None"
+    },
+    "no_coincidences":{
+        "es":"No hay coincidencias",
+        "en":"No coincidences"
+    },
+    "unsaved_changes":{
+        "es":"* hay cambios sin guardar",
+        "en":"* there are un saved changes"
+    },
+    "succes_changes":{
+        "es":"Los cambios se guardaron correctamente",
+        "en":"Changes were successfully saved"
+    }
+}

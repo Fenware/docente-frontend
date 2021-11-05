@@ -1,0 +1,38 @@
+{
+    "chat":{
+        "es":"Chat",
+        "en":"Chat"
+    },
+    "chats":{
+        "es":"Salas de chat",
+        "en":"Chat rooms"
+    },
+    "no_chats":{
+        "es":"No tienes salas de chat",
+        "en":"You have no active chats"
+    },
+    "no_chats_from":{
+        "es":"No tienes salas de chat de",
+        "en":"You have no active chats from "
+    },
+    "select_a_chat":{
+        "es":"Seleccione un chat",
+        "en":"Select a chat"
+    },
+    "type_message":{
+        "es":"Escribir mensaje",
+        "en":"Type a message"
+    },
+    "group":{
+        "es":"Grupo",
+        "en":"Group"
+    },
+    "creator":{
+        "es":"Creador",
+        "en":"Creator"
+    },
+    "participants":{
+        "es":"Participantes",
+        "en":"Participants"
+    }
+}

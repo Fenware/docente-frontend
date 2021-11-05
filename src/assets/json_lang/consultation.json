@@ -1,0 +1,34 @@
+{
+    "consultations":{
+        "es":"Consultas",
+        "en":"Consultations"
+    },
+    "consultation":{
+        "es":"Consulta",
+        "en":"Consultation"
+    },
+    "select_consultation":{
+        "es":"Seleccione una consulta",
+        "en":"Select a consultation"
+    },
+    "responses":{
+        "es":"Respuestas",
+        "en":"Responses"
+    },
+    "no_responses":{
+        "es":"Aún no hay respuestas",
+        "en":"No answers yet"
+    },
+    "no_consultations":{
+        "es":"No tienes consultas pendientes",
+        "en":"You have no pending consultations"
+    },
+    "respond":{
+        "es":"Responder",
+        "en":"Respond"
+    },
+    "new_response":{
+        "es":"Nueva respuesta",
+        "en":"New response"
+    }
+}

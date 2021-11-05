@@ -1,0 +1,26 @@
+{
+    "login_header":{
+        "es":"Ingresar como docente",
+        "en":"Log in as teacher"
+    },
+    "user_input":{
+        "es":"Nombre de usuario o email",
+        "en":"Nickname or email"
+    },
+    "login":{
+        "es":"Ingresar",
+        "en":"log in"
+    },
+    "logout":{
+        "es":"Cerrar sesion",
+        "en":"log out"
+    },
+    "register":{
+        "es":"Registrarse",
+        "en":"Register"
+    },
+    "password":{
+        "es":"Contraseña",
+        "en":"Password"
+    }
+}

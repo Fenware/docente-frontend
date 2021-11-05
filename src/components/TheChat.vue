@@ -111,25 +111,25 @@
               <span class="text-sm"> {{ getDate(chat.creation_date) }}</span>
             </p>
             <p class="">
-              Grupo:
+              {{getWord({file:'chat',word:'group',lang})}}:
               <span class="font-medium text-indigo-400">{{
                 chat.group_name
               }}</span>
             </p>
             <p class="">
-              Creador:
+              {{getWord({file:'chat',word:'creator',lang})}}:
               <span class="font-medium text-indigo-400">
                 {{ chat.student_name }}</span
               >
             </p>
             <p class="">
-              Docente:
+              {{getWord({file:'lang',word:'teacher',lang})}}:
               <span class="font-medium text-indigo-400">
                 {{ chat.teacher_name }}</span
               >
             </p>
 
-            <p class="mt-5 font-medium text-lg text-center">Participantes</p>
+            <p class="mt-5 font-medium text-lg text-center">{{getWord({file:'chat',word:'participants',lang})}}</p>
 
             <div>
               <ol class="overflow-y-auto max-h-28">
@@ -151,6 +151,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 import moment from "moment";
+import { getWord } from "@/utils/lang";
 
 export default {
   name: "TheChat",
@@ -162,6 +163,7 @@ export default {
   computed: {
     ...mapState({
       chat: (state) => state.chatRooms.chat,
+      lang: (state) => state.lang,
       user: (state) => state.user.user,
     }),
   },
@@ -181,14 +183,14 @@ export default {
     },
     getHour(date) {
       // Formateo la fecha a español
-      let date_formated = moment(date).locale("es");
+      let date_formated = moment(date).locale(this.lang);
       date_formated = moment(date_formated).format("LT");
       /* return moment(date_formated).format('LT'); */
       return date_formated;
     },
     getDate(date) {
       // Formateo la fecha a español
-      let date_formated = moment(date).locale("es");
+      let date_formated = moment(date).locale(this.lang);
       date_formated = moment(date_formated).format("LL");
       /* return moment(date_formated).format('LT'); */
       return date_formated;
@@ -224,6 +226,7 @@ export default {
         modal.style.display = "none";
       }, 500);
     },
+    getWord
   },
 };
 </script>

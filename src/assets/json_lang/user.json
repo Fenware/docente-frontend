@@ -1,0 +1,46 @@
+{
+    "identification_document":{
+        "es":"Cedula de identidad",
+        "en":"Identification document"
+    },
+    "nickname":{
+        "es":"Nombre de usuario",
+        "en":"Nickname"
+    },
+    "name":{
+        "es":"Nombre",
+        "en":"Name"
+    },
+    "middle_name":{
+        "es":"Segundo nombre",
+        "en":"Middle name"
+    },
+    "surname":{
+        "es":"Apellido",
+        "en":"Surname"
+    },
+    "second_surname":{
+        "es":"Segundo apellido",
+        "en":"Second surname"
+    },
+    "email":{
+        "es":"E-mail",
+        "en":"E-mail"
+    },
+    "consultations_history":{
+        "es":"Historial de consultas",
+        "en":"Consultations history"
+    },
+    "take_down":{
+        "es":"Dar de baja",
+        "en":"Take down"
+    },
+    "profile":{
+        "es":"Perfil",
+        "en":"Profile"
+    },
+    "change_avatar":{
+        "es":"Cambiar avatar",
+        "en":"Change avatar"
+    }
+}
