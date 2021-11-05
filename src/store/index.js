@@ -8,6 +8,8 @@ import chatRooms from "./modules/chatRooms";
 import user from "./modules/user";
 import schedule from "./modules/schedule";
 
+import env_vars from "@/static/env_vars.json";
+
 export default createStore({
   modules: {
     auth,
@@ -18,7 +20,7 @@ export default createStore({
     schedule
   },
   state: {
-    API_URL: process.env.VUE_APP_ROOT_API,
+    API_URL: env_vars.VUE_APP_ROOT_API || "http://localhost:8080",
     token: null,
     headers: {
       Authorization: "",
