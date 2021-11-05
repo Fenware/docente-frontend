@@ -26,7 +26,7 @@
                 ? 'ml-auto bg-indigo-500 mt-0'
                 : 'bg-gray-700 mt-0'
               : isTheAuthorOfTheMessage(message.id_user)
-              ? 'ml-auto bg-indigo-500 rounded-tr-sm'
+              ? 'ml-auto bg-indigo-500 rounded-tr-sm mt-3'
               : 'bg-gray-700 rounded-tl-sm mt-3'
           "
           class="w-max px-2 py-1 rounded-2xl"
@@ -77,12 +77,13 @@
         class="w-full bg-white bg-opacity-20 hover:bg-opacity-25 focus:bg-opacity-25 transition-all rounded-xl mb-2.5 mt-1 h-10 ml-0.5 mr-3 px-3 outline-none "
         placeholder="Escribir mensaje"
       />
-      <div
+      <button
+        :disabled="new_message.length === 0"
         @click="sendMessage()"
         class=" transition-colors text-gray-400 hover:text-gray-300 cursor-pointer px-1 flex mb-2.5 mt-1"
       >
         <span class="material-icons ">send</span>
-      </div>
+      </button>
     </div>
 
     <!-- MODAL -->
@@ -110,25 +111,25 @@
               <span class="text-sm"> {{ getDate(chat.creation_date) }}</span>
             </p>
             <p class="">
-              Grupo:
+              {{getWord({file:'chat',word:'group',lang})}}:
               <span class="font-medium text-indigo-400">{{
                 chat.group_name
               }}</span>
             </p>
             <p class="">
-              Creador:
+              {{getWord({file:'chat',word:'creator',lang})}}:
               <span class="font-medium text-indigo-400">
                 {{ chat.student_name }}</span
               >
             </p>
             <p class="">
-              Docente:
+              {{getWord({file:'lang',word:'teacher',lang})}}:
               <span class="font-medium text-indigo-400">
                 {{ chat.teacher_name }}</span
               >
             </p>
 
-            <p class="mt-5 font-medium text-lg text-center">Participantes</p>
+            <p class="mt-5 font-medium text-lg text-center">{{getWord({file:'chat',word:'participants',lang})}}</p>
 
             <div>
               <ol class="overflow-y-auto max-h-28">
@@ -141,17 +142,6 @@
               </ol>
             </div>
           </div>
-          <!--Footer-->
-          <!-- <div class="flex justify-center pt-2 mt-2">
-            <button
-              v-if="user.id == chat.id_student"
-              @click="closeChat()"
-              class="btn-danger flex items-center py-0.5"
-            >
-              <span class="material-icons-round mr-1">warning_amber</span>
-              Terminar sala de chat
-            </button>
-          </div> -->
         </div>
       </div>
     </div>
@@ -161,6 +151,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 import moment from "moment";
+import { getWord } from "@/utils/lang";
 
 export default {
   name: "TheChat",
@@ -172,7 +163,8 @@ export default {
   computed: {
     ...mapState({
       chat: (state) => state.chatRooms.chat,
-      user: (state) => state.userProfile.user,
+      lang: (state) => state.lang,
+      user: (state) => state.user.user,
     }),
   },
   updated() {
@@ -182,26 +174,23 @@ export default {
     // Borrando el chat al salir del componente
     this.clearChat();
   },
-  created() {
-    this.listenMessages();
-  },
   methods: {
     ...mapMutations(["clearChat"]),
-    ...mapActions(["sendMessageToChat", "getChatRoomById", "listenMessages"]),
+    ...mapActions(["sendMessageToChat", "getChatRoomById"]),
     sendMessage() {
       this.sendMessageToChat({ id: this.chat.id, message: this.new_message });
       this.new_message = "";
     },
     getHour(date) {
       // Formateo la fecha a español
-      let date_formated = moment(date).locale("es");
+      let date_formated = moment(date).locale(this.lang);
       date_formated = moment(date_formated).format("LT");
       /* return moment(date_formated).format('LT'); */
       return date_formated;
     },
     getDate(date) {
       // Formateo la fecha a español
-      let date_formated = moment(date).locale("es");
+      let date_formated = moment(date).locale(this.lang);
       date_formated = moment(date_formated).format("LL");
       /* return moment(date_formated).format('LT'); */
       return date_formated;
@@ -237,6 +226,7 @@ export default {
         modal.style.display = "none";
       }, 500);
     },
+    getWord
   },
 };
 </script>

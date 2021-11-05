@@ -5,8 +5,10 @@ import auth from "./modules/auth";
 import groups from "./modules/groups";
 import consultations from "./modules/consultations";
 import chatRooms from "./modules/chatRooms";
-import userProfile from "./modules/userProfile";
+import user from "./modules/user";
 import schedule from "./modules/schedule";
+
+import env_vars from "@/static/env_vars.json";
 
 export default createStore({
   modules: {
@@ -14,17 +16,18 @@ export default createStore({
     groups,
     consultations,
     chatRooms,
-    userProfile,
+    user,
     schedule
   },
   state: {
-    API_URL: process.env.VUE_APP_ROOT_API,
+    API_URL: env_vars.VUE_APP_ROOT_API || "http://localhost:8080",
     token: null,
     headers: {
       Authorization: "",
       "Content-Type": "application/json",
     },
     text_filter: "",
+    lang: "es"
   },
   mutations: {
     setToken(state, payload) {
@@ -36,6 +39,9 @@ export default createStore({
     setText(state, payload) {
       state.text_filter = payload;
     },
+    setLang(state,lang){
+      state.lang = lang;
+    }
   },
   actions: {
     searcher({ commit }, payload) {

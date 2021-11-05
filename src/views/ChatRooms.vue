@@ -10,7 +10,7 @@
         class="flex justify-center items-center h-full"
         v-if="!create_chat_mode && chat == null"
       >
-        <p class="text-2xl">Seleccione un chat</p>
+        <p class="text-2xl">{{getWord({file:'chat',word:'select_a_chat',lang})}}</p>
       </div>
     </div>
     <div class="h-92vh bg-gray-700 rounded-2xl shadow-xl">
@@ -18,7 +18,7 @@
         class="flex justify-center px-2 bg-gray-600 rounded-t-xl rounded-b-md"
       >
         <h2 class="text-center text-2xl my-2 min-w-max font-medium">
-          Salas de chat
+          {{getWord({file:'chat',word:'chats',lang})}}
         </h2>
       </div>
 
@@ -34,7 +34,7 @@
             {{ group.name }}
           </p>
           <div class="flex justify-center items-center h-full" v-if="group.chats.length == 0">
-          <p class="min-w-max m-3">No tienes salas de chat de {{ group.name }}</p>
+          <p class="min-w-max m-3">{{getWord({file:'chat',word:'no_chats_from',lang})}} {{ group.name }}</p>
         </div>
           <div
             @click="openChat(chat)"
@@ -77,6 +77,9 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 import TheChat from "@/components/TheChat.vue";
 import moment from "moment";
+import io from "socket.io-client";
+import { getWord } from "@/utils/lang";
+
 
 export default {
   name: "ChatRooms",
@@ -84,37 +87,52 @@ export default {
     return {
       create_chat_mode: false,
       matter: "",
-      subject_id: null
+      subject_id: null,
+      socket: null,
     };
   },
   components: {
     TheChat,
   },
   created() {
+    this.socket = io("ws://localhost:3000", {
+      auth: { token: this.headers },
+    });
+
+    this.socket.on("connect_error", (err) => {
+      console.log(err.message);
+    });
+
+    this.setSocket(this.socket);
     // Obtengo los grupos del docente
     this.getTeacherGroups().then(() => {
       // Cuando se obtengan los grupos obtengo los chats del docente
       this.getChatRooms();
-      this.listenRooms();
+      this.wsChatRoomsConnection();
     });
     this.getUserData();
+  },
+  unmounted(){
+    this.closeSocketConnection();
   },
   computed: {
     ...mapState({
       group_chats: (state) => state.chatRooms.group_chats,
       chat: (state) => state.chatRooms.chat,
       selected_chat: (state) => state.chatRooms.selected_chat,
+      headers: (state) => state.headers,
+      lang: (state) => state.lang,
     }),
   },
   methods: {
-    ...mapMutations(["setChat", "setChatId"]),
+    ...mapMutations(["setChat", "setChatId", "setSocket"]),
     ...mapActions([
       "getChatRooms",
       "getChatMessages",
       "getTeacherGroups",
-      "wsMessagesConnection",
       "getUserData",
-      "listenRooms"
+      "wsChatRoomsConnection",
+      "closeSocketConnection"
     ]),
     getHour(date) {
       // Formateo la fecha a español
@@ -166,7 +184,6 @@ export default {
       this.create_chat_mode = false;
       this.setChat(chat);
       this.getChatMessages(chat.id);
-      /* this.wsMessagesConnection(); */
       this.toggleChatSelected(chat.id);
     },
     toggleChatSelected(id) {
@@ -186,6 +203,7 @@ export default {
 
       this.setChatId(id);
     },
+    getWord,
   },
 };
 </script>

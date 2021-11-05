@@ -15,6 +15,7 @@ module.exports = {
       height:['focus'],
       transitionProperty: ['hover', 'focus'],
     },
+    scale: ['group-hover'],
   },
   plugins: [],
 }

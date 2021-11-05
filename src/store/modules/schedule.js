@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Modulo donde manejo las alertas
-import showAlert from "@/utils/alerts";
+import { showAlert } from "@/utils/alerts";
 
 export default {
   state: {
@@ -26,12 +26,17 @@ export default {
   actions: {
     async getSchedule({ rootState, commit }) {
       await axios({
-        method: "get",
-        url: rootState.API_URL + "/schedule",
+        method: "post",
+        url: rootState.API_URL + "/schedule/getTeacherSchedule",
         headers: rootState.headers,
       })
         .then((res) => {
-          commit("setSchedule", res.data);
+          if (Array.isArray(res.data)) {
+            commit("setSchedule", res.data);
+          } else {
+            console.log("Error ->");
+            console.log(res.data);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -45,11 +50,12 @@ export default {
       };
       await axios({
         method: "post",
-        url: rootState.API_URL + "/schedule",
+        url: rootState.API_URL + "/schedule/addDayToSchedule",
         data,
         headers: rootState.headers,
       })
         .then((res) => {
+          console.log(res);
           if (res.data == 1) {
             commit("pushSchedule", schedule);
           }
@@ -60,8 +66,8 @@ export default {
     },
     async removeSchedule({ rootState, commit }, day) {
       await axios({
-        method: "delete",
-        url: rootState.API_URL + "/schedule",
+        method: "post",
+        url: rootState.API_URL + "/schedule/removeDayForSchedule",
         day,
         headers: rootState.headers,
       })

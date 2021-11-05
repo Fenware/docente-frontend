@@ -1,12 +1,12 @@
 <template>
   <div class="text-white">
     <h2 class="text-white text-center text-3xl font-semibold pt-1">
-      Horarios de disponibilidad
+      {{ getWord({file:'hour',word:'availability_hours',lang}) }}
     </h2>
 
     <div class="flex justify-center items-center mt-10">
       <div class="p-8 pb-4 bg-gray-700 border-2 border-gray-600 rounded-xl">
-        <p class="pl-3 text-lg">Días</p>
+        <p class="pl-3 text-lg">{{ getWord({file:'hour',word:'days',lang}) }}</p>
         <div class="flex mt-1">
           <button
             class="mx-2 py-3 px-4 transition-all ease-in-out hover:bg-opacity-70 rounded-xl shadow-lg select-none"
@@ -21,24 +21,25 @@
             v-for="day in days"
             :key="day.day"
           >
-            <span class="font-bold">{{ day.name }}</span>
+            <span class="font-bold">
+              {{ day.name }}</span>
           </button>
         </div>
 
         <div class="mt-8">
-          <p class="pl-3 text-lg">Horarios (24 hrs)</p>
+          <p class="pl-3 text-lg">{{ getWord({file:'hour',word:'hours_24',lang}) }}</p>
           <div class="mt-3 flex justify-center items-center font-medium">
-            <span>De: </span>
+            <span>{{ getWord({file:'hour',word:'from',lang}) }}: </span>
             <input
               type="time"
               v-model="start_hour"
-              class="ml-2 px-2 rounded-lg bg-gray-500 outline-none cursor-pointer text-white"
+              class="ml-2 px-2 rounded-lg bg-gray-500 outline-none cursor-pointer text-white select-none"
             />
-            <span class="ml-5">Hasta: </span>
+            <span class="ml-5">{{ getWord({file:'hour',word:'to',lang}) }}: </span>
             <input
               type="time"
               v-model="end_hour"
-              class="ml-2 px-2 rounded-lg bg-gray-500 outline-none cursor-pointer text-white"
+              class="ml-2 px-2 rounded-lg bg-gray-500 outline-none cursor-pointer text-white select-none"
             />
             <button
               @click="confirmDeletion()"
@@ -53,7 +54,7 @@
 
           <div class="mt-5 flex">
             <button @click="saveSchedule()" class="btn-success mx-auto">
-              Guardar horarios
+              {{ getWord({file:'lang',word:'save',lang}) }}
             </button>
           </div>
         </div>
@@ -63,19 +64,20 @@
 </template>
 
 <script>
-import showAlert from "@/utils/alerts.js";
+import { showAlert } from "@/utils/alerts.js";
 import { mapActions, mapState } from "vuex";
+import { getWord } from "@/utils/lang";
 
 export default {
   name: "Schedule",
   data: function() {
     return {
       days: [
-        { name: "Lunes", day: 1, state: 0, selected: false },
-        { name: "Martes", day: 2, state: 0, selected: false },
-        { name: "Miércoles", day: 3, state: 0, selected: false },
-        { name: "Jueves", day: 4, state: 0, selected: false },
-        { name: "Viernes", day: 5, state: 0, selected: false },
+        { name: this.lang == 'es'? "Lunes"  : "Monday" , day: 1, state: 0, selected: false },
+        { name: this.lang == 'es'? "Martes" : "Tuesday ", day: 2, state: 0, selected: false },
+        { name: this.lang == 'es'? "Miércoles" : "Wednesday", day: 3, state: 0, selected: false },
+        { name: this.lang == 'es'? "Jueves" : "Thursday ", day: 4, state: 0, selected: false },
+        { name: this.lang == 'es'? "Viernes" : "Friday", day: 5, state: 0, selected: false },
       ],
       start_hour: null,
       end_hour: null,
@@ -84,6 +86,7 @@ export default {
   created() {
     this.getSchedule().then(() => {
       this.schedule.forEach((element) => {
+        
         let found_day = this.days.find(
           (day) => day.day == parseInt(element.day)
         );
@@ -97,6 +100,7 @@ export default {
   computed: {
     ...mapState({
       schedule: (state) => state.schedule.schedule,
+      lang: (state) => state.lang,
     }),
     scheduleTakenSelected() {
       return (
@@ -229,6 +233,7 @@ export default {
           }
         });
     },
+    getWord,
   },
 };
 </script>
